@@ -11,7 +11,15 @@ const CostRow = ({ icon: Icon, label, value, scrollYProgress, index, shouldReduc
   const yRaw = useTransform(scrollYProgress, [0.3, 0.6], [50, 0]);
   const y = shouldReduceMotion ? yRaw : useSpring(yRaw, { stiffness: 100, damping: 20 });
   const opacity = useTransform(scrollYProgress, [0.3 + (index * 0.05), 0.5 + (index * 0.05)], [0, 1]);
-  const widthRaw = useTransform(scrollYProgress, [0.4 + (index * 0.05), 0.7], ["0%", "100%"]);
+  
+  // Calculate logarithmic width based on scroll progress
+  // Maps 0-1 to 0-100 logarithmically to grow fast initially then slow down
+  const normalizedProgress = useTransform(scrollYProgress, [0.4 + (index * 0.05), 0.7], [0, 1]);
+  const logarithmicProgress = useTransform(normalizedProgress, (p) => 
+    Math.max(0, Math.min(1, Math.log10(1 + 9 * p)))
+  );
+  const widthRaw = useTransform(logarithmicProgress, (p) => `${p * 100}%`);
+  
   const width = shouldReduceMotion ? widthRaw : useSpring(widthRaw, { stiffness: 60, damping: 15 });
 
   return (

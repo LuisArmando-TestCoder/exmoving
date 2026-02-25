@@ -8,6 +8,7 @@ import { clsx } from "clsx";
 import { ModalMenu } from "./ModalMenu";
 import { NavDropdown } from "./NavDropdown";
 import { navigationData } from "@/constants/navigation";
+import { useScrollStore } from "@/store/useScrollStore";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -22,14 +23,20 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const lenis = useScrollStore((state) => state.lenis);
+
   // Prevent scroll when menu is open
   useEffect(() => {
     if (menuOpen) {
-      document.body.style.overflow = "hidden";
+      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.documentElement.style.setProperty('--scrollbar-width', `${scrollBarWidth}px`);
+      document.body.classList.add("menu-open");
+      lenis?.stop();
     } else {
-      document.body.style.overflow = "unset";
+      document.body.classList.remove("menu-open");
+      lenis?.start();
     }
-  }, [menuOpen]);
+  }, [menuOpen, lenis]);
 
   return (
     <header className={clsx(styles.header, scrolled && styles["header--scrolled"], menuOpen && styles["header--open"])}>

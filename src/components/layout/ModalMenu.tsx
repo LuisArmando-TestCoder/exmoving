@@ -16,8 +16,13 @@ interface ModalMenuProps {
 }
 
 export const ModalMenu = ({ isOpen, activeTab, setActiveTab, setMenuOpen }: ModalMenuProps) => {
+  const [mounted, setMounted] = useState(false);
   // Global navigation stack instead of per-tab, starts empty (showing root tabs)
   const [navStack, setNavStack] = useState<NavItem[]>([]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // When menu closes, you might want to reset the stack
   useEffect(() => {
@@ -59,7 +64,7 @@ export const ModalMenu = ({ isOpen, activeTab, setActiveTab, setMenuOpen }: Moda
     <div 
       className={clsx(styles.modalMenu, isOpen && styles.modalMenuVisible)} 
       aria-hidden={!isOpen}
-      style={{ pointerEvents: isOpen ? 'auto' : 'none' }}
+      style={mounted ? { pointerEvents: isOpen ? 'auto' : 'none' } : {}}
     >
       <div className={styles.modalContent}>
         <div className={styles.modalGrid}>
