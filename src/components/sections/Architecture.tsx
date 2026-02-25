@@ -1,49 +1,48 @@
 "use client";
 
-import { Server, Shield, Workflow, ArrowUpRight } from "lucide-react";
+import { motion, useScroll, useSpring } from "framer-motion";
+import { useRef } from "react";
 import styles from "./Architecture.module.scss";
-import { SectionHeader, StaggerContainer, Reveal, GlassCard } from "../ui/Common";
-
-const cards = [
-  {
-    icon: <Server size={24} />,
-    title: "Metric-Driven Scaling",
-    description: "Automated indicators record ROI performance. Tools that do not compromise liquidity during financial race conditions.",
-    footer: "Numeric Selling Point"
-  },
-  {
-    icon: <Shield size={24} />,
-    title: "No supervision",
-    description: "A machine that performs automations based on call transcripts. System generates tools automatically from transcripts.",
-    footer: "Auto-Automation"
-  }
-];
+import { SectionHeader } from "../ui/Common";
+import { journeySteps } from "./architecture/constants";
+import { JourneyStep } from "./architecture/JourneyStep";
+import { Vision } from "./architecture/Vision";
 
 export default function Architecture() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start center", "end center"]
+  });
+
+  const scaleY = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
   return (
-    <section id="architecture" className={`${styles.architecture} section`}>
+    <section id="architecture" className={styles.architecture}>
       <div className="container">
         <SectionHeader 
-          title="The Roadmap To Exit."
-          subtitle="A system that brings ROI without supervision, converting transcripts into tailored automation tools."
+          title="Roadmap To Exit."
+          subtitle="For a greater tomorrow, turn status quo upside down. We believe in expanding and enhancing people by supercharging them."
         />
 
-        <StaggerContainer className={styles.grid} staggerDelay={0.2}>
-          {cards.map((card, index) => (
-            <Reveal key={index} direction="up" distance={30}>
-              <GlassCard className={styles.card}>
-                <div className={styles.iconWrapper}>
-                  {card.icon}
-                </div>
-                <h3 className={styles.cardTitle}>{card.title}</h3>
-                <p className={styles.cardDescription}>{card.description}</p>
-                <div className={styles.cardFooter}>
-                  {card.footer} <ArrowUpRight size={14} />
-                </div>
-              </GlassCard>
-            </Reveal>
+        <div className={styles.journeyContainer} ref={containerRef}>
+          <div className={styles.timelineLine}>
+            <motion.div 
+              className={styles.timelineProgress} 
+              style={{ scaleY, originY: 0 }}
+            />
+          </div>
+
+          {journeySteps.map((step, index) => (
+            <JourneyStep key={index} step={step} index={index} />
           ))}
-        </StaggerContainer>
+        </div>
+
+        <Vision />
       </div>
     </section>
   );

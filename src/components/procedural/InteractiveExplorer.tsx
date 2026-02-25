@@ -98,11 +98,11 @@ export default function InteractiveExplorer({ itemName, childrenNodes }: Interac
               className={styles.viewToggleBg}
               animate={{ 
                 x: viewMode === "grid" ? "100%" : "0%",
-                scale: [1, 1.05, 1],
+                scale: [1, 0.9, 1.05, 1],
               }}
               transition={{ 
-                x: { type: "spring", stiffness: 350, damping: 35 },
-                scale: { duration: 0.3 }
+                x: { type: "spring", stiffness: 400, damping: 25 },
+                scale: { duration: 0.4, times: [0, 0.3, 0.7, 1] }
               }}
             />
             <button 

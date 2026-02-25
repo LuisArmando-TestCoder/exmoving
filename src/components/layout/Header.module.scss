@@ -48,60 +48,84 @@
 .navControls {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
   z-index: 1001;
 }
 
+.navPill {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 100px;
+  padding: 0.3rem;
+  backdrop-filter: blur(20px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.pillDivider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0 0.5rem;
+
+  @media (max-width: $breakpoint-sm) {
+    display: none;
+  }
+}
+
 .pricingLink {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  color: white;
+  color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
   letter-spacing: 0.1em;
-  padding: 0.6rem 1.2rem;
+  padding: 0.5rem 1rem;
   border-radius: 100px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  display: none;
+  white-space: nowrap;
 
-  @media (min-width: $breakpoint-sm) {
-    display: block;
+  @media (max-width: $breakpoint-sm) {
+    display: none;
   }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
   }
 
   &Active {
-    border-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
   }
 }
 
 .menuToggle {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.6rem 1.2rem;
+  gap: 0.75rem;
+  background: transparent;
+  border: none;
+  padding: 0.5rem 1rem;
   border-radius: 100px;
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
 
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
   }
 
   &Active {
     background: white;
     color: black;
-    border-color: white;
 
     .hamburger span {
       background: black;
@@ -175,6 +199,7 @@
   display: flex;
   flex-direction: column;
   max-width: 1400px;
+  width: 100%;
   margin: 0 auto;
   transform: translateY(20px);
   opacity: 0;
@@ -203,6 +228,7 @@
   flex-direction: column;
   gap: 3rem;
   flex: 1;
+  width: 100%;
 
   @media (min-width: $breakpoint-md) {
     display: grid;
@@ -287,111 +313,24 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  height: 100%;
-  min-height: 350px;
-
-  @media (min-width: $breakpoint-md) {
-    min-height: 450px;
-  }
-}
-
-.navTabs {
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  padding-bottom: 1rem;
-  scrollbar-width: none; // Hide scrollbar for Firefox
-  -ms-overflow-style: none; // Hide scrollbar for IE/Edge
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-
-  &::-webkit-scrollbar {
-    display: none; // Hide scrollbar for Chrome/Safari
-  }
-
-  @media (min-width: $breakpoint-md) {
-    flex-direction: column;
-    border-bottom: none;
-    border-right: 1px solid rgba(255, 255, 255, 0.03);
-    padding-right: 2rem;
-    width: 250px;
-    overflow-x: visible;
-  }
-}
-
-.navTab {
-  background: transparent;
-  border: none;
-  padding: 0.5rem 1rem;
-  color: rgba(255, 255, 255, 0.4);
-  cursor: pointer;
-  text-align: left;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  transition: all 0.3s ease;
-  position: relative;
-
-  &Active {
-    color: white;
-    
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: -1rem;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: $color-primary;
-
-      @media (min-width: $breakpoint-md) {
-        bottom: 0;
-        right: -2rem;
-        left: auto;
-        width: 2px;
-        height: 100%;
-      }
-    }
-
-    .tabNumber {
-      color: $color-primary;
-    }
-  }
-
-  @media (min-width: $breakpoint-md) {
-    padding: 1rem 0;
-    font-size: 1.25rem;
-  }
-}
-
-.tabNumber {
-  font-family: monospace;
-  font-size: 0.75rem;
-  opacity: 0.5;
-}
-
-.tabName {
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  width: 100%;
 }
 
 .navContentWrapper {
   flex: 1;
   position: relative;
-  overflow: hidden;
+  width: 100%;
 }
 
 .navPanel {
-  position: absolute;
-  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
   opacity: 0;
   visibility: hidden;
   transform: translateX(20px);
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  width: 100%;
 
   &Active {
     opacity: 1;
@@ -425,22 +364,15 @@
 }
 
 .panelGrid {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   padding-right: 0.5rem;
-
-  @media (min-width: 480px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  width: 100%;
 
   @media (min-width: $breakpoint-sm) {
     gap: 2rem;
     padding-right: 1rem;
-  }
-
-  @media (min-width: $breakpoint-lg) {
-    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -448,6 +380,8 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  flex: 1 1 auto;
+  min-width: max-content;
 }
 
 .panelGroupTitle {
@@ -466,17 +400,65 @@
 }
 
 .panelSubLink {
-  font-size: 1.125rem;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
   text-decoration: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  transition: all 0.3s ease;
+  gap: 2rem;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid transparent;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  width: auto;
+  min-width: max-content;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .childName {
+    position: relative;
+    z-index: 1;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+  }
+
+  svg {
+    position: relative;
+    z-index: 1;
+    color: rgba(255, 255, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
 
   &:hover {
     color: white;
-    transform: translateX(5px);
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    
+    &::before {
+      opacity: 1;
+    }
+
+    .childName {
+      transform: translateX(8px);
+    }
+
+    svg {
+      color: $color-primary;
+      transform: translateX(-4px);
+    }
   }
 }
 
@@ -575,9 +557,9 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
+  gap: 0.4rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 100px;
   transition: all 0.3s ease;
 
   &:hover {
@@ -586,15 +568,22 @@
 }
 
 .dropdownMainLink {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+
+  .dropdownToggle:hover & {
+    color: white;
+  }
 }
 
 .chevron {
   transition: transform 0.3s ease;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.3);
 }
 
 .chevronRotate {
@@ -810,9 +799,20 @@
 .panelSubLinkHasChildren {
   color: white !important;
   font-weight: 700 !important;
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.05);
+  
+  svg {
+    color: white;
+  }
   
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+    
+    svg {
+      transform: translateX(4px);
+    }
   }
 }
 
@@ -830,9 +830,10 @@
 // Desktop Nav visibility
 .desktopNav {
   display: none;
-  gap: 1rem;
+  align-items: center;
+  gap: 0.25rem;
 
-  @media (min-width: $breakpoint-lg) {
+  @media (min-width: $breakpoint-sm) {
     display: flex;
   }
 }

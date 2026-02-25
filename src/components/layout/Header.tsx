@@ -40,33 +40,35 @@ export default function Header() {
             ROADMAP<span>.</span>
           </Link>
 
-          {/* Main Desktop Navigation */}
-          <div className={styles.desktopNav}>
-            {navigationData.map((item) => (
-              <NavDropdown key={item.path} item={item} />
-            ))}
-          </div>
-
-          {/* Navigation Toggle */}
+          {/* Unified Navigation Pill */}
           <div className={styles.navControls}>
-            <Link 
-              href="/pricing" 
-              className={clsx(styles.pricingLink, menuOpen && styles.pricingLinkActive)}
-              onClick={() => setMenuOpen(false)}
-            >
-              PRICING
-            </Link>
-            <button 
-              className={clsx(styles.menuToggle, menuOpen && styles.menuToggleActive)}
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
-            >
-              <div className={styles.hamburger}>
-                <span></span>
-                <span></span>
+            <div className={styles.navPill}>
+              <div className={styles.desktopNav}>
+                {navigationData.map((item) => (
+                  <NavDropdown key={item.path} item={item} />
+                ))}
               </div>
-              <span className={styles.toggleText}>{menuOpen ? "CLOSE" : "MENU"}</span>
-            </button>
+              <div className={styles.pillDivider} />
+              <Link 
+                href="/pricing" 
+                className={clsx(styles.pricingLink, menuOpen && styles.pricingLinkActive)}
+                onClick={() => setMenuOpen(false)}
+              >
+                PRICING
+              </Link>
+              <div className={styles.pillDivider} />
+              <button 
+                className={clsx(styles.menuToggle, menuOpen && styles.menuToggleActive)}
+                onClick={() => setMenuOpen(!menuOpen)}
+                aria-label={menuOpen ? "Close menu" : "Open menu"}
+              >
+                <div className={styles.hamburger}>
+                  <span></span>
+                  <span></span>
+                </div>
+                <span className={styles.toggleText}>{menuOpen ? "CLOSE" : "MENU"}</span>
+              </button>
+            </div>
           </div>
 
           <ModalMenu 

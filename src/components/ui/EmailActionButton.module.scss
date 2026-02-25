@@ -1,6 +1,7 @@
 @use "../../styles/variables" as *;
 
 .demoContainer {
+  margin: auto;
   position: relative;
   display: flex;
   align-items: center;
@@ -9,8 +10,8 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 6px;
   border-radius: 100px;
-  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  width: fit-content;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  width: min(400px, 100%);
   cursor: pointer;
   backdrop-filter: blur(20px);
   box-shadow: 
@@ -53,6 +54,7 @@
     .submitButton {
       background: white;
       color: black;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       transform: scale(1.05);
     }
   }
@@ -61,7 +63,7 @@
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.3);
     cursor: default;
-    width: 360px;
+    width: min(500px, 100%);
     padding-right: 8px;
     transform: translateY(0);
     box-shadow: 
@@ -88,6 +90,7 @@
   user-select: none;
   text-transform: uppercase;
   transition: all 0.3s ease;
+  flex: 1;
 }
 
 .inputWrapper {
@@ -125,7 +128,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
@@ -174,6 +177,7 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .loader {
