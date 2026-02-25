@@ -59,10 +59,11 @@ export default function Breadcrumbs() {
       initial="hidden"
       animate="visible"
       ref={dropdownRef}
+      aria-label="Breadcrumbs"
     >
       <motion.div className={styles.breadcrumbItem} variants={itemVariants}>
-        <Link href="/" className={styles.link}>
-          <div className={styles.homeIcon}>
+        <Link href="/" className={styles.link} aria-label="Go to homepage">
+          <div className={styles.homeIcon} aria-hidden="true">
             <LayoutGrid size={12} />
           </div>
           Home
@@ -77,13 +78,18 @@ export default function Breadcrumbs() {
         const hasChildren = navItem?.children && navItem.children.length > 0;
 
         return (
-          <motion.div key={currentPath} className={styles.breadcrumbItem} variants={itemVariants}>
-            <span className={styles.separator}>
+          <motion.div 
+            key={currentPath} 
+            className={`${styles.breadcrumbItem} ${hasChildren ? styles.hasChildren : ""}`} 
+            variants={itemVariants}
+          >
+            <span className={styles.separator} aria-hidden="true">
               <ChevronRight size={12} />
             </span>
             <Link
               href={currentPath}
               className={`${styles.link} ${isLast ? styles.active : ""}`}
+              aria-current={isLast ? "page" : undefined}
             >
               {displayName}
             </Link>
@@ -93,6 +99,9 @@ export default function Breadcrumbs() {
                 <button 
                   className={`${styles.dropdownTrigger} ${openDropdown === currentPath ? styles.active : ""}`}
                   onClick={() => setOpenDropdown(openDropdown === currentPath ? null : currentPath)}
+                  aria-label={`Show sub-pages for ${displayName}`}
+                  aria-haspopup="true"
+                  aria-expanded={openDropdown === currentPath}
                 >
                   <ChevronDown size={12} style={{ transform: openDropdown === currentPath ? 'rotate(180deg)' : 'none', transition: 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }} />
                 </button>
@@ -105,6 +114,7 @@ export default function Breadcrumbs() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
                       transition={{ duration: 0.2 }}
+                      role="menu"
                     >
                       {navItem.children?.map((child) => (
                         <Link
@@ -112,9 +122,10 @@ export default function Breadcrumbs() {
                           href={child.path}
                           className={`${styles.dropdownItem} ${pathname === child.path ? styles.active : ""}`}
                           onClick={() => setOpenDropdown(null)}
+                          role="menuitem"
                         >
                           {child.name}
-                          <ArrowRight size={12} className={styles.itemArrow} />
+                          <ArrowRight size={12} className={styles.itemArrow} aria-hidden="true" />
                         </Link>
                       ))}
                     </motion.div>

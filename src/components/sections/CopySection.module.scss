@@ -2,67 +2,61 @@
 
 .copySection {
   background-color: $color-bg;
+  position: relative;
+  overflow: hidden;
+  padding: 8rem 0;
 }
 
 .card {
-  padding: 4rem;
+  padding: 6rem 4rem;
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 2.5rem;
   align-items: center;
+  position: relative;
+  border-radius: 40px;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  }
 }
 
 .title {
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1;
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  line-height: 1.1;
+  max-width: 800px;
 }
 
 .description {
-  font-size: 1.25rem;
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
   color: $color-text-dim;
-  max-width: 700px;
+  max-width: 650px;
+  line-height: 1.6;
 }
 
 .inputGroup {
   display: flex;
+  justify-content: center;
   width: 100%;
-  max-width: 500px;
-  gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 0.5rem;
-  border-radius: 9999px;
-  border: 1px solid var(--glass-border);
-
-  @media (max-width: $breakpoint-sm) {
-    flex-direction: column;
-    background: transparent;
-    border: none;
-    padding: 0;
-    gap: 1rem;
-    border-radius: 0;
-  }
+  margin-top: 1rem;
 }
 
-.input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  padding: 0 1.5rem;
-  color: white;
-  font-family: inherit;
-  font-size: 0.9375rem;
+.submitButton {
+  transform: scale(1.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
-  &:focus {
-    outline: none;
-  }
-
-  @media (max-width: $breakpoint-sm) {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 1rem 1.5rem;
-    border-radius: 9999px;
-    border: 1px solid var(--glass-border);
+  &:hover {
+    // Keep scale consistent or grow slightly, but do not shrink
+    transform: scale(1.12) translateY(-4px);
   }
 }

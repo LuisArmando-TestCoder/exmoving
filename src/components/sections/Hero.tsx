@@ -1,9 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ChevronRight, Zap } from "lucide-react";
+import { Zap } from "lucide-react";
 import styles from "./Hero.module.scss";
 import { Reveal, StaggerContainer } from "../ui/Common";
+import { EmailActionButton } from "../ui/EmailActionButton";
 
 export default function Hero() {
   return (
@@ -29,10 +30,13 @@ export default function Hero() {
           </Reveal>
           
           <Reveal delay={0.2} className={styles.actions}>
-            <button className="btn btn--primary btn--lg">
-              Get Your Free Demo <ChevronRight size={18} />
-            </button>
-            <button className="btn btn--outline btn--lg">View Architecture</button>
+            <div className={styles.demoGroup}>
+              <EmailActionButton 
+                label="REQUEST FREE DEMO" 
+                subject="Hero Demo Request"
+              />
+              <p className={styles.demoHint}>Takes less than 30 seconds</p>
+            </div>
           </Reveal>
           
           <Reveal delay={0.3} className={styles.stats}>

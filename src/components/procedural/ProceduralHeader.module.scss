@@ -1,0 +1,44 @@
+@use "@/styles/variables" as *;
+
+.headerSection {
+  margin-bottom: 4rem;
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    background-color: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+  }
+
+  .title {
+    font-size: 3.75rem;
+    line-height: 1;
+    font-weight: 900;
+    color: white;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.05em;
+
+    @media (min-width: 768px) {
+      font-size: 4.5rem;
+    }
+
+    span {
+      color: $color-primary;
+    }
+  }
+
+  .description {
+    font-size: 1.25rem;
+    color: #9ca3af;
+    max-width: 42rem;
+    line-height: 1.625;
+  }
+}

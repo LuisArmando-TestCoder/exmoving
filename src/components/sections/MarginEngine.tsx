@@ -3,6 +3,7 @@
 import { CheckCircle2, TrendingUp, BarChart, Settings } from "lucide-react";
 import styles from "./MarginEngine.module.scss";
 import { Reveal } from "../ui/Common";
+import Link from "next/link";
 
 export default function MarginEngine() {
   return (
@@ -33,10 +34,13 @@ export default function MarginEngine() {
               </div>
             </div>
 
-            <div style={{ marginTop: '1rem' }}>
-              <button className="btn btn--primary">
-                See Pricing Model
-              </button>
+            <div className={styles.cta}>
+              <Link href="/pricing" className={styles.pricingButton}>
+                <span className={styles.pricingText}>See Pricing Model</span>
+                <div className={styles.pricingIcon}>
+                  <TrendingUp size={16} />
+                </div>
+              </Link>
             </div>
           </Reveal>
 

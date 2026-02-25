@@ -2,67 +2,17 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ChevronRight, LayoutGrid, ChevronDown } from "lucide-react";
+import { LayoutGrid } from "lucide-react";
 import styles from "./Header.module.scss";
 import { clsx } from "clsx";
-import { navigationData, NavItem } from "@/constants/navigation";
-
-const NavDropdown = ({ item }: { item: NavItem }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div 
-      className={styles.dropdown}
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
-    >
-      <Link 
-        href={item.path} 
-        className={clsx(styles.link, styles.dropdownToggle)}
-      >
-        {item.name}
-        {item.children && <ChevronDown size={14} className={clsx(styles.chevron, isOpen && styles.chevronRotate)} />}
-      </Link>
-      
-      {item.children && isOpen && (
-        <div className={styles.dropdownMenu}>
-          {item.children.map((child) => (
-            <div key={child.path} className={styles.dropdownItemWrapper}>
-              <Link href={child.path} className={styles.dropdownItem}>
-                {child.name}
-                {child.children && <ChevronRight size={14} />}
-              </Link>
-              {child.children && (
-                <div className={styles.dropdownSubmenu}>
-                  {child.children.map((subChild) => (
-                    <div key={subChild.path} className={styles.dropdownItemWrapper}>
-                      <Link href={subChild.path} className={styles.dropdownItem}>
-                        {subChild.name}
-                        {subChild.children && <ChevronRight size={14} />}
-                      </Link>
-                      {subChild.children && (
-                        <div className={styles.dropdownSubmenu}>
-                          {subChild.children.map((leaf) => (
-                            <Link key={leaf.path} href={leaf.path} className={styles.dropdownItem}>
-                              {leaf.name}
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
+import { ModalMenu } from "./ModalMenu";
+import { NavDropdown } from "./NavDropdown";
+import { navigationData } from "@/constants/navigation";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -72,26 +22,59 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Prevent scroll when menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [menuOpen]);
+
   return (
-    <header className={clsx(styles.header, scrolled && styles["header--scrolled"])}>
+    <header className={clsx(styles.header, scrolled && styles["header--scrolled"], menuOpen && styles["header--open"])}>
       <div className="container">
         <nav className={styles.nav}>
-          <Link href="/" className={styles.logo}>
+          <Link href="/" className={styles.logo} onClick={() => setMenuOpen(false)}>
             <LayoutGrid size={24} />
             ROADMAP<span>.</span>
           </Link>
 
-          <div className={styles.links}>
+          {/* Main Desktop Navigation */}
+          <div className={styles.desktopNav}>
             {navigationData.map((item) => (
               <NavDropdown key={item.path} item={item} />
             ))}
           </div>
 
-          <div className={styles.actions}>
-            <button className="btn btn--primary">
-              Request Free Demo <ChevronRight size={16} />
+          {/* Navigation Toggle */}
+          <div className={styles.navControls}>
+            <Link 
+              href="/pricing" 
+              className={clsx(styles.pricingLink, menuOpen && styles.pricingLinkActive)}
+              onClick={() => setMenuOpen(false)}
+            >
+              PRICING
+            </Link>
+            <button 
+              className={clsx(styles.menuToggle, menuOpen && styles.menuToggleActive)}
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+            >
+              <div className={styles.hamburger}>
+                <span></span>
+                <span></span>
+              </div>
+              <span className={styles.toggleText}>{menuOpen ? "CLOSE" : "MENU"}</span>
             </button>
           </div>
+
+          <ModalMenu 
+            isOpen={menuOpen}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            setMenuOpen={setMenuOpen}
+          />
         </nav>
       </div>
     </header>

@@ -1,4 +1,4 @@
- export interface NavItem {
+export interface NavItem {
   name: string;
   path: string;
   children?: NavItem[];
@@ -17,10 +17,7 @@ export const navigationData: NavItem[] = [
             name: "Moving",
             path: "/services/consultations/moving",
             children: [
-              {
-                name: "Pricing",
-                path: "/services/consultations/moving/pricing",
-              },
+              { name: "Pricing", path: "/services/consultations/moving/pricing" },
             ],
           },
         ],

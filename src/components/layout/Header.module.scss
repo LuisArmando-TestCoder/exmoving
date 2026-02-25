@@ -5,15 +5,21 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
-  padding: 1rem 0;
-  transition: all 0.3s ease;
+  z-index: 1000;
+  padding: 1.5rem 0;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
   &--scrolled {
-    padding: 0.75rem 0;
+    padding: 1rem 0;
     background: rgba(3, 7, 18, 0.8);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  &--open {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border-bottom-color: transparent !important;
   }
 }
 
@@ -30,75 +36,565 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  z-index: 1001;
+  color: white;
+  text-decoration: none;
   
   span {
     color: $color-primary;
   }
 }
 
-.links {
-  display: none;
+.navControls {
+  display: flex;
   align-items: center;
-  gap: 2.5rem;
-
-  @media (min-width: $breakpoint-md) {
-    display: flex;
-  }
+  gap: 1.5rem;
+  z-index: 1001;
 }
 
-.link {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: $color-text-dim;
-  transition: color 0.2s ease;
-  position: relative;
+.pricingLink {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: white;
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  padding: 0.6rem 1.2rem;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  display: none;
 
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background: $color-primary;
-    transition: width 0.3s ease;
+  @media (min-width: $breakpoint-sm) {
+    display: block;
   }
 
   &:hover {
-    color: $color-text;
-    &::after {
-      width: 100%;
-    }
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  &Active {
+    border-color: rgba(255, 255, 255, 0.2);
   }
 }
 
-.actions {
+.menuToggle {
   display: flex;
   align-items: center;
   gap: 1rem;
-}
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.6rem 1.2rem;
+  border-radius: 100px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
 
-.dropdown {
-  position: relative;
-  
   &:hover {
-    .dropdownMenu {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  &Active {
+    background: white;
+    color: black;
+    border-color: white;
+
+    .hamburger span {
+      background: black;
+      
+      &:first-child {
+        transform: translateY(3px) rotate(45deg);
+      }
+      &:last-child {
+        transform: translateY(-3px) rotate(-45deg);
+      }
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.9);
+      color: black;
     }
   }
 }
 
-.dropdownToggle {
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 18px;
+
+  span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: white;
+    transition: all 0.3s ease;
+  }
+}
+
+.toggleText {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.modalMenu {
+  position: fixed;
+  inset: 0;
+  background: #030712;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+
+  &Visible {
+    opacity: 1;
+    visibility: visible;
+
+    .modalContent {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .modalItem {
+      transform: translateY(0);
+      opacity: 1;
+      transition-delay: calc(0.1s * var(--index) + 0.3s);
+    }
+  }
+}
+
+.modalContent {
+  height: 100%;
+  padding: 5rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  max-width: 1400px;
+  margin: 0 auto;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+  @media (min-width: $breakpoint-sm) {
+    padding: 6rem 1.5rem 2rem;
+  }
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+  }
+}
+
+.modalGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  flex: 1;
+
+  @media (min-width: $breakpoint-md) {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 4rem;
+  }
+}
+
+.modalLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.2em;
+}
+
+.navHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+  @media (min-width: $breakpoint-sm) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.searchContainer {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 100px;
+  padding: 0.25rem 0.25rem 0.25rem 1rem;
+  width: 100%;
+  max-width: 300px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+  @media (min-width: $breakpoint-sm) {
+    width: 140px;
+    &:focus-within {
+      width: 200px;
+    }
+  }
+
+  &:focus-within {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.searchInput {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 0.75rem;
+  width: 100%;
+  outline: none;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.searchIcon {
+  width: 24px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+// Ultramodern Nav Styles
+.ultramodernNav {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  height: 100%;
+  min-height: 350px;
+
+  @media (min-width: $breakpoint-md) {
+    min-height: 450px;
+  }
+}
+
+.navTabs {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  scrollbar-width: none; // Hide scrollbar for Firefox
+  -ms-overflow-style: none; // Hide scrollbar for IE/Edge
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+
+  &::-webkit-scrollbar {
+    display: none; // Hide scrollbar for Chrome/Safari
+  }
+
+  @media (min-width: $breakpoint-md) {
+    flex-direction: column;
+    border-bottom: none;
+    border-right: 1px solid rgba(255, 255, 255, 0.03);
+    padding-right: 2rem;
+    width: 250px;
+    overflow-x: visible;
+  }
+}
+
+.navTab {
+  background: transparent;
+  border: none;
+  padding: 0.5rem 1rem;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  position: relative;
+
+  &Active {
+    color: white;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -1rem;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: $color-primary;
+
+      @media (min-width: $breakpoint-md) {
+        bottom: 0;
+        right: -2rem;
+        left: auto;
+        width: 2px;
+        height: 100%;
+      }
+    }
+
+    .tabNumber {
+      color: $color-primary;
+    }
+  }
+
+  @media (min-width: $breakpoint-md) {
+    padding: 1rem 0;
+    font-size: 1.25rem;
+  }
+}
+
+.tabNumber {
+  font-family: monospace;
+  font-size: 0.75rem;
+  opacity: 0.5;
+}
+
+.tabName {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.navContentWrapper {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.navPanel {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(20px);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  &Active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+}
+
+.panelHeader {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.panelMainLink {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: $color-primary;
+  }
+
+  @media (min-width: $breakpoint-md) {
+    font-size: 2.5rem;
+  }
+}
+
+.panelGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding-right: 0.5rem;
+
+  @media (min-width: 480px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: $breakpoint-sm) {
+    gap: 2rem;
+    padding-right: 1rem;
+  }
+
+  @media (min-width: $breakpoint-lg) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.panelGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.panelGroupTitle {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: $color-primary;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.panelSubLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.panelSubLink {
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: white;
+    transform: translateX(5px);
+  }
+}
+
+.nestedCount {
+  font-size: 0.7rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.modalInfoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.modalInfoBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modalInfoLink {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: $color-primary;
+  }
+}
+
+.modalInfoText {
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+}
+
+.modalActions {
+  margin-top: 1rem;
+}
+
+.modalDemoButton {
+  justify-content: center;
+}
+
+.modalFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding-top: 4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+  @media (min-width: $breakpoint-md) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.modalSocials {
+  display: flex;
+  gap: 2rem;
+}
+
+.modalSocialLink {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: white;
+  }
+}
+
+.modalCopyright {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.2);
+  letter-spacing: 0.05em;
+}
+
+// Breadcrumb Dropdown Styles
+.dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dropdownToggle {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.dropdownMainLink {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
 }
 
 .chevron {
   transition: transform 0.3s ease;
-  color: $color-text-dim;
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .chevronRotate {
@@ -109,28 +605,105 @@
   position: absolute;
   top: 100%;
   left: 0;
-  min-width: 200px;
-  background: rgba(10, 10, 10, 0.95);
-  backdrop-filter: blur(12px);
+  width: 280px;
+  background: #0b0f1a;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.75rem;
-  padding: 0.5rem;
+  border-radius: 12px;
+  padding: 1rem;
   margin-top: 0.5rem;
   opacity: 0;
   visibility: hidden;
   transform: translateY(10px);
-  transition: all 0.3s ease;
-  z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  z-index: 100;
+
+  &Visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
+
+.breadcrumbContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.breadcrumbWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.breadcrumbLink {
+  background: transparent;
+  border: none;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.breadcrumbActive {
+  color: $color-primary;
+  cursor: default;
+  &:hover {
+    background: transparent;
+  }
+}
+
+.breadcrumbSeparator {
+  color: rgba(255, 255, 255, 0.1);
+}
+
+.dropdownContentRelative {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: none;
+  color: $color-primary;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin-bottom: 0.25rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba($color-primary, 0.1);
+  }
+}
+
+.navItemsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .dropdownItemWrapper {
-  position: relative;
-  
-  &:hover > .dropdownSubmenu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(0);
-  }
+  width: 100%;
 }
 
 .dropdownItem {
@@ -138,32 +711,133 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 1rem;
-  color: $color-text-dim;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
   font-size: 0.875rem;
-  border-radius: 0.5rem;
+  font-weight: 500;
+  border-radius: 8px;
   transition: all 0.2s ease;
-  white-space: nowrap;
 
   &:hover {
     background: rgba(255, 255, 255, 0.05);
-    color: $color-text;
+    color: white;
+    transform: translateX(4px);
+  }
+
+  svg {
+    opacity: 0.4;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover svg {
+    opacity: 1;
+    transform: translateX(2px);
   }
 }
 
-.dropdownSubmenu {
-  position: absolute;
-  top: 0;
-  left: 100%;
-  min-width: 200px;
-  background: rgba(10, 10, 10, 0.95);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.75rem;
-  padding: 0.5rem;
-  margin-left: 0.5rem;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateX(10px);
+.viewAllLink {
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  color: $color-primary;
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  &:hover {
+    background: transparent;
+    color: lighten($color-primary, 10%);
+  }
+}
+
+// Modal Breadcrumb Styles
+.breadcrumbContainerModal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+
+  @media (min-width: $breakpoint-sm) {
+    gap: 0.5rem;
+  }
+}
+
+.breadcrumbLinkModal {
+  background: transparent;
+  border: none;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
   transition: all 0.3s ease;
-  z-index: 1001;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  @media (min-width: $breakpoint-sm) {
+    font-size: 0.875rem;
+    padding: 0.4rem 0.8rem;
+    letter-spacing: 0.1em;
+  }
+
+  &:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.modalBackButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: none;
+  color: $color-primary;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateX(-4px);
+  }
+}
+
+.panelSubLinkHasChildren {
+  color: white !important;
+  font-weight: 700 !important;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.hoverArrow {
+  opacity: 0;
+  transform: translate(-10px, 10px);
+  transition: all 0.3s ease;
+}
+
+.panelSubLink:hover .hoverArrow {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+// Desktop Nav visibility
+.desktopNav {
+  display: none;
+  gap: 1rem;
+
+  @media (min-width: $breakpoint-lg) {
+    display: flex;
+  }
+}
+
+// Hide legacy elements
+.navGroup, .mobileToggle, .mobileMenu {
+  display: none !important;
 }
