@@ -1,0 +1,68 @@
+@use "../../styles/variables" as *;
+
+.copySection {
+  background-color: $color-bg;
+}
+
+.card {
+  padding: 4rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+}
+
+.title {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.description {
+  font-size: 1.25rem;
+  color: $color-text-dim;
+  max-width: 700px;
+}
+
+.inputGroup {
+  display: flex;
+  width: 100%;
+  max-width: 500px;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid var(--glass-border);
+
+  @media (max-width: $breakpoint-sm) {
+    flex-direction: column;
+    background: transparent;
+    border: none;
+    padding: 0;
+    gap: 1rem;
+    border-radius: 0;
+  }
+}
+
+.input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 0 1.5rem;
+  color: white;
+  font-family: inherit;
+  font-size: 0.9375rem;
+
+  &:focus {
+    outline: none;
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem 1.5rem;
+    border-radius: 9999px;
+    border: 1px solid var(--glass-border);
+  }
+}

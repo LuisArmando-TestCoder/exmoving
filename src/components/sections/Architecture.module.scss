@@ -1,0 +1,74 @@
+@use "../../styles/variables" as *;
+
+.architecture {
+  background-color: $color-bg;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+.title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  color: $color-text-dim;
+  font-size: 1.125rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 2rem;
+
+  @media (min-width: $breakpoint-md) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  height: 100%;
+}
+
+.iconWrapper {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+  background: rgba($color-primary, 0.1);
+  color: $color-primary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba($color-primary, 0.2);
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: $color-text;
+}
+
+.cardDescription {
+  color: $color-text-dim;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.cardFooter {
+  margin-top: auto;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: $color-primary;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
