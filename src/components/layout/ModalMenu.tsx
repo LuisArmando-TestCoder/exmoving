@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { LayoutGrid, ArrowUpRight, ChevronRight, ChevronLeft } from "lucide-react";
 import { clsx } from "clsx";
+import { AnimatePresence, motion, Variants } from "framer-motion";
 import { navigationData, NavItem } from "@/constants/navigation";
 import { EmailActionButton } from "../ui/EmailActionButton";
 import styles from "./Header.module.scss";
@@ -19,6 +20,7 @@ export const ModalMenu = ({ isOpen, activeTab, setActiveTab, setMenuOpen }: Moda
   const [mounted, setMounted] = useState(false);
   // Global navigation stack instead of per-tab, starts empty (showing root tabs)
   const [navStack, setNavStack] = useState<NavItem[]>([]);
+  const [direction, setDirection] = useState<1 | -1>(1);
 
   useEffect(() => {
     setMounted(true);
@@ -41,6 +43,7 @@ export const ModalMenu = ({ isOpen, activeTab, setActiveTab, setMenuOpen }: Moda
   const navigateToChild = (child: NavItem, e: React.MouseEvent) => {
     if (child.children && child.children.length > 0) {
       e.preventDefault();
+      setDirection(1);
       setNavStack([...navStack, child]);
     } else {
       // If it's a leaf node, let the Link handle navigation but close the menu
@@ -49,15 +52,43 @@ export const ModalMenu = ({ isOpen, activeTab, setActiveTab, setMenuOpen }: Moda
   };
 
   const goBack = () => {
+    setDirection(-1);
     setNavStack(navStack.slice(0, -1));
   };
 
   const jumpTo = (index: number) => {
+    setDirection(-1);
     if (index === -1) {
       setNavStack([]);
     } else {
       setNavStack(navStack.slice(0, index + 1));
     }
+  };
+
+  const slideVariants: Variants = {
+    enter: (dir: number) => ({
+      x: dir > 0 ? 50 : -50,
+      opacity: 0,
+      position: 'absolute',
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      position: 'relative',
+      transition: {
+        x: { type: "tween", duration: 0.4, ease: [0.16, 1, 0.3, 1] },
+        opacity: { duration: 0.3 }
+      }
+    },
+    exit: (dir: number) => ({
+      x: dir > 0 ? -50 : 50,
+      opacity: 0,
+      position: 'absolute',
+      transition: {
+        x: { type: "tween", duration: 0.4, ease: [0.16, 1, 0.3, 1] },
+        opacity: { duration: 0.3 }
+      }
+    })
   };
 
   return (
@@ -114,50 +145,61 @@ export const ModalMenu = ({ isOpen, activeTab, setActiveTab, setMenuOpen }: Moda
 
             <div className={styles.ultramodernNav}>
               <div className={styles.navContentWrapper}>
-                <div className={clsx(styles.navPanel, styles.navPanelActive)}>
-                  <div className={styles.panelHeader}>
-                    {!isAtRoot && (
-                      <button 
-                        onClick={goBack} 
-                        className={styles.modalBackButton}
-                        aria-label="Go back"
-                      >
-                        <ChevronLeft size={20} aria-hidden="true" /> Back
-                      </button>
-                    )}
-                    <Link
-                      href={isAtRoot ? "/" : currentItem!.path}
-                      className={styles.panelMainLink}
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      {isAtRoot ? `Explore Everything` : `Explore ${currentItem!.name}`}
-                      <ArrowUpRight size={24} aria-hidden="true" />
-                    </Link>
-                  </div>
-
-                  <div className={styles.panelGrid}>
-                    {currentList.map((child) => (
-                      <div key={child.path} className={styles.panelGroup}>
-                        <Link
-                          href={child.path}
-                          className={clsx(
-                            styles.panelSubLink, 
-                            child.children && child.children.length > 0 && styles.panelSubLinkHasChildren
-                          )}
-                          onClick={(e) => navigateToChild(child, e)}
-                          aria-haspopup={child.children && child.children.length > 0 ? "true" : "false"}
+                <AnimatePresence initial={false} custom={direction}>
+                  <motion.div
+                    key={navStack.length}
+                    custom={direction}
+                    variants={slideVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    className={clsx(styles.navPanel, styles.navPanelActive)}
+                    style={{ width: '100%' }}
+                  >
+                    <div className={styles.panelHeader}>
+                      {!isAtRoot && (
+                        <button 
+                          onClick={goBack} 
+                          className={styles.modalBackButton}
+                          aria-label="Go back"
                         >
-                          <span className={styles.childName}>{child.name}</span>
-                          {child.children && child.children.length > 0 ? (
-                            <ChevronRight size={18} aria-hidden="true" />
-                          ) : (
-                            <ArrowUpRight size={18} className={styles.hoverArrow} aria-hidden="true" />
-                          )}
-                        </Link>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                          <ChevronLeft size={20} aria-hidden="true" /> Back
+                        </button>
+                      )}
+                      <Link
+                        href={isAtRoot ? "/" : currentItem!.path}
+                        className={styles.panelMainLink}
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        {isAtRoot ? `Explore Everything` : `Explore ${currentItem!.name}`}
+                        <ArrowUpRight size={24} aria-hidden="true" />
+                      </Link>
+                    </div>
+
+                    <div className={styles.panelGrid}>
+                      {currentList.map((child) => (
+                        <div key={child.path} className={styles.panelGroup}>
+                          <Link
+                            href={child.path}
+                            className={clsx(
+                              styles.panelSubLink, 
+                              child.children && child.children.length > 0 && styles.panelSubLinkHasChildren
+                            )}
+                            onClick={(e) => navigateToChild(child, e)}
+                            aria-haspopup={child.children && child.children.length > 0 ? "true" : "false"}
+                          >
+                            <span className={styles.childName}>{child.name}</span>
+                            {child.children && child.children.length > 0 ? (
+                              <ChevronRight size={18} aria-hidden="true" />
+                            ) : (
+                              <ArrowUpRight size={18} className={styles.hoverArrow} aria-hidden="true" />
+                            )}
+                          </Link>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
               </div>
             </div>
           </div>

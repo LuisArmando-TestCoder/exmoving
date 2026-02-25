@@ -320,23 +320,17 @@
   flex: 1;
   position: relative;
   width: 100%;
+  overflow: hidden;
+  min-height: 400px; /* Provides space for sliding items without collapsing */
 }
 
 .navPanel {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateX(20px);
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   width: 100%;
-
-  &Active {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(0);
-  }
+  top: 0;
+  left: 0;
 }
 
 .panelHeader {
