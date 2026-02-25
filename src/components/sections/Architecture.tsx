@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useScroll, useSpring } from "framer-motion";
-import { useRef } from "react";
+import { motion, useScroll, useSpring, useReducedMotion } from "framer-motion";
+import { useRef, useMemo } from "react";
 import styles from "./Architecture.module.scss";
 import { SectionHeader } from "../ui/Common";
 import { journeySteps } from "./architecture/constants";
@@ -10,6 +10,8 @@ import { Vision } from "./architecture/Vision";
 
 export default function Architecture() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const shouldReduceMotion = useReducedMotion();
+  
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start center", "end center"]
@@ -21,8 +23,14 @@ export default function Architecture() {
     restDelta: 0.001
   });
 
+  const memoizedJourneySteps = useMemo(() => 
+    journeySteps.map((step, index) => (
+      <JourneyStep key={index} step={step} index={index} />
+    )), 
+  []);
+
   return (
-    <section id="architecture" className={styles.architecture}>
+    <section id="architecture" className={styles.architecture} style={{ willChange: "transform" }}>
       <div className="container">
         <SectionHeader 
           title="Roadmap To Exit."
@@ -33,13 +41,15 @@ export default function Architecture() {
           <div className={styles.timelineLine}>
             <motion.div 
               className={styles.timelineProgress} 
-              style={{ scaleY, originY: 0 }}
+              style={{ 
+                scaleY: shouldReduceMotion ? scrollYProgress : scaleY, 
+                originY: 0,
+                willChange: "transform"
+              }}
             />
           </div>
 
-          {journeySteps.map((step, index) => (
-            <JourneyStep key={index} step={step} index={index} />
-          ))}
+          {memoizedJourneySteps}
         </div>
 
         <Vision />

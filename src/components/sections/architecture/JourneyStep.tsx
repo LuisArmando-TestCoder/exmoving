@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { useRef } from "react";
+import { motion, useScroll, useTransform, useSpring, useReducedMotion } from "framer-motion";
+import { useRef, memo } from "react";
 import styles from "../Architecture.module.scss";
 import { JourneyStepData } from "./constants";
 
@@ -10,8 +10,9 @@ interface JourneyStepProps {
   index: number;
 }
 
-export function JourneyStep({ step, index }: JourneyStepProps) {
+export const JourneyStep = memo(function JourneyStep({ step, index }: JourneyStepProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const shouldReduceMotion = useReducedMotion();
   const isEven = index % 2 !== 0;
 
   const { scrollYProgress } = useScroll({
@@ -22,33 +23,28 @@ export function JourneyStep({ step, index }: JourneyStepProps) {
   const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 };
   
   // Transform values for ultra-reactive feel
-  const opacity = useSpring(
-    useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]),
-    springConfig
-  );
+  const opacityRaw = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+  const opacity = shouldReduceMotion ? opacityRaw : useSpring(opacityRaw, springConfig);
   
-  const scale = useSpring(
-    useTransform(scrollYProgress, [0, 0.2, 0.5, 0.8, 1], [0.8, 1, 1.05, 1, 0.8]),
-    springConfig
-  );
+  const scaleRaw = useTransform(scrollYProgress, [0, 0.2, 0.5, 0.8, 1], [0.8, 1, 1.05, 1, 0.8]);
+  const scale = shouldReduceMotion ? scaleRaw : useSpring(scaleRaw, springConfig);
 
   const xOffset = isEven ? 100 : -100;
-  const x = useSpring(
-    useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [xOffset, 0, 0, -xOffset]),
-    springConfig
-  );
+  const xRaw = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [xOffset, 0, 0, -xOffset]);
+  const x = shouldReduceMotion ? xRaw : useSpring(xRaw, springConfig);
 
-  const rotate = useSpring(
-    useTransform(scrollYProgress, [0, 1], [isEven ? 5 : -5, isEven ? -5 : 5]),
-    springConfig
-  );
+  const rotateRaw = useTransform(scrollYProgress, [0, 1], [isEven ? 5 : -5, isEven ? -5 : 5]);
+  const rotate = shouldReduceMotion ? rotateRaw : useSpring(rotateRaw, springConfig);
+
+  const nodeScaleRaw = useTransform(scrollYProgress, [0.1, 0.2], [0, 1.5]);
+  const nodeScale = shouldReduceMotion ? nodeScaleRaw : useSpring(nodeScaleRaw, springConfig);
 
   return (
     <div ref={containerRef} className={styles.journeyStep}>
       <motion.div 
         className={styles.stepNode}
         style={{
-          scale: useSpring(useTransform(scrollYProgress, [0.1, 0.2], [0, 1.5]), springConfig),
+          scale: nodeScale,
           backgroundColor: useTransform(
             scrollYProgress,
             [0.1, 0.2],
@@ -58,7 +54,8 @@ export function JourneyStep({ step, index }: JourneyStepProps) {
             scrollYProgress,
             [0.1, 0.2],
             ["0 0 0px rgba(0,0,0,0)", "0 0 20px var(--color-primary)"]
-          )
+          ),
+          willChange: "transform, background-color, box-shadow"
         }}
       />
       
@@ -69,14 +66,16 @@ export function JourneyStep({ step, index }: JourneyStepProps) {
           scale,
           x,
           rotateZ: rotate,
-          perspective: 1000
+          perspective: 1000,
+          willChange: "transform, opacity"
         }}
       >
         <motion.span 
           className={styles.stepLabel}
           style={{
             letterSpacing: useTransform(scrollYProgress, [0, 0.3], ["0.5em", "0.2em"]),
-            opacity: useTransform(scrollYProgress, [0.1, 0.2], [0, 1])
+            opacity: useTransform(scrollYProgress, [0.1, 0.2], [0, 1]),
+            willChange: "letter-spacing, opacity"
           }}
         >
           {step.label}
@@ -86,7 +85,8 @@ export function JourneyStep({ step, index }: JourneyStepProps) {
           className={styles.stepTitle}
           style={{
             y: useTransform(scrollYProgress, [0, 0.3], [20, 0]),
-            filter: useTransform(scrollYProgress, [0, 0.2], ["blur(10px)", "blur(0px)"])
+            filter: useTransform(scrollYProgress, [0, 0.2], ["blur(10px)", "blur(0px)"]),
+            willChange: "transform, filter"
           }}
         >
           {step.title}
@@ -96,7 +96,8 @@ export function JourneyStep({ step, index }: JourneyStepProps) {
           className={styles.stepDescription}
           style={{
             y: useTransform(scrollYProgress, [0.1, 0.4], [20, 0]),
-            opacity: useTransform(scrollYProgress, [0.2, 0.4], [0, 1])
+            opacity: useTransform(scrollYProgress, [0.2, 0.4], [0, 1]),
+            willChange: "transform, opacity"
           }}
         >
           {step.description}
@@ -104,21 +105,27 @@ export function JourneyStep({ step, index }: JourneyStepProps) {
         
         <div className={styles.stepTags}>
           {step.tags.map((tag, i) => (
-            <motion.span 
-              key={i} 
-              className={styles.tag}
-              style={{
-                scale: useSpring(
-                  useTransform(scrollYProgress, [0.3 + (i * 0.05), 0.5 + (i * 0.05)], [0, 1]),
-                  springConfig
-                )
-              }}
-            >
-              {tag}
-            </motion.span>
+            <JourneyStepTag key={i} tag={tag} index={i} scrollYProgress={scrollYProgress} springConfig={springConfig} shouldReduceMotion={shouldReduceMotion} />
           ))}
         </div>
       </motion.div>
     </div>
+  );
+});
+
+function JourneyStepTag({ tag, index, scrollYProgress, springConfig, shouldReduceMotion }: { tag: string, index: number, scrollYProgress: any, springConfig: any, shouldReduceMotion: boolean | null }) {
+  const scaleRaw = useTransform(scrollYProgress, [0.3 + (index * 0.05), 0.5 + (index * 0.05)], [0, 1]);
+  const scale = shouldReduceMotion ? scaleRaw : useSpring(scaleRaw, springConfig);
+  
+  return (
+    <motion.span 
+      className={styles.tag}
+      style={{
+        scale,
+        willChange: "transform"
+      }}
+    >
+      {tag}
+    </motion.span>
   );
 }
