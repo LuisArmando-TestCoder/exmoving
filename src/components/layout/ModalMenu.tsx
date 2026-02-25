@@ -56,7 +56,11 @@ export const ModalMenu = ({ isOpen, activeTab, setActiveTab, setMenuOpen }: Moda
   };
 
   return (
-    <div className={clsx(styles.modalMenu, isOpen && styles.modalMenuVisible)} aria-hidden={!isOpen}>
+    <div 
+      className={clsx(styles.modalMenu, isOpen && styles.modalMenuVisible)} 
+      aria-hidden={!isOpen}
+      style={{ pointerEvents: isOpen ? 'auto' : 'none' }}
+    >
       <div className={styles.modalContent}>
         <div className={styles.modalGrid}>
           <div className={styles.modalNavSection}>
