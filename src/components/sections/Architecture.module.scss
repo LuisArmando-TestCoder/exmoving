@@ -191,12 +191,45 @@
 
 .equation {
   font-family: var(--font-mono);
-  font-size: 2.5rem;
-  margin: 3rem 0;
-  background: linear-gradient(to right, $color-primary, $color-secondary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 300;
+  font-size: 3.5rem;
+  margin: 4rem 0;
+  font-weight: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: $color-text;
+
+  @media (max-width: $breakpoint-md) {
+    font-size: 2rem;
+    flex-wrap: wrap;
+  }
+
+  span {
+    display: inline-block;
+  }
+
+  .symbol {
+    color: $color-primary;
+    font-weight: 400;
+    text-shadow: 0 0 20px rgba($color-primary, 0.5);
+  }
+
+  .function {
+    padding: 0.5rem 1rem;
+    background: rgba($color-primary, 0.05);
+    border: 1px solid rgba($color-primary, 0.2);
+    border-radius: 8px;
+    font-size: 0.8em;
+    backdrop-filter: blur(4px);
+  }
+
+  .result {
+    background: linear-gradient(to right, $color-primary, $color-secondary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 600;
+  }
 }
 
 .philosophy {
