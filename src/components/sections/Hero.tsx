@@ -1,15 +1,33 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
 import { Zap } from "lucide-react";
 import styles from "./Hero.module.scss";
 import { Reveal, StaggerContainer } from "../ui/Common";
 import { EmailActionButton } from "../ui/EmailActionButton";
 
 export default function Hero() {
+  const containerRef = useRef<HTMLElement>(null);
+  const shouldReduceMotion = useReducedMotion();
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
+
+  const yRaw = useTransform(scrollYProgress, [0, 1], [0, 150]);
+  const y = shouldReduceMotion ? yRaw : useSpring(yRaw, { stiffness: 100, damping: 30, restDelta: 0.001 });
+  
+  const opacityRaw = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const opacity = shouldReduceMotion ? opacityRaw : useSpring(opacityRaw, { stiffness: 100, damping: 30, restDelta: 0.001 });
+
   return (
-    <section className={styles.hero}>
-      <div className="container">
+    <section ref={containerRef} className={styles.hero}>
+      <motion.div 
+        className="container"
+        style={{ y, opacity, willChange: "transform, opacity" }}
+      >
         <StaggerContainer className={styles.content} delayChildren={0.2}>
           <Reveal className={styles.badge}>
             <Zap size={14} />
@@ -38,23 +56,8 @@ export default function Hero() {
               <p className={styles.demoHint}>Takes less than 30 seconds</p>
             </div>
           </Reveal>
-          
-          <Reveal delay={0.3} className={styles.stats}>
-            <div className={styles.statItem}>
-              <span className={styles.statItem__value}>$0.50</span>
-              <span className={styles.statItem__label}>per 1M tokens</span>
-            </div>
-            <div className={styles.statItem}>
-              <span className={styles.statItem__value}>$200</span>
-              <span className={styles.statItem__label}>Support Fee</span>
-            </div>
-            <div className={styles.statItem}>
-              <span className={styles.statItem__value}>10x</span>
-              <span className={styles.statItem__label}>Valuation Target</span>
-            </div>
-          </Reveal>
         </StaggerContainer>
-      </div>
+      </motion.div>
       
       {/* Decorative Elements */}
       <div className="bg-glow" />

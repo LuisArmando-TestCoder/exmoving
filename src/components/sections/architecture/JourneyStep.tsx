@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useScroll, useTransform, useSpring, useReducedMotion } from "framer-motion";
-import { useRef, memo } from "react";
+import { motion, useScroll, useTransform, useSpring, useReducedMotion, useInView } from "framer-motion";
+import { useRef, memo, useState, useEffect } from "react";
 import styles from "../Architecture.module.scss";
 import { JourneyStepData } from "./constants";
 
@@ -39,6 +39,8 @@ export const JourneyStep = memo(function JourneyStep({ step, index }: JourneySte
   const nodeScaleRaw = useTransform(scrollYProgress, [0.1, 0.2], [0, 1.5]);
   const nodeScale = shouldReduceMotion ? nodeScaleRaw : useSpring(nodeScaleRaw, springConfig);
 
+  const isInView = useInView(containerRef, { margin: "200px" });
+
   return (
     <div ref={containerRef} className={styles.journeyStep}>
       <motion.div 
@@ -62,7 +64,7 @@ export const JourneyStep = memo(function JourneyStep({ step, index }: JourneySte
       <motion.div 
         className={styles.stepContent}
         style={{
-          opacity,
+          opacity: isInView ? opacity : 0,
           scale,
           x,
           rotateZ: rotate,

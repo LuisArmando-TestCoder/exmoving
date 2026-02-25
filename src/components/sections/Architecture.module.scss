@@ -310,7 +310,6 @@
   .resultBlock {
     @extend .block;
     border-radius: 12px;
-    overflow: hidden;
 
     &::before {
       background: linear-gradient(90deg, transparent, #fff, transparent);

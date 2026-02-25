@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { motion, useTransform, useSpring, MotionValue, useAnimationFrame } from "framer-motion";
+import { motion, useTransform, useSpring, MotionValue, useInView } from "framer-motion";
 import styles from "../Architecture.module.scss";
 
 interface CircuitEquationProps {
@@ -25,8 +25,11 @@ const DataParticles = ({ progress, reverse = false, delay = 0 }: { progress: Mot
   const pathLength = useTransform(progress, [0.3 + delay, 0.6 + delay], [0, 1]);
   const opacity = useTransform(pathLength, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
 
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: false, margin: "200px" });
+
   return (
-    <motion.div style={{ position: "absolute", inset: 0, opacity, pointerEvents: "none" }}>
+    <motion.div ref={ref} style={{ position: "absolute", inset: 0, opacity, pointerEvents: "none" }}>
       {particles.map((p) => (
         <motion.div
           key={p.id}
@@ -42,10 +45,10 @@ const DataParticles = ({ progress, reverse = false, delay = 0 }: { progress: Mot
             marginTop: "-2px",
             marginLeft: "-2px",
           }}
-          animate={{
+          animate={isInView ? {
             left: reverse ? ["100%", "0%"] : ["0%", "100%"],
             scale: [0, 1, 1, 0],
-          }}
+          } : { left: reverse ? "100%" : "0%", scale: 0 }}
           transition={{
             duration: p.duration,
             repeat: Infinity,
@@ -171,6 +174,7 @@ function useMouseGlow(ref: React.RefObject<HTMLDivElement | null>) {
 
 export function CircuitEquation({ scrollYProgress }: CircuitEquationProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { once: false, margin: "200px" });
   const { mousePosition, isHovered } = useMouseGlow(containerRef);
 
   const springConfig = { stiffness: 80, damping: 25, restDelta: 0.001 };
@@ -249,7 +253,7 @@ export function CircuitEquation({ scrollYProgress }: CircuitEquationProps) {
         {/* Scanline effect */}
         <motion.div 
           style={{ position: "absolute", top: 0, left: 0, right: 0, height: "100%", background: "linear-gradient(to bottom, transparent, rgba(var(--color-primary-rgb), 0.1), transparent)", zIndex: 1 }}
-          animate={{ y: ["-100%", "100%"] }}
+          animate={isInView ? { y: ["-100%", "100%"] } : { y: "-100%" }}
           transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
         />
       </motion.div>
@@ -323,7 +327,7 @@ export function CircuitEquation({ scrollYProgress }: CircuitEquationProps) {
       >
         <motion.div 
           style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1), transparent)", pointerEvents: "none" }}
-          animate={{ opacity: [0.5, 1, 0.5] }}
+          animate={isInView ? { opacity: [0.5, 1, 0.5] } : { opacity: 0 }}
           transition={{ duration: 3, repeat: Infinity }}
         />
         <div className={styles.dataNodeLeft} style={{ background: "#fff", boxShadow: "0 0 10px #fff" }} />
