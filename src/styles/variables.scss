@@ -1,3 +1,5 @@
+@use "sass:color";
+
 $color-bg: #030712;
 $color-surface: #111827;
 $color-border: rgba(255, 255, 255, 0.08);
@@ -131,7 +133,7 @@ body {
     color: white;
     
     &:hover {
-      background: lighten($color-primary, 5%);
+      background: color.adjust($color-primary, $lightness: 5%);
       transform: translateY(-2px);
       box-shadow: 0 0 20px rgba($color-primary, 0.4);
     }

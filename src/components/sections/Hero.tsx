@@ -17,20 +17,20 @@ export default function Hero() {
           
           <Reveal>
             <h1 className={styles.title}>
-              ROI Without <br />
-              <span className="text-gradient">Supervision.</span>
+              ROI Driven <br />
+              <span className="text-gradient">Scaling.</span>
             </h1>
           </Reveal>
           
           <Reveal delay={0.1}>
             <p className={styles.subtitle}>
-              Turn status quo upside down. We expand and enhance people by supercharging them with self-supervising systems that convert operational friction into measurable returns.
+              We automate to industries that were left behind. We turn status quo upside down, expanding and enhancing people by supercharging them with self-supervising systems that convert operational friction into measurable returns.
             </p>
           </Reveal>
           
           <Reveal delay={0.2} className={styles.actions}>
             <button className="btn btn--primary btn--lg">
-              Start Demo <ChevronRight size={18} />
+              Get Your Free Demo <ChevronRight size={18} />
             </button>
             <button className="btn btn--outline btn--lg">View Architecture</button>
           </Reveal>

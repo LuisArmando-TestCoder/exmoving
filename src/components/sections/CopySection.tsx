@@ -13,7 +13,7 @@ export default function CopySection() {
               Deploy <span className="text-gradient">Automation.</span>
             </h2>
             <p className={styles.description}>
-              Convert transcripts into self-supervising tools. Start with pricing automations that return direct ROI.
+              No quotes. Just results. After a consultation, we build your custom demo at no cost. Convert transcripts into self-supervising tools without liquidity race conditions.
             </p>
             
             <div className={styles.inputGroup}>
@@ -23,7 +23,7 @@ export default function CopySection() {
                 className={styles.input}
               />
               <button className="btn btn--primary">
-                Deploy System
+                Request Free Demo
               </button>
             </div>
           </GlassCard>

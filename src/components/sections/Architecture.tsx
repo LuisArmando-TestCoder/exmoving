@@ -30,8 +30,8 @@ export default function Architecture() {
     <section id="architecture" className={`${styles.architecture} section`}>
       <div className="container">
         <SectionHeader 
-          title="The Automation Cycle."
-          subtitle="A system that brings ROI without supervision."
+          title="The Roadmap To Exit."
+          subtitle="A system that brings ROI without supervision, converting transcripts into tailored automation tools."
         />
 
         <StaggerContainer className={styles.grid} staggerDelay={0.2}>

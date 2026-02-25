@@ -1,0 +1,193 @@
+@use "@/styles/variables" as *;
+
+.breadcrumbsContainer {
+  margin-bottom: 3rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem;
+  background: rgba(10, 15, 30, 0.4);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1.25rem;
+  gap: 0.25rem;
+  box-shadow: 
+    0 4px 24px -1px rgba(0, 0, 0, 0.2),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.breadcrumbItem {
+  display: flex;
+  align-items: center;
+  position: relative;
+  
+  .link {
+    display: flex;
+    align-items: center;
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.6rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #9ca3af;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+
+    &:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.05);
+      
+      .icon {
+        transform: scale(1.1);
+        color: $color-primary;
+      }
+    }
+
+    &.active {
+      color: white;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      
+      .icon {
+        color: $color-primary;
+      }
+    }
+  }
+
+  .icon {
+    transition: all 0.3s ease;
+    color: #6b7280;
+  }
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #374151;
+  padding: 0 0.25rem;
+  
+  svg {
+    opacity: 0.5;
+  }
+}
+
+.homeIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.4rem;
+  background: rgba(59, 130, 246, 0.1);
+  color: $color-primary;
+  margin-right: 0.5rem;
+}
+
+.dropdownTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  margin-left: -0.25rem;
+  margin-right: 0.25rem;
+  border-radius: 0.5rem;
+  color: #6b7280;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+
+  &:hover {
+    color: white;
+    background: rgba(59, 130, 246, 0.1);
+    border-color: rgba(59, 130, 246, 0.2);
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.15);
+  }
+
+  &.active {
+    color: $color-primary;
+    background: rgba(59, 130, 246, 0.15);
+    border-color: rgba(59, 130, 246, 0.3);
+  }
+}
+
+.dropdown {
+  position: absolute;
+  top: 120%;
+  left: 0;
+  background: rgba(13, 17, 28, 0.85);
+  backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  padding: 0.5rem;
+  min-width: 220px;
+  z-index: 50;
+  box-shadow: 
+    0 20px 40px -10px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 1rem;
+    padding: 1px;
+    background: linear-gradient(to bottom right, rgba(255,255,255,0.1), transparent, rgba(59, 130, 246, 0.1));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #9ca3af;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 0.25rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateX(4px);
+    
+    .itemArrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  &.active {
+    color: $color-primary;
+    background: rgba(59, 130, 246, 0.08);
+    
+    &::after {
+      content: '';
+      width: 4px;
+      height: 4px;
+      background: $color-primary;
+      border-radius: 50%;
+      box-shadow: 0 0 8px $color-primary;
+    }
+  }
+}
+
+.itemArrow {
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+  color: $color-primary;
+}

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "push": "git add -A && git commit -m 'update' && git push origin main",
+    "push": "git branch && git add -A && git commit -m 'update' && git push origin main",
     "firstlaunch": "git init && git remote add origin https://github.com/LuisArmando-TestCoder/exmoving.git && npm run push"
   },
   "dependencies": {
