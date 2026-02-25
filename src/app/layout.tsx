@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "@/styles/globals.scss";
 import { EmailModal } from "@/components/ui/EmailModal";
+import { SmoothScroll } from "@/components/layout/SmoothScroll";
 
 export const metadata: Metadata = {
   title: "LOGOS | Moving Logistics Control Tower",
@@ -15,10 +16,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="theme-dark">
-        <div className="bg-glow" />
-        <div className="grid-overlay" />
-        {children}
-        <EmailModal />
+        <SmoothScroll>
+          <div className="bg-glow" />
+          <div className="grid-overlay" />
+          {children}
+          <EmailModal />
+        </SmoothScroll>
       </body>
     </html>
   );
