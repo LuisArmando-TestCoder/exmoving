@@ -182,9 +182,20 @@ export const ShaderCanvas: React.FC<ShaderCanvasProps> = ({
 
       // Update Trail Canvas
       if (trailCtx && trailCanvas.width > 0 && trailCanvas.height > 0) {
-        // Fade out existing trail (lower alpha = slower fade)
-        trailCtx.fillStyle = 'rgba(0, 0, 0, 0.02)';
+        // Fade out existing trail. Setting alpha to a very low value or removing it 
+        // stops it from fading completely, leaving a permanent/semi-permanent trail.
+        // We use a small clear with high transparency to prevent complete blow-out over time,
+        // but it will essentially look like a permanent stain.
+        // We set a minimum alpha floor so it never fully disappears
+        trailCtx.fillStyle = 'rgba(0, 0, 0, 0.005)'; 
         trailCtx.fillRect(0, 0, trailCanvas.width, trailCanvas.height);
+        
+        // This trick ensures the canvas never gets completely black
+        // preventing the stain from ever fully disappearing
+        trailCtx.globalCompositeOperation = 'lighten';
+        trailCtx.fillStyle = 'rgba(10, 10, 10, 1.0)'; // Floor value (adjust rgb for min brightness)
+        trailCtx.fillRect(0, 0, trailCanvas.width, trailCanvas.height);
+        trailCtx.globalCompositeOperation = 'source-over';
 
         // Always draw at current mouse position so it stains when stationary
         trailCtx.beginPath();
@@ -197,12 +208,12 @@ export const ShaderCanvas: React.FC<ShaderCanvasProps> = ({
         }
 
         trailCtx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
-        trailCtx.lineWidth = 200; // Size of the trail "spray" (much thicker)
+        trailCtx.lineWidth = 400; // Size of the trail "spray" (massive)
         trailCtx.lineCap = 'round';
         trailCtx.lineJoin = 'round';
         
         // Add some blur/glow to the stroke itself
-        trailCtx.shadowBlur = 100; // Increased blur for much thicker spray
+        trailCtx.shadowBlur = 20; // Decreased blur so it's not so strong
         trailCtx.shadowColor = 'white';
         
         trailCtx.stroke();
