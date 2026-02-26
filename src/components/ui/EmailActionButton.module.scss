@@ -27,16 +27,19 @@
   &::before {
     content: '';
     position: absolute;
-    inset: -50%;
+    inset: -150%;
     background: conic-gradient(
       from 0deg,
-      transparent,
-      rgba(var(--primary-rgb), 0.1),
-      transparent 25%
+      transparent 0%,
+      rgba(var(--primary-rgb), 0.4) 15%,
+      transparent 30%,
+      rgba(var(--primary-rgb), 0.15) 50%,
+      transparent 100%
     );
-    animation: rotate 6s linear infinite;
+    animation: rotate 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     z-index: 0;
-    opacity: 0.6;
+    opacity: 0.8;
+    filter: blur(20px);
   }
 
   &::after {
@@ -138,15 +141,18 @@
     &::before {
       content: '';
       position: absolute;
-      inset: -50%;
+      inset: -150%;
       background: conic-gradient(
         from 0deg,
-        transparent,
-        rgba(var(--accent-rgb), 0.1),
-        transparent 25%
+        transparent 0%,
+        rgba(var(--accent-rgb), 0.3) 15%,
+        transparent 30%,
+        rgba(var(--accent-rgb), 0.1) 50%,
+        transparent 100%
       );
-      animation: rotate 4s linear infinite;
+      animation: rotate 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
       z-index: 0;
+      filter: blur(15px);
     }
 
     &:hover {
@@ -184,6 +190,8 @@
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  position: relative;
+  z-index: 1;
 
   @media (min-width: $breakpoint-sm) {
     padding: 0 1rem 0 1.5rem;
@@ -198,6 +206,8 @@
   flex: 1;
   padding-left: 0.75rem;
   overflow: hidden;
+  position: relative;
+  z-index: 1;
 
   @media (min-width: $breakpoint-sm) {
     padding-left: 1.25rem;
@@ -239,6 +249,7 @@
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
+  z-index: 1;
 
   @media (min-width: $breakpoint-sm) {
     width: 44px;
