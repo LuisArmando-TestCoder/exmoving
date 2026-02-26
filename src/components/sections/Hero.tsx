@@ -1,80 +1,16 @@
 "use client";
 
-import { motion, useScroll, useTransform, useSpring, useReducedMotion, useInView } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useScroll, useTransform, useSpring, useReducedMotion, useInView } from "framer-motion";
+import { useRef } from "react";
 import styles from "./Hero.module.scss";
-import { EmailActionButton } from "../ui/EmailActionButton";
-import { ShaderCanvas } from "./ShaderCanvas";
-
-const HERO_SHADER = `
-// Function to generate pseudo-random noise
-float noise(vec2 p) {
-    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
-}
-
-// Smooth noise using interpolation
-float smoothNoise(vec2 p) {
-    vec2 i = floor(p);
-    vec2 f = fract(p);
-    float a = noise(i);
-    float b = noise(i + vec2(1.0, 0.0));
-    float c = noise(i + vec2(0.0, 1.0));
-    float d = noise(i + vec2(1.0, 1.0));
-    vec2 u = f * f * (3.0 - 2.0 * f);
-    return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
-}
-
-// Generate fractal Brownian motion noise
-float fbm(vec2 p) {
-    float value = 0.0;
-    float amplitude = 0.5;
-    float frequency = 1.0;
-    for (int i = 0; i < 5; i++) {
-        value += amplitude * smoothNoise(p * frequency);
-        frequency *= 2.0;
-        amplitude *= 0.5;
-    }
-    return value;
-}
-
-// Main fragment shader
-void mainImage(out vec4 fragColor, in vec2 fragCoord) {
-    vec2 uv = fragCoord / iResolution.xy;
-    uv.x *= iResolution.x / iResolution.y;
-
-    // Center UV coordinates and add a swirl effect
-    vec2 p = uv - 0.5;
-    float t = iTime * 0.05;
-    float angle = fbm(p * 2.0 + t) * 6.28318;
-    float radius = length(p);
-    p = vec2(
-        cos(angle) * p.x - sin(angle) * p.y,
-        sin(angle) * p.x + cos(angle) * p.y
-    );
-
-    // Create a swirling effect with FBM noise
-    float liquidPattern = fbm(p * 4.0 + t);
-
-    // Combine noise and texture sample
-    vec2 texCoord = uv / liquidPattern * 0.02;
-    texCoord.y = 1.0 - texCoord.y; // Flip Y-coordinate for proper texture mapping
-    vec4 textureColor = texture2D(iChannel0, texCoord);
-
-    // Modulate texture with swirling noise
-    float colorModulation = 0.5 + 0.5 * sin(liquidPattern * 10.0 + t);
-    fragColor = vec4(textureColor.rgb * colorModulation, 1.0);
-}
-`;
+import { HeroBackground } from "./hero/HeroBackground";
+import { HeroTitle } from "./hero/HeroTitle";
+import { ScrollIndicator } from "./hero/ScrollIndicator";
 
 export default function Hero() {
   const containerRef = useRef<HTMLElement>(null);
   const isInView = useInView(containerRef, { amount: 0.1 });
   const shouldReduceMotion = useReducedMotion();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
   
   // High-performance scroll tracking relative to the container
   const { scrollYProgress } = useScroll({
@@ -97,115 +33,36 @@ export default function Hero() {
   const opacityContent = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   const blurContent = useTransform(scrollYProgress, [0, 0.5], ["blur(0px)", "blur(20px)"]);
   
-  // Rotate animation for "Status Quo" and "Upside Down"
-  // Using only rotateX for turning, starting from 180 (flipped) to 0, no bounce config
-  const rotateX = useTransform(scrollYProgress, [0, 0.4], [180, 0]);
-  
-  const springConfigNoBounce = { stiffness: 100, damping: 30, restDelta: 0.001 };
-  const smoothRotateX = shouldReduceMotion ? rotateX : useSpring(rotateX, springConfigNoBounce);
-
   // Smoothen the movement if motion is not reduced
   const springConfig = { stiffness: 60, damping: 20, restDelta: 0.001 };
-  const smoothYTitle = shouldReduceMotion ? yTitle : useSpring(yTitle, springConfig);
-  const smoothYSubtitle = shouldReduceMotion ? ySubtitle : useSpring(ySubtitle, springConfig);
   const smoothXTitle = shouldReduceMotion ? xTitle : useSpring(xTitle, springConfig);
   const smoothXSubtitle = shouldReduceMotion ? xSubtitle : useSpring(xSubtitle, springConfig);
 
   return (
-    <>
     <section 
       ref={containerRef} 
       className={`${styles.heroWrapper} dark-theme`}
       aria-labelledby="hero-title"
     >
       <div className={styles.soft}>
-        {/* Background Layer: Affected by invert filter, scale, blur, opacity */}
-        <motion.div 
-          className={styles.videoContainer}
-          style={{ 
-            scale: scaleVideo,
-            opacity: opacityVideo,
-            filter: blurVideo
-          }}
-        >
-          <ShaderCanvas 
-            shader={HERO_SHADER}
-            iChannel0="https://images.pexels.com/photos/172289/pexels-photo-172289.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        {isInView && (
+          <HeroBackground 
+            scaleVideo={scaleVideo}
+            opacityVideo={opacityVideo}
+            blurVideo={blurVideo}
           />
-        </motion.div>
-        
-        {/* Middle Layer: Clipped Text with Mix Blend Mode */}
-        <div className={styles.titleContainer} style={{ perspective: "1000px" }}>
-          <motion.div 
-            className={styles.titleContent} 
-            style={{ 
-              x: smoothXTitle,
-              opacity: opacityContent,
-              filter: blurContent
-            }}
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <h1 id="hero-title" className={styles.mainTitle}>
-              Σxecutions
-            </h1>
-          </motion.div>
-
-          <motion.div 
-            className={styles.titleContent} 
-            style={{ 
-              x: smoothXSubtitle,
-              opacity: opacityContent,
-              filter: blurContent
-            }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1.2, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <p className={styles.subtitle}>
-              <span>We believe in expansion and enhancement</span>
-            </p>
-            <p className={styles.subtitle}>
-              <span>By supercharging human beings</span>
-            </p>
-            <p className={styles.subtitle}>
-              <span>We just happen to automate you</span>
-            </p>
-          </motion.div>
-        </div>
-
-        {/* Scroll Indicator - Client-only to avoid hydration mismatch */}
-        {mounted && (
-          <motion.div 
-            className={styles.scrollIndicator}
-            style={{ opacity: opacityContent }}
-          >
-            <span className={styles.scrollText}>SCROLL</span>
-            <div className={styles.scrollLine} />
-          </motion.div>
         )}
+        
+        <HeroTitle 
+          isInView={isInView}
+          smoothXTitle={smoothXTitle}
+          smoothXSubtitle={smoothXSubtitle}
+          opacityContent={opacityContent}
+          blurContent={blurContent}
+        />
 
+        {isInView && <ScrollIndicator opacityContent={opacityContent} />}
       </div>
     </section>
-      {/* Top Layer: UI Controls, unaffected by Title's mix-blend-mode container */}
-      {/* <div className={styles.uiOverlay}>
-        <div className={styles.actionsContainer}>
-          <motion.div 
-            className={styles.titleContent}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          >
-            <div className={styles.actions}>
-              <EmailActionButton 
-                label="SCHEDULE CONSULT" 
-                subject="Consultation Request"
-              />
-            </div>
-          </motion.div>
-        </div>
-      </div> */}
-      </>
   );
 }
