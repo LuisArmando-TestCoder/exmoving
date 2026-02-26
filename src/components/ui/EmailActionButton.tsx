@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Check, Loader2 } from "lucide-react";
+import { ArrowRight, Check, Loader2, MessageSquare } from "lucide-react";
 import { clsx } from "clsx";
 import { useChatbotStore } from "@/store/useChatbotStore";
 import styles from "./EmailActionButton.module.scss";
@@ -23,10 +23,12 @@ export const EmailActionButton = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [hasSent, setHasSent] = useState(false);
+  
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-  const openChatbot = useChatbotStore((state) => state.openChatbot);
+  const { openChatbot } = useChatbotStore();
 
   useEffect(() => {
     if (isExpanded && inputRef.current) {
@@ -112,6 +114,7 @@ export const EmailActionButton = ({
         `,
       });
       setStatus("success");
+      setHasSent(true);
       setTimeout(() => {
         setStatus("idle");
         setIsExpanded(false);
@@ -134,9 +137,16 @@ export const EmailActionButton = ({
         styles.demoContainer, 
         isExpanded && styles.expanded,
         status === "success" && styles.success,
+        hasSent && styles.hasSent,
         className
       )}
-      onClick={() => !isExpanded && setIsExpanded(true)}
+      onClick={() => {
+        if (hasSent && !isExpanded) {
+          openChatbot();
+        } else if (!isExpanded) {
+          setIsExpanded(true);
+        }
+      }}
       transition={{
         type: "spring",
         stiffness: 500,
@@ -154,7 +164,7 @@ export const EmailActionButton = ({
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className={styles.label}
           >
-            {label}
+            {hasSent ? "Open Consultation" : label}
           </motion.div>
         ) : (
           <form 
@@ -182,6 +192,9 @@ export const EmailActionButton = ({
           if (isExpanded) {
             e.stopPropagation();
             handleSubmitInternal();
+          } else if (hasSent) {
+            e.stopPropagation();
+            openChatbot();
           }
         }}
         disabled={status === "loading" || (isExpanded && !email)}
@@ -209,6 +222,15 @@ export const EmailActionButton = ({
               exit={{ opacity: 0, scale: 0.5 }}
             >
               <Check size={18} />
+            </motion.div>
+          ) : hasSent ? (
+            <motion.div
+              key="chat-icon"
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+            >
+              <MessageSquare size={18} />
             </motion.div>
           ) : (
             <motion.div

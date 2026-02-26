@@ -382,25 +382,20 @@ export const Chatbot = ({
               className={clsx(styles.message, styles[msg.role])}
             >
               <div className={styles["message-bubble"]}>
-                <div dangerouslySetInnerHTML={{ __html: marked.parse(msg.text) as string }} />
+                {msg.role === "model" && msg.text === "" && loading ? (
+                  <div className={styles["loading-dots"]}>
+                    <span className={styles.dot}></span>
+                    <span className={styles.dot}></span>
+                    <span className={styles.dot}></span>
+                  </div>
+                ) : (
+                  <div dangerouslySetInnerHTML={{ __html: marked.parse(msg.text) as string }} />
+                )}
                 {msg.timestamp && <span className={styles.timestamp}>{msg.timestamp}</span>}
               </div>
             </motion.div>
           ))}
         </AnimatePresence>
-        {loading && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className={clsx(styles.message, styles.model, styles["bot-loading"])}
-          >
-            <div className={styles["message-bubble"]}>
-              <span className={styles.dot}></span>
-              <span className={styles.dot}></span>
-              <span className={styles.dot}></span>
-            </div>
-          </motion.div>
-        )}
       </div>
 
       <div className={styles["input-area"]}>
