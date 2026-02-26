@@ -328,8 +328,9 @@ export const Chatbot = ({
 
       if (erraticDetected) {
         setIsErratic(true);
+        setIsListening(false);
         const erraticText = "This chat has been closed due to user erratic behavior. We only provide consultations to serious inquiries. If you believe this is a mistake, please contact us at [oriens@aiexecutions.com](mailto:oriens@aiexecutions.com).";
-        setMessages((prev) => {
+        setMessages((prev: Message[]) => {
           const newMessages = [...prev];
           newMessages[newMessages.length - 1] = {
             role: "model",
@@ -352,6 +353,7 @@ export const Chatbot = ({
             .join("\n\n");
           setSummaryText(finalSummary);
           setShowEmailBtn(true);
+          setIsListening(false);
         }
       }
     } catch (error: any) {
