@@ -32,20 +32,32 @@ float fbm(vec2 p) {
 // Main fragment shader
 void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     vec2 uv = fragCoord / iResolution.xy;
-    uv.x *= iResolution.x / iResolution.y;
+    vec2 mouse = iMouse.xy / iResolution.xy;
+    
+    // Maintain aspect ratio for UV and mouse
+    float aspect = iResolution.x / iResolution.y;
+    uv.x *= aspect;
+    mouse.x *= aspect;
 
     // Center UV coordinates and add a swirl effect
-    vec2 p = uv - 0.5;
+    vec2 p = uv - vec2(0.5 * aspect, 0.5);
     float t = iTime * 0.05;
+    
+    // Dynamic swirl based on noise
     float angle = fbm(p * 2.0 + t) * 6.28318;
-    float radius = length(p);
     p = vec2(
         cos(angle) * p.x - sin(angle) * p.y,
         sin(angle) * p.x + cos(angle) * p.y
     );
 
-    // Create a swirling effect with FBM noise
-    float liquidPattern = fbm(p * 4.0 + t);
+    // Sample the trail canvas from iChannel1
+    // Need to use un-adjusted uv since trail canvas maps directly to screen
+    vec2 screenUV = fragCoord / iResolution.xy;
+    vec4 trailData = texture2D(iChannel1, screenUV);
+    float trailInfluence = trailData.r; // Use red channel as intensity
+
+    // Dynamic swirl based on noise and trail influence
+    float liquidPattern = fbm(p * 4.0 + t + trailInfluence * 3.0);
 
     // Combine noise and texture sample
     vec2 texCoord = uv / liquidPattern * 0.02;
@@ -54,6 +66,12 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
     // Modulate texture with swirling noise
     float colorModulation = 0.5 + 0.5 * sin(liquidPattern * 10.0 + t);
-    fragColor = vec4(textureColor.rgb * colorModulation * vec3(1.0, 0.5, 7.0), 1.0);
+    
+    // Accentuate the trail with a subtle glow or color shift
+    vec3 baseColor = vec3(1.0, 0.5, 7.0);
+    vec3 trailColor = vec3(1.5, 0.8, 9.0);
+    vec3 finalTint = mix(baseColor, trailColor, trailInfluence);
+    
+    fragColor = vec4(textureColor.rgb * colorModulation * finalTint, 1.0);
 }
 `;

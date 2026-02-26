@@ -24,6 +24,7 @@ export const ShaderCanvas: React.FC<ShaderCanvasProps> = ({
   const animationFrameIdRef = useRef<number | null>(null);
   const startTimeRef = useRef<number>(Date.now() + Math.random() * 1e8);
   const mouseRef = useRef({ x: 0, y: 0, z: 0, w: 0 });
+  const targetMouseRef = useRef({ x: 0, y: 0 });
   const isMouseDownRef = useRef(false);
 
   useEffect(() => {
@@ -154,9 +155,64 @@ export const ShaderCanvas: React.FC<ShaderCanvasProps> = ({
       if (url) loadTexture(url, i);
     });
 
+    // Trail Canvas Setup (Channel 1)
+    const trailCanvas = document.createElement('canvas');
+    trailCanvas.width = canvas.width;
+    trailCanvas.height = canvas.height;
+    const trailCtx = trailCanvas.getContext('2d');
+    
+    let trailTexture = gl.createTexture();
+    gl.activeTexture(gl.TEXTURE1);
+    gl.bindTexture(gl.TEXTURE_2D, trailTexture);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+    let lastMouseX = mouseRef.current.x;
+    let lastMouseY = mouseRef.current.y;
+
     const render = () => {
       if (!gl || !program) return;
       const elapsedTime = (Date.now() - startTimeRef.current) / 1000;
+
+      // Smooth mouse movement
+      mouseRef.current.x += (targetMouseRef.current.x - mouseRef.current.x) * 0.15;
+      mouseRef.current.y += (targetMouseRef.current.y - mouseRef.current.y) * 0.15;
+
+      // Update Trail Canvas
+      if (trailCtx && trailCanvas.width > 0 && trailCanvas.height > 0) {
+        // Fade out existing trail
+        trailCtx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        trailCtx.fillRect(0, 0, trailCanvas.width, trailCanvas.height);
+
+        // Draw new trail segment
+        const dist = Math.hypot(mouseRef.current.x - lastMouseX, mouseRef.current.y - lastMouseY);
+        if (dist > 0.1) {
+          trailCtx.beginPath();
+          trailCtx.moveTo(lastMouseX, canvas.height - lastMouseY); // Flip Y for 2D context
+          trailCtx.lineTo(mouseRef.current.x, canvas.height - mouseRef.current.y);
+          trailCtx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+          trailCtx.lineWidth = 40; // Size of the trail "spray"
+          trailCtx.lineCap = 'round';
+          trailCtx.lineJoin = 'round';
+          
+          // Add some blur/glow to the stroke itself
+          trailCtx.shadowBlur = 20;
+          trailCtx.shadowColor = 'white';
+          
+          trailCtx.stroke();
+        }
+        
+        lastMouseX = mouseRef.current.x;
+        lastMouseY = mouseRef.current.y;
+
+        // Update Texture from Trail Canvas
+        gl.activeTexture(gl.TEXTURE1);
+        gl.bindTexture(gl.TEXTURE_2D, trailTexture);
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false); // No flip here as we flipped in drawing
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, trailCanvas);
+      }
 
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.uniform3f(iResolutionLocation, canvas.width, canvas.height, 1.0);
@@ -172,11 +228,11 @@ export const ShaderCanvas: React.FC<ShaderCanvasProps> = ({
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
-      mouseRef.current.x = e.clientX - rect.left;
-      mouseRef.current.y = rect.height - (e.clientY - rect.top);
+      targetMouseRef.current.x = e.clientX - rect.left;
+      targetMouseRef.current.y = rect.height - (e.clientY - rect.top);
       if (isMouseDownRef.current) {
-        mouseRef.current.z = mouseRef.current.x;
-        mouseRef.current.w = mouseRef.current.y;
+        mouseRef.current.z = targetMouseRef.current.x;
+        mouseRef.current.w = targetMouseRef.current.y;
       }
     };
 
