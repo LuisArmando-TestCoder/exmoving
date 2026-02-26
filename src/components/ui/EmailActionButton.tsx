@@ -57,76 +57,75 @@ export const EmailActionButton = ({
     }
 
     setStatus("loading");
->>>>>>> SEARCH
-      setStatus("success");
-      setHasSent(true);
-      setTimeout(() => {
-        setStatus("idle");
-        setIsExpanded(false);
-        setEmail("");
-        // Open chatbot after success with user context
-        openChatbot({ email, ...metadata });
-      }, 3000);
-"use client";
 
-import { useState, useRef, useEffect } from "react";
-import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Check, Loader2, MessageSquare } from "lucide-react";
-import { clsx } from "clsx";
-import { useChatbotStore } from "@/store/useChatbotStore";
-import styles from "./EmailActionButton.module.scss";
-import { sendEmail } from "@/app/actions";
-
-interface EmailActionButtonProps {
-  label: string;
-  subject?: string;
-  className?: string;
-}
-
-export const EmailActionButton = ({
-  label,
-  subject = "Contact Request",
-  className,
-}: EmailActionButtonProps) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [hasSent, setHasSent] = useState(false);
-  
-  const inputRef = useRef<HTMLInputElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const pathname = usePathname();
-  const { openChatbot } = useChatbotStore();
-
-  useEffect(() => {
-    if (isExpanded && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [isExpanded]);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        if (status !== "loading") {
-          setIsExpanded(false);
-        }
-      }
+    // Gather exhaustive browser metadata
+    const metadata = {
+      path: pathname,
+      userAgent: navigator.userAgent,
+      language: navigator.language,
+      languages: navigator.languages,
+      platform: (navigator as any).platform,
+      vendor: navigator.vendor,
+      hardwareConcurrency: navigator.hardwareConcurrency,
+      deviceMemory: (navigator as any).deviceMemory,
+      maxTouchPoints: navigator.maxTouchPoints,
+      screenResolution: `${window.screen.width}x${window.screen.height}`,
+      availableScreenResolution: `${window.screen.availWidth}x${window.screen.availHeight}`,
+      windowSize: `${window.innerWidth}x${window.innerHeight}`,
+      colorDepth: window.screen.colorDepth,
+      pixelDepth: window.screen.pixelDepth,
+      referrer: document.referrer || "Direct",
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      cookiesEnabled: navigator.cookieEnabled,
+      doNotTrack: navigator.doNotTrack,
+      connection: (navigator as any).connection ? {
+        effectiveType: (navigator as any).connection.effectiveType,
+        downlink: (navigator as any).connection.downlink,
+        rtt: (navigator as any).connection.rtt,
+        saveData: (navigator as any).connection.saveData
+      } : "Unknown",
+      timestamp: new Date().toISOString(),
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [status]);
-
+    try {
+      await sendEmail({
+        to: "oriens@aiexecutions.com",
+        subject: `${subject} - ${email}`,
+        text: `${label} request from: ${email}\n\nMetadata:\n${JSON.stringify(metadata, null, 2)}`,
+        html: `
+          <h3>${label} request</h3>
+          <p><strong>Email:</strong> ${email}</p>
+          <hr />
+          <h4>Metadata</h4>
+          <ul>
+            <li><strong>Path:</strong> ${metadata.path}</li>
+            <li><strong>User Agent:</strong> ${metadata.userAgent}</li>
+            <li><strong>Language:</strong> ${metadata.language}</li>
+            <li><strong>Platform:</strong> ${metadata.platform}</li>
+            <li><strong>Hardware Concurrency:</strong> ${metadata.hardwareConcurrency} cores</li>
+            <li><strong>Device Memory:</strong> ~${metadata.deviceMemory} GB</li>
+            <li><strong>Screen Resolution:</strong> ${metadata.screenResolution}</li>
+            <li><strong>Window Size:</strong> ${metadata.windowSize}</li>
+            <li><strong>Referrer:</strong> ${metadata.referrer}</li>
+            <li><strong>Timezone:</strong> ${metadata.timezone}</li>
+            <li><strong>Connection:</strong> ${typeof metadata.connection === 'object' ? metadata.connection.effectiveType : metadata.connection}</li>
+            <li><strong>Timestamp:</strong> ${metadata.timestamp}</li>
+          </ul>
+        `,
+      });
       setStatus("success");
       setHasSent(true);
       setTimeout(() => {
         setStatus("idle");
         setIsExpanded(false);
         setEmail("");
-        // Open chatbot after success with user context
         openChatbot({ email, ...metadata });
       }, 3000);
+    } catch (error) {
+      console.error(error);
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 2000);
+    }
   };
 
   return (
@@ -169,7 +168,7 @@ export const EmailActionButton = ({
         ) : (
           <form 
             key="form"
-            className={styles.inputWrapper}
+            className={clsx(styles.inputWrapper, status === "success" && styles.fadeOut)}
             onSubmit={handleSubmitInternal}
           >
             <input

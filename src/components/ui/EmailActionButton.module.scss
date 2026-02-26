@@ -208,9 +208,15 @@
   overflow: hidden;
   position: relative;
   z-index: 1;
+  transition: opacity 0.5s ease;
 
   @media (min-width: $breakpoint-sm) {
     padding-left: 1.25rem;
+  }
+
+  &.fadeOut {
+    opacity: 0;
+    pointer-events: none;
   }
 }
 
