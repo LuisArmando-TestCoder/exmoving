@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { clsx } from "clsx";
+import { useChatbotStore } from "@/store/useChatbotStore";
 import styles from "./EmailActionButton.module.scss";
 import { sendEmail } from "@/app/actions";
 
@@ -25,6 +26,7 @@ export const EmailActionButton = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+  const openChatbot = useChatbotStore((state) => state.openChatbot);
 
   useEffect(() => {
     if (isExpanded && inputRef.current) {
@@ -54,14 +56,32 @@ export const EmailActionButton = ({
 
     setStatus("loading");
 
-    // Gather browser metadata
+    // Gather exhaustive browser metadata
     const metadata = {
       path: pathname,
       userAgent: navigator.userAgent,
       language: navigator.language,
+      languages: navigator.languages,
+      platform: (navigator as any).platform,
+      vendor: navigator.vendor,
+      hardwareConcurrency: navigator.hardwareConcurrency,
+      deviceMemory: (navigator as any).deviceMemory,
+      maxTouchPoints: navigator.maxTouchPoints,
       screenResolution: `${window.screen.width}x${window.screen.height}`,
+      availableScreenResolution: `${window.screen.availWidth}x${window.screen.availHeight}`,
       windowSize: `${window.innerWidth}x${window.innerHeight}`,
+      colorDepth: window.screen.colorDepth,
+      pixelDepth: window.screen.pixelDepth,
       referrer: document.referrer || "Direct",
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      cookiesEnabled: navigator.cookieEnabled,
+      doNotTrack: navigator.doNotTrack,
+      connection: (navigator as any).connection ? {
+        effectiveType: (navigator as any).connection.effectiveType,
+        downlink: (navigator as any).connection.downlink,
+        rtt: (navigator as any).connection.rtt,
+        saveData: (navigator as any).connection.saveData
+      } : "Unknown",
       timestamp: new Date().toISOString(),
     };
 
@@ -79,9 +99,14 @@ export const EmailActionButton = ({
             <li><strong>Path:</strong> ${metadata.path}</li>
             <li><strong>User Agent:</strong> ${metadata.userAgent}</li>
             <li><strong>Language:</strong> ${metadata.language}</li>
+            <li><strong>Platform:</strong> ${metadata.platform}</li>
+            <li><strong>Hardware Concurrency:</strong> ${metadata.hardwareConcurrency} cores</li>
+            <li><strong>Device Memory:</strong> ~${metadata.deviceMemory} GB</li>
             <li><strong>Screen Resolution:</strong> ${metadata.screenResolution}</li>
             <li><strong>Window Size:</strong> ${metadata.windowSize}</li>
             <li><strong>Referrer:</strong> ${metadata.referrer}</li>
+            <li><strong>Timezone:</strong> ${metadata.timezone}</li>
+            <li><strong>Connection:</strong> ${typeof metadata.connection === 'object' ? metadata.connection.effectiveType : metadata.connection}</li>
             <li><strong>Timestamp:</strong> ${metadata.timestamp}</li>
           </ul>
         `,
@@ -91,6 +116,8 @@ export const EmailActionButton = ({
         setStatus("idle");
         setIsExpanded(false);
         setEmail("");
+        // Open chatbot after success with user context
+        openChatbot({ email, ...metadata });
       }, 3000);
     } catch (error) {
       console.error(error);

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "@/styles/globals.scss";
 import { EmailModal } from "@/components/ui/EmailModal";
+import { ChatbotModal } from "@/components/ui/ChatbotModal";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export default function RootLayout({
           <div className="grid-overlay" />
           {children}
           <EmailModal />
+          <ChatbotModal />
         </SmoothScroll>
       </body>
     </html>
