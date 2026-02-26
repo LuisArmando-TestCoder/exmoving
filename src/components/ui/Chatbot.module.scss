@@ -1,4 +1,4 @@
-@use "../../styles/variables" as *;
+@uspre "../../styles/variables" as *;
 
 .glass-card {
   background: var(--bg);
@@ -265,7 +265,7 @@
   40% { transform: scale(1); }
 }
 
-@media (max-width: $breakpoint-sm) {
+@media (max-width: 640px) {
   .glass-card {
     height: 480px;
   }

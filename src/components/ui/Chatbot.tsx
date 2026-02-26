@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChatBrain } from "@/lib/ChatBrain";
 import { marked } from "marked";
@@ -49,16 +49,47 @@ export const Chatbot = ({
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
+  const speak = useCallback((text: string) => {
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      
+      // Deep male British voice configuration
+      utterance.rate = 0.9; // Slightly slower for a more serious/deep tone
+      utterance.pitch = 0.8; // Lower pitch for deepness
+      
+      const voices = window.speechSynthesis.getVoices();
+      
+      // Search for British voices, preferably male
+      const preferredVoice = voices.find(v => 
+        (v.lang.includes("en-GB") && (v.name.includes("Male") || v.name.includes("Daniel") || v.name.includes("Oliver"))) ||
+        (v.lang.includes("en-GB") && v.name.includes("Google"))
+      ) || voices.find(v => v.lang.includes("en-GB"));
+      
+      if (preferredVoice) utterance.voice = preferredVoice;
+
+      window.speechSynthesis.speak(utterance);
+    }
+  }, []);
+
   const brain = useMemo(() => {
     if (!apiKey) return null;
     return new ChatBrain({
       apiKey,
       modelId,
-      systemInstruction: `Act as a concise automation consultant. GATHER: Company, Industry, Email, Team Size, Tech Stack, Pain Points, Desired Automations. 
+      systemInstruction: `Act as a concise automation consultant. 
+        CONSULTATION FLOW:
+        1. GATHER initial info: Company, Industry, Email.
+        2. DEFINE OBJECTIVE: Ask what the primary business goal is.
+        3. IDENTIFY PROBLEM: Once the objective is set, ask for the main roadblock/problem.
+        4. ROOT CAUSE ANALYSIS: Use the "5 Whys" technique to drill down into the stated problem to find its source.
+        5. RECOMMENDATION: Briefly state how automation addresses the root cause.
+        
         RULES:
         - BE EXTREMELY CONCISE. One sentence max per response.
         - Ask ONLY 1 question at a time.
         - Professional tone.
+        - Keep track of the "5 Whys" chain internally.
         - When complete, provide a 3-bullet point summary and tell them to use the Submit Request button.
         
         USER CONTEXT: ${JSON.stringify(userContext)}`
@@ -80,6 +111,12 @@ export const Chatbot = ({
     }
   }, [messages, loading]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.getVoices();
+    }
+  }, []);
+
   const handleButtonMouseMove = (
     e: React.MouseEvent, 
     btnRef: React.RefObject<HTMLButtonElement | null>, 
@@ -93,7 +130,6 @@ export const Chatbot = ({
     const x = e.clientX - left;
     const y = e.clientY - top;
 
-    // Magnetic effect
     const centerX = width / 2;
     const centerY = height / 2;
     const deltaX = (x - centerX) / 8;
@@ -106,7 +142,6 @@ export const Chatbot = ({
       ease: "power2.out",
     });
 
-    // Glow effect
     gsap.to(glow, {
       left: x,
       top: y,
@@ -137,7 +172,6 @@ export const Chatbot = ({
 
   const handleSendEmail = async () => {
     if (isSendingEmail || emailStatus === "success") return;
-    
     setIsSendingEmail(true);
     try {
       await sendEmail({
@@ -165,6 +199,10 @@ export const Chatbot = ({
     e?.preventDefault();
     if (!userInput.trim() || loading || isErratic) return;
 
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
+
     const userText = userInput;
     setUserInput("");
 
@@ -183,7 +221,6 @@ export const Chatbot = ({
         throw new Error("AI not initialized");
       }
 
-      // Check for erratic behavior and get main response
       const [erraticDetected, text] = await Promise.all([
         brain.checkErraticBehavior(userText, messages),
         brain.sendMessage(userText, messages)
@@ -191,14 +228,16 @@ export const Chatbot = ({
 
       if (erraticDetected) {
         setIsErratic(true);
+        const erraticText = "This chat has been closed due to user erratic behavior. We only provide consultations to serious inquiries. If you believe this is a mistake, please contact us via email.";
         setMessages((prev) => [
           ...prev,
           {
             role: "model",
-            text: "This chat has been closed due to user erratic behavior. We only provide consultations to serious inquiries. If you believe this is a mistake, please contact us via email.",
+            text: erraticText,
             timestamp: formatTimestamp(),
           },
         ]);
+        speak(erraticText);
         setLoading(false);
         return;
       }
@@ -212,6 +251,7 @@ export const Chatbot = ({
             timestamp: formatTimestamp(),
           },
         ]);
+        speak(text);
 
         if (text.toLowerCase().includes("summar") || text.toLowerCase().includes("whatsapp") || text.toLowerCase().includes("button below") || text.toLowerCase().includes("request button")) {
           const finalSummary = [...updatedMessages, { role: "model", text, timestamp: formatTimestamp() }]
@@ -278,7 +318,7 @@ export const Chatbot = ({
 
       <div className={styles["input-area"]}>
         {isErratic ? (
-          <div className={styles["erratic-notice"]} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '1rem', color: '#ff4d4d' }}>
+          <div className={styles["erratic-notice"]} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '1rem', color: '#dc2626' }}>
             <AlertCircle size={20} />
             <span>Chat Closed</span>
           </div>
