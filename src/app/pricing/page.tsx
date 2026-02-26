@@ -120,7 +120,7 @@ export default function PricingPage() {
                   </thead>
                   <tbody>
                     <tr>
-                      <td className={styles.highlight}>Gemini 1.5 Flash</td>
+                      <td className={styles.highlight}>Gemini Flash Latest</td>
                       <td>Fast / Basic</td>
                       <td>6,000,000</td>
                     </tr>

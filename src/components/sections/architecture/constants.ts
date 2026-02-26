@@ -16,7 +16,7 @@ export const journeySteps: JourneyStepData[] = [
     label: "PHASE II: THE CATALYST",
     title: "ROI Without Supervision",
     description: "Pricing agents that read emails, organize quotes, and take action. A system that brings passive income from non-agnostic sources using Gemini Flash efficiency.",
-    tags: ["Gemini 1.5 Flash", "Pricing Agents", "TypeSense Indexing"]
+    tags: ["Gemini Flash Latest", "Pricing Agents", "TypeSense Indexing"]
   },
   {
     label: "PHASE III: THE ACCELERATION",
