@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { ChatBrain } from "@/lib/ChatBrain";
 import { marked } from "marked";
 import gsap from "gsap";
 import { clsx } from "clsx";
@@ -45,23 +45,28 @@ export const Chatbot = ({
   const [summaryText, setSummaryText] = useState("");
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
-  const aiRef = useRef<GoogleGenerativeAI | null>(null);
+
+  const brain = useMemo(() => {
+    if (!apiKey) return null;
+    return new ChatBrain({
+      apiKey,
+      modelId,
+      systemInstruction: `Act as a concise automation consultant. GATHER: Company, Industry, Email, Team Size, Tech Stack, Pain Points, Desired Automations. 
+        RULES:
+        - BE EXTREMELY CONCISE. One sentence max per response.
+        - Ask ONLY 1 question at a time.
+        - Professional tone.
+        - When complete, provide a 3-bullet point summary and tell them to use the WhatsApp button.
+        
+        USER CONTEXT: ${JSON.stringify(userContext)}`
+    });
+  }, [apiKey, modelId, userContext]);
 
   // Button refs for GSAP
   const sendBtnRef = useRef<HTMLButtonElement>(null);
   const sendGlowRef = useRef<HTMLSpanElement>(null);
   const waBtnRef = useRef<HTMLButtonElement>(null);
   const waGlowRef = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    if (apiKey) {
-      try {
-        aiRef.current = new GoogleGenerativeAI(apiKey);
-      } catch (e) {
-        console.error("Failed to initialize GoogleGenerativeAI:", e);
-      }
-    }
-  }, [apiKey]);
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -151,39 +156,11 @@ export const Chatbot = ({
     setLoading(true);
 
     try {
-      if (!aiRef.current) {
+      if (!brain) {
         throw new Error("AI not initialized");
       }
 
-      const model = aiRef.current.getGenerativeModel({ 
-        model: modelId,
-        systemInstruction: `Act as a concise automation consultant. GATHER: Company, Industry, Email, Team Size, Tech Stack, Pain Points, Desired Automations. 
-        RULES:
-        - BE EXTREMELY CONCISE. One sentence max per response.
-        - Ask ONLY 1 question at a time.
-        - Professional tone.
-        - When complete, provide a 3-bullet point summary and tell them to use the WhatsApp button.
-        
-        USER CONTEXT: ${JSON.stringify(userContext)}`
-      });
-
-      // Google Generative AI requires the first message in history to be from the 'user' role.
-      // If our first message is from the 'model' (greeting), we should exclude it from the history
-      // or ensure the history starts with a 'user' message.
-      const history = messages
-        .filter((_, index) => index > 0 || messages[0].role === "user")
-        .map((m) => ({
-          role: m.role === "model" ? "model" : "user",
-          parts: [{ text: m.text }],
-        }));
-
-      const chat = model.startChat({
-        history,
-      });
-
-      const result = await chat.sendMessage(userText);
-      const response = await result.response;
-      const text = response.text();
+      const text = await brain.sendMessage(userText, messages);
 
       if (text) {
         setMessages((prev) => [
