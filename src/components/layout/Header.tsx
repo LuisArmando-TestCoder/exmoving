@@ -40,7 +40,7 @@ export default function Header() {
 
   return (
     <header className={clsx(styles.header, scrolled && styles["header--scrolled"], menuOpen && styles["header--open"])}>
-      <div className="container">
+      <div className={styles.container}>
         <nav className={styles.nav}>
           <Link href="/" className={styles.logo} onClick={() => setMenuOpen(false)}>
             <LayoutGrid size={24} />
