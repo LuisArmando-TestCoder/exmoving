@@ -13,8 +13,17 @@ export default function CopySection() {
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end start"]
+    offset: ["start end", "center center"]
   });
+
+  // Effect logic: "Enlightened floor" that reacts as CopySection enters view
+  // This simulates the ball's dawn light hitting the "top" of the next section
+  const dawnOpacity = useTransform(scrollYProgress, [0, 0.4], [0, 1]);
+  const dawnGlow = useTransform(
+    scrollYProgress,
+    [0, 0.4],
+    ["rgba(59,130,246,0)", "rgba(245,158,11,0.5)"]
+  );
 
   const yRaw = useTransform(scrollYProgress, [0, 1], [50, -50]);
   const y = shouldReduceMotion ? yRaw : useSpring(yRaw, { stiffness: 100, damping: 30, restDelta: 0.001 });
@@ -23,10 +32,24 @@ export default function CopySection() {
   const scale = shouldReduceMotion ? scaleRaw : useSpring(scaleRaw, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   return (
-    <section id="contact" ref={containerRef} className={styles.copySection}>
+    <section 
+      id="contact" 
+      ref={containerRef} 
+      className={styles.copySection}
+      style={{
+        "--dawn-opacity": dawnOpacity,
+        "--dawn-glow": dawnGlow
+      } as any}
+    >
       <motion.div 
         className="container"
-        style={{ y: isInView ? y : 0, scale: isInView ? scale : 1, willChange: "transform" }}
+        style={{ 
+          y: isInView ? y : 0, 
+          scale: isInView ? scale : 1, 
+          willChange: "transform",
+          position: 'relative',
+          zIndex: 1
+        }}
       >
         <Reveal direction="up" distance={40}>
           <GlassCard className={styles.card}>

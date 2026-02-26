@@ -5,6 +5,26 @@
   position: relative;
   overflow: hidden;
   padding: 8rem 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 400px;
+    background: radial-gradient(
+      ellipse at top,
+      var(--dawn-glow, transparent) 0%,
+      transparent 70%
+    );
+    opacity: var(--dawn-opacity, 0);
+    filter: blur(60px);
+    pointer-events: none;
+    z-index: 0;
+    transition: opacity 0.3s ease;
+  }
 }
 
 .card {
