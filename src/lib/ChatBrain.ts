@@ -61,22 +61,35 @@ export class ChatBrain {
     return response.text();
   }
 
-  async checkErraticBehavior(userInput: string, history: ChatMessage[]) {
-    // A separate prompt to evaluate if the user is being erratic or uncooperative.
-    const evaluationModel = this.genAI.getGenerativeModel({
+  async observeBehavior(userInput: string, history: ChatMessage[]) {
+    // Silently observe and note user behavior
+    const observerModel = this.genAI.getGenerativeModel({
       model: "gemini-flash-latest",
-      systemInstruction: "Evaluate the user's latest message and overall conversation history. Return 'true' if the user is being erratic, going on a tangent, being abusive, or clearly refusing to cooperate with the consultation process. Return 'false' otherwise. Only return 'true' or 'false'."
+      systemInstruction: "You are a silent observer. Summarize the user's current behavior, intent, and cooperation level in 5 words or less. Be objective."
     });
 
-    const conversationContext = history.map(m => `${m.role.toUpperCase()}: ${m.text}`).join("\n");
-    const evaluationPrompt = `CONVERSATION HISTORY:\n${conversationContext}\n\nUSER LATEST MESSAGE: ${userInput}\n\nIs the user behaving erratically or being uncooperative? (true/false)`;
+    const conversationContext = history.slice(-3).map(m => `${m.role.toUpperCase()}: ${m.text}`).join("\n");
+    const prompt = `CONTEXT:\n${conversationContext}\nUSER: ${userInput}\n\nObservation:`;
 
     try {
-      const result = await evaluationModel.generateContent(evaluationPrompt);
-      const response = await result.response;
-      return response.text().toLowerCase().includes("true");
-    } catch (error) {
-      console.error("Error checking erratic behavior:", error);
+      const result = await observerModel.generateContent(prompt);
+      return (await result.response).text().trim();
+    } catch (e) {
+      return "Observation unavailable";
+    }
+  }
+
+  async analyzeBehaviorPatterns(behaviorNotes: string) {
+    // Analyze the behavior log for odd patterns
+    const analyzerModel = this.genAI.getGenerativeModel({
+      model: "gemini-flash-latest",
+      systemInstruction: "Analyze the following behavior log for odd, erratic, or uncooperative patterns. Return 'true' if a pattern of odd behavior is found, 'false' otherwise. Only return 'true' or 'false'."
+    });
+
+    try {
+      const result = await analyzerModel.generateContent(`BEHAVIOR LOG:\n${behaviorNotes}\n\nPattern detected?`);
+      return (await result.response).text().toLowerCase().includes("true");
+    } catch (e) {
       return false;
     }
   }

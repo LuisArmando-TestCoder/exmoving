@@ -26,7 +26,7 @@
     transform: translateX(-50%);
     width: 120%;
     height: 500px;
-    background: var(--accent);
+    background: radial-gradient(circle at center, var(--dawn-glow), transparent 70%);
     filter: blur(80px);
     opacity: var(--dawn-opacity, 0);
   }

@@ -34,6 +34,8 @@ export const Chatbot = ({
     setMessages, 
     isErratic, 
     setIsErratic, 
+    behaviorNotes,
+    setBehaviorNotes,
     showEmailBtn, 
     setShowEmailBtn, 
     summaryText, 
@@ -324,7 +326,15 @@ export const Chatbot = ({
         throw new Error("AI not initialized");
       }
 
-      const erraticCheckPromise = brain.checkErraticBehavior(userText, messages);
+      // Start background observation asynchronously
+      const observationPromise = brain.observeBehavior(userText, messages).then(note => {
+        if (note && note !== "Observation unavailable") {
+          setBehaviorNotes(`[${formatTimestamp()}] ${note}`);
+        }
+        return useChatbotStore.getState().behaviorNotes;
+      }).then(updatedNotes => {
+        return brain.analyzeBehaviorPatterns(updatedNotes);
+      });
 
       setMessages((prev) => [
         ...prev,
@@ -351,12 +361,13 @@ export const Chatbot = ({
         });
       }
 
-      const erraticDetected = await erraticCheckPromise;
+      // Check if background observation flagged the user
+      const erraticDetected = await observationPromise;
 
-      if (erraticDetected) {
+      if (erraticDetected && !isErratic) {
         setIsErratic(true);
         setIsListening(false);
-        const erraticText = "This chat has been closed due to user erratic behavior. We only provide consultations to serious inquiries. If you believe this is a mistake, please contact us at [oriens@aiexecutions.com](mailto:oriens@aiexecutions.com).";
+        const erraticText = "This chat has been closed. We only provide consultations to serious inquiries. If you believe this is a mistake, please contact us at [oriens@aiexecutions.com](mailto:oriens@aiexecutions.com).";
         setMessages((prev: Message[]) => {
           const newMessages = [...prev];
           newMessages[newMessages.length - 1] = {
@@ -367,6 +378,16 @@ export const Chatbot = ({
           return newMessages;
         });
         speak(erraticText);
+        
+        // Auto-send minuta on erratic close
+        const finalSummary = [...updatedMessages, { role: "model", text: erraticText, timestamp: formatTimestamp() }]
+          .map((m) => `${m.role.toUpperCase()}: ${m.text}`)
+          .join("\n\n");
+        
+        const currentBehaviorNotes = useChatbotStore.getState().behaviorNotes;
+        
+        setSummaryText(`[ERRATIC BEHAVIOR DETECTED]\n\nCHAT HISTORY:\n${finalSummary}\n\nBEHAVIORAL OBSERVATIONS:\n${currentBehaviorNotes}`);
+        setShowEmailBtn(true);
         setLoading(false);
         return;
       }
@@ -378,7 +399,10 @@ export const Chatbot = ({
           const finalSummary = [...updatedMessages, { role: "model", text: fullText, timestamp: formatTimestamp() }]
             .map((m) => `${m.role.toUpperCase()}: ${m.text}`)
             .join("\n\n");
-          setSummaryText(finalSummary);
+            
+          const currentBehaviorNotes = useChatbotStore.getState().behaviorNotes;
+          
+          setSummaryText(`CHAT HISTORY:\n${finalSummary}\n\nBEHAVIORAL OBSERVATIONS:\n${currentBehaviorNotes}`);
           setShowEmailBtn(true);
           setIsListening(false);
         }
