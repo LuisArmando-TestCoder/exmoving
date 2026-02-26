@@ -249,7 +249,6 @@ export function CircuitEquation({ scrollYProgress }: CircuitEquationProps) {
         whileHover={{ scale: 1.05, y: -5, boxShadow: "0 15px 40px -10px rgba(var(--color-primary-rgb), 0.4)" }}
       >
         <span className={styles.symbol} style={{ color: "var(--text)", textShadow: "0 0 10px var(--color-primary)", display: "inline-block", position: "relative", zIndex: 2 }}>Σx</span>
-        <div className={styles.dataNode} style={{ boxShadow: "0 0 15px var(--color-primary)" }} />
         {/* Scanline effect */}
         <motion.div 
           style={{ position: "absolute", top: 0, left: 0, right: 0, height: "100%", background: "linear-gradient(to bottom, transparent, rgba(var(--color-primary-rgb), 0.1), transparent)", zIndex: 1 }}

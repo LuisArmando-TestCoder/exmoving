@@ -155,6 +155,11 @@
   overflow: hidden;
   position: relative;
   padding-bottom: 0.1em;
+  // Ensure lines don't collapse or shift
+  min-height: 1.6em;
+  backface-visibility: hidden;
+  // Stabilize vertical alignment
+  vertical-align: top;
 }
 
 .word {
@@ -162,6 +167,9 @@
   margin-right: 0.3em;
   white-space: nowrap;
   will-change: transform, opacity, filter;
+  // Prevent sub-pixel rendering glitches during animation
+  backface-visibility: hidden;
+  transform: translateZ(0);
   
   &:last-child {
     margin-right: 0;

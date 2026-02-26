@@ -273,7 +273,7 @@
   .sumBlock {
     @extend .block;
     border-radius: 12px;
-    overflow: visible;
+    overflow: clip;
 
     .symbol {
       font-size: 1.5em;

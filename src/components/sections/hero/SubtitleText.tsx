@@ -78,23 +78,25 @@ export function SubtitleText({ isInView, smoothXSubtitle, opacityContent, blurCo
 
 function Word({ word, isInView, index, opacityContent }: { word: string; isInView: boolean; index: number; opacityContent: MotionValue<number> }) {
   // Each word has its own reaction to the scroll
-  const y = useTransform(opacityContent, [0, 1], [20, 0]);
+  // Use a smaller range for y to minimize vertical jitter
+  const scrollY = useTransform(opacityContent, [0, 1], [15, 0]);
   const wordOpacity = useTransform(opacityContent, [0, 0.2, 1], [0, 1, 1]);
-  const blur = useTransform(opacityContent, [0, 0.5, 1], ["blur(10px)", "blur(0px)", "blur(0px)"]);
+  const blur = useTransform(opacityContent, [0, 0.5, 1], ["blur(8px)", "blur(0px)", "blur(0px)"]);
 
   const variants: Variants = {
     hidden: { 
       opacity: 0, 
-      y: 20,
-      filter: "blur(8px)"
+      y: 15,
+      filter: "blur(4px)",
+      transition: { duration: 0.3 }
     },
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
       filter: "blur(0px)",
       transition: {
-        delay: 0.4 + i * 0.03,
-        duration: 0.8,
+        delay: 0.4 + i * 0.02, // Faster stagger
+        duration: 0.6,
         ease: [0.215, 0.61, 0.355, 1]
       }
     })
@@ -107,10 +109,12 @@ function Word({ word, isInView, index, opacityContent }: { word: string; isInVie
       custom={index}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
+      // Force hardware acceleration and prevent subpixel layout shifts
+      transformTemplate={({ y }: any) => `translateY(${y}) translateZ(0)`}
       style={{ 
-        y, 
-        opacity: wordOpacity,
-        filter: blur
+        y: isInView ? scrollY : 15, 
+        opacity: isInView ? wordOpacity : 0,
+        filter: isInView ? blur : "blur(4px)"
       }}
     >
       {word}
