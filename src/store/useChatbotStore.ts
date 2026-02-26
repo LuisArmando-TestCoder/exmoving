@@ -15,8 +15,11 @@ interface ChatbotState {
   behaviorNotes: string;
   showEmailBtn: boolean;
   summaryText: string;
+  isNewsletterOpen: boolean;
   openChatbot: (context?: any) => void;
   closeChatbot: () => void;
+  openNewsletter: () => void;
+  closeNewsletter: () => void;
   setMessages: (messages: Message[] | ((prev: Message[]) => Message[])) => void;
   setIsErratic: (isErratic: boolean) => void;
   setBehaviorNotes: (notes: string) => void;
@@ -40,8 +43,11 @@ export const useChatbotStore = create<ChatbotState>()(
       behaviorNotes: "",
       showEmailBtn: false,
       summaryText: "",
+      isNewsletterOpen: false,
       openChatbot: (context = {}) => set({ isOpen: true, userContext: context }),
       closeChatbot: () => set({ isOpen: false }),
+      openNewsletter: () => set({ isNewsletterOpen: true }),
+      closeNewsletter: () => set({ isNewsletterOpen: false }),
       setMessages: (messagesOrFn) => 
         set((state) => ({ 
           messages: typeof messagesOrFn === 'function' ? messagesOrFn(state.messages) : messagesOrFn 

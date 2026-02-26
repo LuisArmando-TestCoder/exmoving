@@ -40,7 +40,8 @@ export const Chatbot = ({
     setShowEmailBtn, 
     summaryText, 
     setSummaryText,
-    openChatbot
+    closeChatbot,
+    openNewsletter
   } = useChatbotStore();
 
   const formatTimestamp = () => {
@@ -401,10 +402,34 @@ export const Chatbot = ({
             .join("\n\n");
             
           const currentBehaviorNotes = useChatbotStore.getState().behaviorNotes;
+          const finalSummaryText = `CHAT HISTORY:\n${finalSummary}\n\nBEHAVIORAL OBSERVATIONS:\n${currentBehaviorNotes}`;
           
-          setSummaryText(`CHAT HISTORY:\n${finalSummary}\n\nBEHAVIORAL OBSERVATIONS:\n${currentBehaviorNotes}`);
-          setShowEmailBtn(true);
+          setSummaryText(finalSummaryText);
           setIsListening(false);
+          
+          // Auto send email
+          try {
+            await sendEmail({
+              to: "oriens@aiexecutions.com",
+              subject: `Chatbot Consultation Summary`,
+              text: finalSummaryText,
+              html: `
+                <h3>Chatbot Consultation Summary</h3>
+                <pre style="white-space: pre-wrap; font-family: sans-serif;">${finalSummaryText}</pre>
+                <hr />
+                <p>This summary was automatically generated and sent by the AI Chatbot.</p>
+              `,
+            });
+            console.log("Email automatically sent to stakeholder.");
+          } catch (error) {
+            console.error("Failed to auto-send chatbot summary email:", error);
+          }
+          
+          // Switch to newsletter modal
+          setTimeout(() => {
+            closeChatbot();
+            openNewsletter();
+          }, 1500); // Small delay to let the user hear/read the final message
         }
       }
     } catch (error: any) {
@@ -476,18 +501,7 @@ export const Chatbot = ({
               </button>
             )}
             
-            {showEmailBtn ? (
-              <div className={styles.chatbotEmailBtnWrapper}>
-                <EmailActionButton 
-                  label="Submit Request"
-                  subject="Chatbot Consultation Summary"
-                  className={styles.chatbotEmailActionBtn}
-                  onSuccess={() => {
-                    handleSendEmail();
-                  }}
-                />
-              </div>
-            ) : (
+            {showEmailBtn ? null : (
               <>
                 <textarea
                   ref={textareaRef}
