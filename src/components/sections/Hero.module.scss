@@ -1,131 +1,212 @@
 @use "../../styles/variables" as *;
 
-.hero {
-  min-height: 100vh;
+.heroWrapper {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
   display: flex;
   align-items: center;
-  padding-top: 8rem;
-  padding-bottom: 5rem;
-  overflow: hidden;
-  position: relative;
+  justify-content: center;
 }
 
-.content {
-  max-width: 800px;
-  margin: 0 auto;
-  text-align: center;
-  position: relative;
-  z-index: 2;
-}
-
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 600;
+.soft {
+  filter: invert(1);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: $color-primary;
-  margin-bottom: 2rem;
-  backdrop-filter: blur(8px);
+  font-weight: 900;
+  font-family: "Inter", "Helvetica", sans-serif;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.title {
-  font-size: clamp(2.5rem, 8vw, 4.5rem);
-  line-height: 1.1;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  margin-bottom: 1.5rem;
+.videoContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  will-change: transform, opacity, filter;
+}
+
+.video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.titleContainer {
+  margin: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  mix-blend-mode: screen;
+  height: 100vh;
+  width: 100%;
+  background: white;
+  z-index: 1;
+  color: black;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.uiOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 2;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.actionsContainer {
+  margin: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  z-index: 2;
+  pointer-events: none;
+
+  padding-top: clamp(250px, 50vh, 600px);
+
+  @media (max-width: #{$breakpoint-md}) {
+    padding-top: 40vh;
+  }
+
+  .actions {
+    pointer-events: auto;
+  }
+}
+
+.titleContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  will-change: transform, opacity;
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.mainTitle {
+  margin: 0;
+  font-size: calc(15vw);
+  line-height: 0.9;
+  display: inline-block;
+  white-space: nowrap;
+  letter-spacing: -0.05em;
+  
+  @media (max-width: #{$breakpoint-md}) {
+    font-size: 18vw;
+  }
 }
 
 .subtitle {
-  font-size: clamp(1.125rem, 3vw, 1.25rem);
-  color: $color-text-dim;
-  margin-bottom: 3rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 2rem 0 0 0;
+  font-size: clamp(0.9rem, 1.5vw, 2rem);
+  font-family: var(--font-jost, 'Jost', sans-serif);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  max-width: 90vw;
+  line-height: 1.4;
+
+  @media (max-width: #{$breakpoint-md}) {
+    margin-top: 2rem;
+    font-size: 0.8rem;
+    max-width: 80vw;
+  }
 }
 
 .actions {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-bottom: 5rem;
-
-  @media (max-width: $breakpoint-sm) {
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-    
-    & > div {
-      width: 100% !important;
-      max-width: 320px;
-    }
-  }
-}
-
-.demoGroup {
+  margin-top: clamp(4rem, 10vh, 8rem);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-
-  @media (max-width: $breakpoint-sm) {
-    width: 100%;
-    align-items: center;
-  }
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .demoHint {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(0, 0, 0, 0.4);
   font-weight: 500;
-  margin-left: 1.5rem;
   letter-spacing: 0.02em;
-
-  @media (max-width: $breakpoint-sm) {
-    margin-left: 0;
-  }
 }
 
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  padding: 2.5rem;
-  background: var(--glass);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
-  border-radius: 2rem;
-
-  @media (max-width: $breakpoint-md) {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-}
-
-.statItem {
+.scrollIndicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 1rem;
+  z-index: 3;
+  pointer-events: none;
 
-  &__value {
-    font-size: 2.5rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    color: $color-text;
+  @media (max-height: 600px) {
+    display: none;
   }
+}
 
-  &__label {
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: $color-text-dim;
+.scrollLine {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(to bottom, transparent, #000);
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    animation: scrollMove 2s cubic-bezier(0.76, 0, 0.24, 1) infinite;
   }
+}
+
+@keyframes scrollMove {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+.scrollText {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: #000;
+  opacity: 0.6;
+}
+
+:global(.lenis-scrolling) .titleContent {
+  pointer-events: none;
 }
