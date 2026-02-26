@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useChatbotStore } from "@/store/useChatbotStore";
 import { ChatBrain } from "@/lib/ChatBrain";
 import { marked } from "marked";
 import gsap from "gsap";
@@ -27,25 +28,25 @@ export const Chatbot = ({
   modelId = "gemini-flash-latest",
   userContext = {},
 }: ChatbotProps) => {
+  const { 
+    messages, 
+    setMessages, 
+    isErratic, 
+    setIsErratic, 
+    showEmailBtn, 
+    setShowEmailBtn, 
+    summaryText, 
+    setSummaryText 
+  } = useChatbotStore();
+
   const formatTimestamp = () => {
     return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
-
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: "model",
-      text: "Hello! I'm here to help you explore how automation can transform your business. To get started, could you tell me your company name and what industry you're in?",
-      timestamp: formatTimestamp(),
-    },
-  ]);
 
   const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [emailStatus, setEmailStatus] = useState<"idle" | "success" | "error">("idle");
-  const [showEmailBtn, setShowEmailBtn] = useState(false);
-  const [summaryText, setSummaryText] = useState("");
-  const [isErratic, setIsErratic] = useState(false);
   const [isListening, setIsListening] = useState(true);
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -146,11 +147,16 @@ export const Chatbot = ({
         };
 
         recognitionRef.current.onerror = (event: any) => {
+          if (event.error === "network") {
+            console.warn("Speech recognition network error - disabling auto-restart");
+            setIsListening(false);
+            return;
+          }
           console.error("Speech recognition error:", event.error);
           if (event.error !== "not-allowed" && isListening && !isSpeakingRef.current) {
             setTimeout(() => {
               try { recognitionRef.current.start(); } catch(e) {}
-            }, 100);
+            }, 1000); // Increased timeout for retry
           }
         };
 
@@ -374,7 +380,7 @@ export const Chatbot = ({
     <div className={styles["glass-card"]}>
       <div className={styles["chat-container"]} ref={chatContainerRef}>
         <AnimatePresence initial={false}>
-          {messages.map((msg, i) => (
+          {messages.map((msg: Message, i: number) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 10 }}

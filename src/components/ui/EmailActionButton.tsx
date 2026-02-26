@@ -49,10 +49,19 @@ export const EmailActionButton = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [status]);
 
+  const validateEmail = (email: string) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
   const handleSubmitInternal = async (e?: React.FormEvent) => {
     e?.preventDefault();
-    if (!email || !email.includes("@")) {
+    if (!email || !validateEmail(email)) {
       setStatus("error");
+      setTimeout(() => setStatus("idle"), 2000);
       return;
     }
 
