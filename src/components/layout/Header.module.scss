@@ -13,9 +13,19 @@
     padding: 1rem 0;
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(var(--overlay-rgb), 0.05);
+    mix-blend-mode: exclusion;
+
+    .logo, .menuToggle, .dropdownMainLink {
+      color: var(--bg);
+    }
+
+    .hamburger span {
+      background: var(--bg);
+    }
 
     .navPill {
       box-shadow: 0 4px 24px #0003;
+      color: var(--bg);
     }
   }
 

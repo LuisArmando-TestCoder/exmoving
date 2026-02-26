@@ -1,8 +1,9 @@
 .wrapper {
-  overflow: hidden;
+  overflow: visible;
   display: inline-block;
   line-height: 1;
   perspective: 1000px;
+  position: relative;
 }
 
 .char {
@@ -11,4 +12,14 @@
   opacity: 0;
   will-change: transform, opacity;
   transform-style: preserve-3d;
+
+  background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
+  background-attachment: fixed;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+
+  // Subtle glow effect
+  filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.4));
 }
