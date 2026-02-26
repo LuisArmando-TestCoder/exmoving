@@ -51,16 +51,29 @@ body {
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, $color-primary, $color-secondary, $color-accent);
-  background-size: 200% auto;
+  background: linear-gradient(
+    to right,
+    $color-primary,
+    $color-secondary 25%,
+    $color-accent 50%,
+    $color-secondary 75%,
+    $color-primary 100%
+  );
+  background-size: 300% auto;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: shine 5s linear infinite;
+  animation: shine 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  display: inline-block;
+  white-space: nowrap;
 }
 
 @keyframes shine {
-  to {
-    background-position: 200% center;
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 300% center;
   }
 }
 
