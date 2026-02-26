@@ -226,8 +226,7 @@ export function CircuitEquation({ scrollYProgress }: CircuitEquationProps) {
           left: 0,
           right: 0,
           bottom: 0,
-          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(var(--color-primary-rgb), 0.08), transparent 40%)`,
-          opacity: isHovered ? 1 : 0,
+          opacity: 1,
           transition: "opacity 0.5s ease",
           pointerEvents: "none",
           zIndex: -1,
@@ -246,7 +245,6 @@ export function CircuitEquation({ scrollYProgress }: CircuitEquationProps) {
           background: "linear-gradient(145deg, rgba(var(--color-bg-rgb), 0.9) 0%, rgba(var(--color-bg-rgb), 0.4) 100%)",
           willChange: "transform, opacity",
         }}
-        whileHover={{ scale: 1.05, y: -5, boxShadow: "0 15px 40px -10px rgba(var(--color-primary-rgb), 0.4)" }}
       >
         <span className={styles.symbol} style={{ color: "var(--text)", textShadow: "0 0 10px var(--color-primary)", display: "inline-block", position: "relative", zIndex: 2 }}>Σx</span>
         {/* Scanline effect */}
@@ -286,7 +284,6 @@ export function CircuitEquation({ scrollYProgress }: CircuitEquationProps) {
           border: "1px dashed rgba(var(--color-primary-rgb), 0.4)",
           willChange: "transform, opacity",
         }}
-        whileHover={{ scale: 1.05, y: -5, borderColor: "rgba(var(--color-primary-rgb), 0.8)" }}
       >
         <div className={styles.dataNodeLeft} />
         <span className={styles.funcText} style={{ color: "var(--color-text)", fontWeight: 500 }}>f(y)</span>
@@ -322,7 +319,6 @@ export function CircuitEquation({ scrollYProgress }: CircuitEquationProps) {
           border: "1px solid rgba(var(--color-primary-rgb), 0.8)",
           willChange: "transform, opacity",
         }}
-        whileHover={{ scale: 1.08, y: -8, boxShadow: "0 20px 50px 0px rgba(var(--color-primary-rgb), 0.6)" }}
       >
         <motion.div 
           style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 50% 50%, rgba(var(--overlay-rgb),0.1), transparent)", pointerEvents: "none" }}
