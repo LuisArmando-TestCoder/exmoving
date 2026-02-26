@@ -380,6 +380,12 @@ export const Chatbot = ({
         });
         speak(erraticText);
         
+        // Log to history
+        useChatbotStore.getState().addInteractionRecord({
+          date: new Date().toLocaleDateString(),
+          status: 'erratic'
+        });
+        
         // Auto-send minuta on erratic close
         const finalSummary = [...updatedMessages, { role: "model", text: erraticText, timestamp: formatTimestamp() }]
           .map((m) => `${m.role.toUpperCase()}: ${m.text}`)
@@ -406,6 +412,12 @@ export const Chatbot = ({
           
           setSummaryText(finalSummaryText);
           setIsListening(false);
+          
+          // Log to history
+          useChatbotStore.getState().addInteractionRecord({
+            date: new Date().toLocaleDateString(),
+            status: 'success'
+          });
           
           // Auto send email
           try {
