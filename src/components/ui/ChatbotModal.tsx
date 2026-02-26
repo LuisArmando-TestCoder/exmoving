@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { X, Sparkles } from "lucide-react";
 import { useChatbotStore } from "@/store/useChatbotStore";
 import { Chatbot } from "./Chatbot";
 import styles from "./ChatbotModal.module.scss";
@@ -39,8 +39,16 @@ export const ChatbotModal = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className={styles.onboardingHeader}>
-              <h2>AI Consultation</h2>
+              <div className={styles.headerBadge}>
+                <Sparkles size={12} className={styles.sparkleIcon} />
+                <span>Proprietary Engine</span>
+              </div>
+              <div className={styles.titleWrapper}>
+                <h2>Consultation</h2>
+                <div className={styles.statusDot} />
+              </div>
               <p>Explore automation opportunities for your business. Provide your details below to get a custom roadmap.</p>
+              <div className={styles.headerGlow} />
             </div>
 
             <button className={styles.closeButton} onClick={closeChatbot} aria-label="Close">
