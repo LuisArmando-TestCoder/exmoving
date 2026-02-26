@@ -59,7 +59,7 @@ export default function Risk() {
         <motion.div 
           className={styles.progressBar} 
           style={{ 
-            height: useTransform(smoothProgress, [0, 1], ["0%", "100%"]),
+            height: useTransform(smoothProgress, [0, 1], ["0%", "calc(99.3%)"]),
             // Use custom CSS variable for dynamic shadow evaluation in SCSS & Framer
             // We'll apply it directly to the element via motion style
             boxShadow: dawnShadow 
