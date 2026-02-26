@@ -182,8 +182,8 @@ export const ShaderCanvas: React.FC<ShaderCanvasProps> = ({
 
       // Update Trail Canvas
       if (trailCtx && trailCanvas.width > 0 && trailCanvas.height > 0) {
-        // Fade out existing trail
-        trailCtx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        // Fade out existing trail (lower alpha = slower fade)
+        trailCtx.fillStyle = 'rgba(0, 0, 0, 0.02)';
         trailCtx.fillRect(0, 0, trailCanvas.width, trailCanvas.height);
 
         // Draw new trail segment
@@ -195,12 +195,12 @@ export const ShaderCanvas: React.FC<ShaderCanvasProps> = ({
           trailCtx.moveTo(lastMouseX, lastMouseY); 
           trailCtx.lineTo(mouseRef.current.x, mouseRef.current.y);
           trailCtx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
-          trailCtx.lineWidth = 40; // Size of the trail "spray"
+          trailCtx.lineWidth = 80; // Size of the trail "spray" (thicker)
           trailCtx.lineCap = 'round';
           trailCtx.lineJoin = 'round';
           
           // Add some blur/glow to the stroke itself
-          trailCtx.shadowBlur = 20;
+          trailCtx.shadowBlur = 40; // Increased blur for thicker spray
           trailCtx.shadowColor = 'white';
           
           trailCtx.stroke();
