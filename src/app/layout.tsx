@@ -4,7 +4,7 @@ import { EmailModal } from "@/components/ui/EmailModal";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 
 export const metadata: Metadata = {
-  title: "LOGOS | Moving Logistics Control Tower",
+  title: "Σxecutions | Moving Logistics Control Tower",
   description: "Vertical automation agency for moving companies. We engineer structural advantage.",
 };
 

@@ -45,7 +45,7 @@ export default function Footer() {
         </div>
 
         <div className={styles.bottom}>
-          <p>© {new Date().getFullYear()} LOGOS Automation. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Σxecutions Automation. All rights reserved.</p>
           <div className={styles.socials}>
             <Link href="#" className={styles.link}><Twitter size={18} /></Link>
             <Link href="#" className={styles.link}><Linkedin size={18} /></Link>
