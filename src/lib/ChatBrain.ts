@@ -40,4 +40,24 @@ export class ChatBrain {
     const response = await result.response;
     return response.text();
   }
+
+  async checkErraticBehavior(userInput: string, history: ChatMessage[]) {
+    // A separate prompt to evaluate if the user is being erratic or uncooperative.
+    const evaluationModel = this.genAI.getGenerativeModel({
+      model: "gemini-flash-latest",
+      systemInstruction: "Evaluate the user's latest message and overall conversation history. Return 'true' if the user is being erratic, going on a tangent, being abusive, or clearly refusing to cooperate with the consultation process. Return 'false' otherwise. Only return 'true' or 'false'."
+    });
+
+    const conversationContext = history.map(m => `${m.role.toUpperCase()}: ${m.text}`).join("\n");
+    const evaluationPrompt = `CONVERSATION HISTORY:\n${conversationContext}\n\nUSER LATEST MESSAGE: ${userInput}\n\nIs the user behaving erratically or being uncooperative? (true/false)`;
+
+    try {
+      const result = await evaluationModel.generateContent(evaluationPrompt);
+      const response = await result.response;
+      return response.text().toLowerCase().includes("true");
+    } catch (error) {
+      console.error("Error checking erratic behavior:", error);
+      return false;
+    }
+  }
 }

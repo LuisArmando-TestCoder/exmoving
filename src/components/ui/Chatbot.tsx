@@ -7,7 +7,7 @@ import { marked } from "marked";
 import gsap from "gsap";
 import { clsx } from "clsx";
 import { sendEmail } from "@/app/actions";
-import { Loader2, Check } from "lucide-react";
+import { Loader2, Check, AlertCircle } from "lucide-react";
 import styles from "./Chatbot.module.scss";
 
 interface Message {
@@ -45,6 +45,7 @@ export const Chatbot = ({
   const [emailStatus, setEmailStatus] = useState<"idle" | "success" | "error">("idle");
   const [showEmailBtn, setShowEmailBtn] = useState(false);
   const [summaryText, setSummaryText] = useState("");
+  const [isErratic, setIsErratic] = useState(false);
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -162,7 +163,7 @@ export const Chatbot = ({
 
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
-    if (!userInput.trim() || loading) return;
+    if (!userInput.trim() || loading || isErratic) return;
 
     const userText = userInput;
     setUserInput("");
@@ -182,7 +183,25 @@ export const Chatbot = ({
         throw new Error("AI not initialized");
       }
 
-      const text = await brain.sendMessage(userText, messages);
+      // Check for erratic behavior and get main response
+      const [erraticDetected, text] = await Promise.all([
+        brain.checkErraticBehavior(userText, messages),
+        brain.sendMessage(userText, messages)
+      ]);
+
+      if (erraticDetected) {
+        setIsErratic(true);
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "model",
+            text: "This chat has been closed due to user erratic behavior. We only provide consultations to serious inquiries. If you believe this is a mistake, please contact us via email.",
+            timestamp: formatTimestamp(),
+          },
+        ]);
+        setLoading(false);
+        return;
+      }
 
       if (text) {
         setMessages((prev) => [
@@ -258,7 +277,12 @@ export const Chatbot = ({
       </div>
 
       <div className={styles["input-area"]}>
-        {showEmailBtn ? (
+        {isErratic ? (
+          <div className={styles["erratic-notice"]} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '1rem', color: '#ff4d4d' }}>
+            <AlertCircle size={20} />
+            <span>Chat Closed</span>
+          </div>
+        ) : showEmailBtn ? (
           <button
             ref={emailBtnRef}
             className={clsx(
