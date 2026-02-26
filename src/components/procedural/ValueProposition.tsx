@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, useReducedMotion } from "framer-motion";
 import { 
   Zap, 
   LayoutGrid, 
@@ -26,6 +26,7 @@ export default function ValueProposition({ itemName }: ValuePropositionProps) {
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 5]);
   const scale = useTransform(scrollYProgress, [0.4, 0.5, 0.6], [0.95, 1, 0.95]);
   const springScale = useSpring(scale, { stiffness: 100, damping: 30 });
+  const shouldReduceMotion = useReducedMotion();
 
   const features = [
     { text: "Self-supervising ROI systems", icon: <Cpu size={16} /> },
@@ -44,7 +45,7 @@ export default function ValueProposition({ itemName }: ValuePropositionProps) {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, margin: "-100px" }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className={styles.textBlock}
           >
@@ -63,8 +64,8 @@ export default function ValueProposition({ itemName }: ValuePropositionProps) {
                   key={i} 
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: false }}
-                  transition={{ delay: 0.1 * i }}
+                  viewport={{ once: true }}
+                  transition={{ delay: shouldReduceMotion ? 0 : 0.1 * i }}
                   className={styles.featureItem}
                 >
                   <div className={styles.featureIcon}>
@@ -81,7 +82,7 @@ export default function ValueProposition({ itemName }: ValuePropositionProps) {
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: false, margin: "-100px" }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1, ease: "circOut" }}
             className={styles.gridCards}
           >
