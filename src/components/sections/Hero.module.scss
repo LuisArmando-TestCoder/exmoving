@@ -126,24 +126,45 @@
 }
 
 .subtitle {
-  margin: 2rem 0 0 0;
-  font-size: clamp(0.9rem, 1.5vw, 2rem);
+  margin: 1.5rem 0 0 0;
+  font-size: clamp(0.9rem, 1.4vw, 1.8rem);
   font-family: var(--font-jost, 'Jost', sans-serif);
-  font-weight: 400;
-  letter-spacing: 0.1em;
+  font-weight: 300;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   max-width: 90vw;
-  line-height: 1.4;
+  line-height: 1.6;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  gap: 0.5ch;
+  gap: 0.75rem;
+  color: rgba(0, 0, 0, 0.85);
+  text-wrap: balance;
 
   @media (max-width: #{$breakpoint-md}) {
-    margin-top: 2rem;
-    font-size: 0.8rem;
-    max-width: 80vw;
+    margin-top: 1.5rem;
+    font-size: 0.7rem;
+    max-width: 85vw;
+    gap: 0.5rem;
+    letter-spacing: 0.15em;
+  }
+}
+
+.subtitleLine {
+  display: block;
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 0.1em;
+}
+
+.word {
+  display: inline-block;
+  margin-right: 0.3em;
+  white-space: nowrap;
+  will-change: transform, opacity, filter;
+  
+  &:last-child {
+    margin-right: 0;
   }
 }
 
