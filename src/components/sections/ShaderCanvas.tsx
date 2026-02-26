@@ -186,16 +186,8 @@ export const ShaderCanvas: React.FC<ShaderCanvasProps> = ({
         // stops it from fading completely, leaving a permanent/semi-permanent trail.
         // We use a small clear with high transparency to prevent complete blow-out over time,
         // but it will essentially look like a permanent stain.
-        // We set a minimum alpha floor so it never fully disappears
         trailCtx.fillStyle = 'rgba(0, 0, 0, 0.005)'; 
         trailCtx.fillRect(0, 0, trailCanvas.width, trailCanvas.height);
-        
-        // This trick ensures the canvas never gets completely black
-        // preventing the stain from ever fully disappearing
-        trailCtx.globalCompositeOperation = 'lighten';
-        trailCtx.fillStyle = 'rgba(10, 10, 10, 1.0)'; // Floor value (adjust rgb for min brightness)
-        trailCtx.fillRect(0, 0, trailCanvas.width, trailCanvas.height);
-        trailCtx.globalCompositeOperation = 'source-over';
 
         // Always draw at current mouse position so it stains when stationary
         trailCtx.beginPath();
