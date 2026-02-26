@@ -14,6 +14,7 @@ export const EmailModal = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,8 +36,9 @@ export const EmailModal = () => {
         setStatus("idle");
         setEmail("");
       }, 2000);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      setErrorMessage(error.message || "Something went wrong. Please try again.");
       setStatus("error");
     } finally {
       setLoading(false);
@@ -92,7 +94,7 @@ export const EmailModal = () => {
                       autoFocus
                     />
                     {status === "error" && (
-                      <p className={styles.error}>Something went wrong. Please try again.</p>
+                      <p className={styles.error}>{errorMessage}</p>
                     )}
                   </div>
 
