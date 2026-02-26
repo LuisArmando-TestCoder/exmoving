@@ -3,27 +3,36 @@
 .copySection {
   background-color: $color-bg;
   position: relative;
-  overflow: hidden;
+  // removed overflow: hidden to allow the glow to "bleed" out if needed, 
+  // though we'll manage it with z-index
   padding: 8rem 0;
+}
+
+.dawnFloorGlow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 500px;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
 
   &::before {
     content: '';
     position: absolute;
-    top: 0;
+    top: -250px;
     left: 50%;
     transform: translateX(-50%);
-    width: 60%;
-    height: 400px;
+    width: 120%;
+    height: 500px;
     background: radial-gradient(
-      ellipse at top,
-      var(--dawn-glow, transparent) 0%,
+      ellipse at center,
+      var(--dawn-glow, rgba(245, 158, 11, 0.5)) 0%,
       transparent 70%
     );
+    filter: blur(80px);
     opacity: var(--dawn-opacity, 0);
-    filter: blur(60px);
-    pointer-events: none;
-    z-index: 0;
-    transition: opacity 0.3s ease;
   }
 }
 

@@ -36,11 +36,15 @@ export default function CopySection() {
       id="contact" 
       ref={containerRef} 
       className={styles.copySection}
-      style={{
-        "--dawn-opacity": dawnOpacity,
-        "--dawn-glow": dawnGlow
-      } as any}
     >
+      <motion.div 
+        className={styles.dawnFloorGlow} 
+        style={{
+          "--dawn-opacity": dawnOpacity,
+          "--dawn-glow": dawnGlow
+        } as any}
+      />
+      
       <motion.div 
         className="container"
         style={{ 
