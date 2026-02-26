@@ -38,8 +38,8 @@ export default function ProceduralTemplate() {
       <BackgroundDecor />
 
       <main className={`${styles.main} container mx-auto px-4`}>
-        <Breadcrumbs />
         <ProceduralHeader title={item.name} />
+        <Breadcrumbs />
 
         {item.children && item.children.length > 0 && (
           <InteractiveExplorer 
