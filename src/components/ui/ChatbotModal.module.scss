@@ -1,0 +1,85 @@
+@use "../../styles/variables" as *;
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+}
+
+.modalContent {
+  position: relative;
+  width: 100%;
+  max-width: 650px;
+  background: rgba(15, 15, 15, 0.8);
+  border: 1px solid rgba(var(--accent-rgb), 0.3);
+  border-radius: 30px;
+  box-shadow: 
+    0 0 50px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(var(--accent-rgb), 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.onboardingHeader {
+  background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.1), transparent);
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid rgba(var(--accent-rgb), 0.2);
+  
+  h2 {
+    color: var(--accent);
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  p {
+    color: rgba(var(--text-rgb), 0.7);
+    font-size: 0.875rem;
+    margin: 0;
+    line-height: 1.4;
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(90deg);
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .modalContent {
+    max-height: 90vh;
+  }
+  
+  .onboardingHeader {
+    padding: 1.25rem;
+  }
+}

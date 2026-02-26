@@ -72,7 +72,11 @@ export const Chatbot = ({
     }
   }, [messages, loading]);
 
-  const handleButtonMouseMove = (e: React.MouseEvent, btnRef: React.RefObject<HTMLButtonElement>, glowRef: React.RefObject<HTMLSpanElement>) => {
+  const handleButtonMouseMove = (
+    e: React.MouseEvent, 
+    btnRef: React.RefObject<HTMLButtonElement | null>, 
+    glowRef: React.RefObject<HTMLSpanElement | null>
+  ) => {
     const btn = btnRef.current;
     const glow = glowRef.current;
     if (!btn || !glow) return;
@@ -103,7 +107,10 @@ export const Chatbot = ({
     });
   };
 
-  const handleButtonMouseLeave = (btnRef: React.RefObject<HTMLButtonElement>, glowRef: React.RefObject<HTMLSpanElement>) => {
+  const handleButtonMouseLeave = (
+    btnRef: React.RefObject<HTMLButtonElement | null>, 
+    glowRef: React.RefObject<HTMLSpanElement | null>
+  ) => {
     const btn = btnRef.current;
     const glow = glowRef.current;
     if (!btn || !glow) return;
@@ -133,15 +140,14 @@ export const Chatbot = ({
     const userText = userInput;
     setUserInput("");
 
-    const newMessages: Message[] = [
-      ...messages,
-      {
-        role: "user",
-        text: userText,
-        timestamp: formatTimestamp(),
-      },
-    ];
-    setMessages(newMessages);
+    const userMsg: Message = {
+      role: "user",
+      text: userText,
+      timestamp: formatTimestamp(),
+    };
+    
+    const updatedMessages: Message[] = [...messages, userMsg];
+    setMessages(updatedMessages);
     setLoading(true);
 
     try {
@@ -151,10 +157,14 @@ export const Chatbot = ({
 
       const model = aiRef.current.getGenerativeModel({ 
         model: modelId,
-        systemInstruction: `You are an AI assistant for a business automation consultancy. Your goal is to gather information from the user to provide a consultation. You need to collect: Company Name, Industry, Contact Email, Team Size, Tech Stack, Manual Pain Points, and Desired Automations. Be professional, friendly, and concise. Only ask one or two questions at a time. Once you have all the information, summarize it in a clear format and tell the user that they can now send this information to our team via WhatsApp using the button below.
-
-User Context for this session:
-${JSON.stringify(userContext, null, 2)}`
+        systemInstruction: `Act as a concise automation consultant. GATHER: Company, Industry, Email, Team Size, Tech Stack, Pain Points, Desired Automations. 
+        RULES:
+        - BE EXTREMELY CONCISE. One sentence max per response.
+        - Ask ONLY 1 question at a time.
+        - Professional tone.
+        - When complete, provide a 3-bullet point summary and tell them to use the WhatsApp button.
+        
+        USER CONTEXT: ${JSON.stringify(userContext)}`
       });
 
       const chat = model.startChat({
@@ -179,7 +189,7 @@ ${JSON.stringify(userContext, null, 2)}`
         ]);
 
         if (text.toLowerCase().includes("summar") || text.toLowerCase().includes("whatsapp") || text.toLowerCase().includes("button below")) {
-          const finalSummary = [...newMessages, { role: "model", text, timestamp: formatTimestamp() }]
+          const finalSummary = [...updatedMessages, { role: "model", text, timestamp: formatTimestamp() }]
             .map((m) => `${m.role.toUpperCase()}: ${m.text}`)
             .join("\n\n");
           setSummaryText(finalSummary);
