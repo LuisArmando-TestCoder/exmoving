@@ -65,30 +65,6 @@ export default function Header() {
                   ))}
                 </div>
                 <div className={styles.pillDivider} />
-                <Link 
-                  href="/about" 
-                  className={clsx(styles.pricingLink, menuOpen && styles.pricingLinkActive)}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  ABOUT
-                </Link>
-                <div className={styles.pillDivider} />
-                <Link 
-                  href="/contact" 
-                  className={clsx(styles.pricingLink, menuOpen && styles.pricingLinkActive)}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  CONTACT
-                </Link>
-                <div className={styles.pillDivider} />
-                <Link 
-                  href="/pricing" 
-                  className={clsx(styles.pricingLink, menuOpen && styles.pricingLinkActive)}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  PRICING
-                </Link>
-                <div className={styles.pillDivider} />
                 <button 
                   className={clsx(styles.menuToggle, menuOpen && styles.menuToggleActive)}
                   onClick={() => setMenuOpen(!menuOpen)}

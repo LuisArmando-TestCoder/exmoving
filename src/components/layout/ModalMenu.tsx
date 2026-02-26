@@ -206,14 +206,18 @@ export const ModalMenu = ({ isOpen, activeTab, setActiveTab, setMenuOpen }: Moda
 
           <div className={styles.modalInfoSection}>
             <div className={styles.modalInfoBlock}>
-              <p className={styles.modalLabel}>CONTACT</p>
-              <a href="mailto:hello@roadmap.com" className={styles.modalInfoLink}>info@aiexecutions.com</a>
+              <p className={styles.modalLabel}>EXPLORE</p>
+              <nav className={styles.modalSecondaryNav}>
+                <Link href="/about" className={styles.modalInfoLink} onClick={() => setMenuOpen(false)}>About</Link>
+                <Link href="/pricing" className={styles.modalInfoLink} onClick={() => setMenuOpen(false)}>Pricing</Link>
+                <Link href="/contact" className={styles.modalInfoLink} onClick={() => setMenuOpen(false)}>Contact</Link>
+              </nav>
             </div>
-            
-            {/* <div className={styles.modalInfoBlock}>
-              <p className={styles.modalLabel}>OFFICE</p>
-              <p className={styles.modalInfoText}>123 Innovation Way<br />Tech Valley, CA 94025</p>
-            </div> */}
+
+            <div className={styles.modalInfoBlock}>
+              <p className={styles.modalLabel}>GET IN TOUCH</p>
+              <a href="mailto:info@aiexecutions.com" className={styles.modalInfoLink}>info@aiexecutions.com</a>
+            </div>
 
             <div className={styles.modalActions}>
               <EmailActionButton 

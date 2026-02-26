@@ -81,7 +81,7 @@
   background: rgba(var(--overlay-rgb), 0.1);
   margin: 0 0.5rem;
 
-  @media (max-width: $breakpoint-sm) {
+  @media (max-width: $breakpoint-md) {
     display: none;
   }
 }
@@ -481,6 +481,12 @@
   gap: 0.5rem;
 }
 
+.modalSecondaryNav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .modalInfoLink {
   font-size: 1.5rem;
   font-weight: 600;
@@ -833,7 +839,7 @@
   align-items: center;
   gap: 0.25rem;
 
-  @media (min-width: $breakpoint-sm) {
+  @media (min-width: $breakpoint-md) {
     display: flex;
   }
 }
