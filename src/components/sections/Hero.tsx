@@ -164,19 +164,13 @@ export default function Hero() {
             transition={{ duration: 1.2, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           >
             <p className={styles.subtitle}>
-              <span>Automating Industries. Turning</span>
-              <motion.span 
-                className={styles.upsideDown}
-                style={{ rotateX: smoothRotateX }}
-              >
-                Status Quo
-              </motion.span>
-              <motion.span 
-                className={styles.upsideDown}
-                style={{ rotateX: smoothRotateX }}
-              >
-                Upside Down.
-              </motion.span>
+              <span>We believe in expansion and enhancement</span>
+            </p>
+            <p className={styles.subtitle}>
+              <span>By supercharging human beings</span>
+            </p>
+            <p className={styles.subtitle}>
+              <span>We just happen to automate you</span>
             </p>
           </motion.div>
         </div>
@@ -195,7 +189,7 @@ export default function Hero() {
       </div>
     </section>
       {/* Top Layer: UI Controls, unaffected by Title's mix-blend-mode container */}
-      <div className={styles.uiOverlay}>
+      {/* <div className={styles.uiOverlay}>
         <div className={styles.actionsContainer}>
           <motion.div 
             className={styles.titleContent}
@@ -211,7 +205,7 @@ export default function Hero() {
             </div>
           </motion.div>
         </div>
-      </div>
+      </div> */}
       </>
   );
 }
