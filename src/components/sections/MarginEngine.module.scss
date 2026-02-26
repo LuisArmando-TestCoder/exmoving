@@ -86,6 +86,10 @@
   align-items: center;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid rgba(var(--overlay-rgb), 0.1);
+
+  @media (max-width: 1024px) {
+    display: grid;
+  }
 }
 
 .revenueTitle {
