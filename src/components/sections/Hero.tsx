@@ -112,6 +112,7 @@ export default function Hero() {
   const smoothXSubtitle = shouldReduceMotion ? xSubtitle : useSpring(xSubtitle, springConfig);
 
   return (
+    <>
     <section 
       ref={containerRef} 
       className={`${styles.heroWrapper} dark-theme`}
@@ -192,6 +193,7 @@ export default function Hero() {
         )}
 
       </div>
+    </section>
       {/* Top Layer: UI Controls, unaffected by Title's mix-blend-mode container */}
       <div className={styles.uiOverlay}>
         <div className={styles.actionsContainer}>
@@ -210,6 +212,6 @@ export default function Hero() {
           </motion.div>
         </div>
       </div>
-    </section>
+      </>
   );
 }
