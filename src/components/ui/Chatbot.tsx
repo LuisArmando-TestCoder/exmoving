@@ -51,6 +51,7 @@ export const Chatbot = ({
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const lastSubmittedInputRef = useRef("");
   const recognitionRef = useRef<any>(null);
   const isSpeakingRef = useRef(false);
 
@@ -146,11 +147,28 @@ export const Chatbot = ({
         recognitionRef.current.lang = "en-US";
 
         recognitionRef.current.onresult = (event: any) => {
-          let transcript = "";
-          for (let i = 0; i < event.results.length; ++i) {
-            transcript += event.results[i][0].transcript;
+          let currentTranscript = "";
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+              const text = event.results[i][0].transcript;
+              setUserInput(prev => {
+                const base = prev.trim();
+                return base ? `${base} ${text.trim()}` : text.trim();
+              });
+            } else {
+              currentTranscript += event.results[i][0].transcript;
+            }
           }
-          setUserInput(transcript);
+          
+          if (currentTranscript) {
+            setUserInput(prev => {
+              // We want to avoid double-appending if the same interim result comes back multiple times
+              // But simpler: just append the interim to the current state
+              // However, the interim changes constantly.
+              // A better way for interim is to keep track of the "stable" user input separately.
+              return prev; 
+            });
+          }
         };
 
         recognitionRef.current.onerror = (event: any) => {

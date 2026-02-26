@@ -26,12 +26,7 @@
     transform: translateX(-50%);
     width: 120%;
     height: 500px;
-    background: radial-gradient(
-      ellipse at center,
-      rgba(var(--overlay-rgb), 0.8) 0%,
-      var(--dawn-glow, rgba(245, 158, 11, 0.5)) 20%,
-      transparent 70%
-    );
+    background: var(--accent);
     filter: blur(80px);
     opacity: var(--dawn-opacity, 0);
   }

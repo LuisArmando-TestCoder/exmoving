@@ -1,22 +1,33 @@
 @use "sass:color";
 
-$color-bg: #ffffff;
-$color-surface: #f3f4f6;
-$color-border: rgba(0, 0, 0, 0.08);
-$color-text: #111827;
-$color-text-dim: #4b5563;
+// -----------------------------------------------------------------------------
+// 1. BRAND COLOR PALETTE
+// -----------------------------------------------------------------------------
+$palette-blue:      #0E21A0; // Primary / Deep Base
+$palette-purple:    #4D2FB2; // Secondary / Vibrancy
+$palette-lavender:  #B153D7; // Intermediate / Softness
+$palette-pink:      #F375C2; // Accent / Highlights
 
-// Dark theme variables for specific components like Hero
-$color-dark-bg: #030712;
-$color-dark-surface: #111827;
-$color-dark-border: rgba(255, 255, 255, 0.08);
-$color-dark-text: #f9fafb;
+// Standard Theme Colors (Light)
+$color-bg:          #ffffff;
+$color-surface:     #f8f9fc;
+$color-border:      rgba(14, 33, 160, 0.08); // Tinted with Primary
+$color-text:        #05070a;
+$color-text-dim:    #4b5563;
+
+// Dark Theme Colors
+$color-dark-bg:     #030510;
+$color-dark-surface: #0a0c1f;
+$color-dark-border:  rgba(243, 117, 194, 0.1); // Tinted with Accent
+$color-dark-text:    #f9fafb;
 $color-dark-text-dim: #9ca3af;
-$color-primary: #3b82f6;
-$color-accent: #10b981;
-$color-secondary: #8b5cf6;
-$font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-$font-mono: 'JetBrains Mono', monospace;
+
+// Global Token Mapping
+$color-primary:     $palette-blue;
+$color-secondary:   $palette-purple;
+$color-accent:      $palette-pink;
+$font-sans:         'Inter', system-ui, -apple-system, sans-serif;
+$font-mono:         'JetBrains Mono', monospace;
 
 // Breakpoints
 $breakpoint-sm: 640px;
@@ -24,6 +35,9 @@ $breakpoint-md: 768px;
 $breakpoint-lg: 1024px;
 $breakpoint-xl: 1280px;
 
+// -----------------------------------------------------------------------------
+// 2. ROOT & CUSTOM PROPERTIES
+// -----------------------------------------------------------------------------
 :root {
   --bg: #{$color-bg};
   --surface: #{$color-surface};
@@ -31,33 +45,24 @@ $breakpoint-xl: 1280px;
   --text: #{$color-text};
   --text-dim: #{$color-text-dim};
   
-  // Darker versions for better contrast on white background
-  --primary: #2563eb;
-  --secondary: #7c3aed;
-  --accent: #9c27b0;
+  --primary: #{$palette-blue};
+  --secondary: #{$palette-purple};
+  --accent: #{$palette-lavender};
+
+  --overlay-rgb: #{$palette-pink};
   
-  --glass: rgba(0, 0, 0, 0.03);
-  --glass-border: rgba(0, 0, 0, 0.08);
-  --glow: rgba(37, 99, 235, 0.15);
+  --glass: rgba(14, 33, 160, 0.03);
+  --glass-border: rgba(14, 33, 160, 0.08);
+  --glow: rgba(77, 47, 178, 0.15);
   
+  // RGB values for alpha blending
   --bg-rgb: 255, 255, 255;
-  --surface-rgb: 243, 244, 246;
-  --text-rgb: 17, 24, 39;
-  --primary-rgb: 37, 99, 235;
-  --secondary-rgb: 124, 58, 237;
-  --accent-rgb: 5, 150, 105;
-  --overlay-rgb: 0, 0, 0;
-  --overlay-dark-rgb: 0, 0, 0;
-  --overlay-light-rgb: 200, 200, 200;
+  --primary-rgb: 14, 33, 160;
+  --secondary-rgb: 77, 47, 178;
+  --accent-rgb: 243, 117, 194;
   
   --font-sans: #{$font-sans};
   --font-mono: #{$font-mono};
-  
-  --color-primary: var(--primary);
-  --color-primary-rgb: var(--primary-rgb);
-  --color-bg: var(--bg);
-  --color-bg-rgb: var(--bg-rgb);
-  --color-text: var(--text);
 }
 
 .dark-theme {
@@ -67,76 +72,62 @@ $breakpoint-xl: 1280px;
   --text: #{$color-dark-text};
   --text-dim: #{$color-dark-text-dim};
   
-  --primary: #3b82f6;
-  --secondary: #8b5cf6;
-  --accent: #9c27b0;
+  // We brighten the primary slightly for dark mode visibility
+  --primary: #{color.adjust($palette-blue, $lightness: 20%)};
+  --secondary: #{$palette-lavender};
+  --accent: #{$palette-pink};
   
-  --bg-rgb: 3, 7, 18;
-  --surface-rgb: 17, 24, 39;
-  --text-rgb: 249, 250, 251;
-  --primary-rgb: 59, 130, 246;
-  --secondary-rgb: 139, 92, 246;
-  --accent-rgb: 16, 185, 129;
-  --overlay-rgb: 255, 255, 255; // In dark mode, overlays are white
+  --bg-rgb: 3, 5, 16;
+  --surface-rgb: 10, 12, 31;
+  --glass: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
 }
 
+// -----------------------------------------------------------------------------
+// 3. BASE STYLES
+// -----------------------------------------------------------------------------
 body {
-  background-color: $color-bg;
-  color: $color-text;
-  font-family: $font-sans;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  transition: background-color 0.3s ease;
 }
 
 .container {
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 1.5rem;
-  
-  @media (min-width: $breakpoint-md) {
-    padding: 0 2rem;
-  }
-}
-
-.text-gradient {
-  background: linear-gradient(
-    to right,
-    $color-primary,
-    $color-secondary 25%,
-    $color-accent 50%,
-    $color-secondary 75%,
-    $color-primary 100%
-  );
-  background-size: 300% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  display: inline-block;
-  white-space: nowrap;
-}
-
-@keyframes shine {
-  0% {
-    background-position: 0% center;
-  }
-  100% {
-    background-position: 300% center;
-  }
+  @media (min-width: $breakpoint-md) { padding: 0 2rem; }
 }
 
 .section {
   padding: 5rem 0;
-  position: relative;
-  
-  @media (min-width: $breakpoint-md) {
-    padding: 8rem 0;
-  }
+  @media (min-width: $breakpoint-md) { padding: 8rem 0; }
 }
 
-.bg-surface {
-  background-color: $color-surface;
+// -----------------------------------------------------------------------------
+// 4. COMPONENTS & UTILITIES
+// -----------------------------------------------------------------------------
+.text-gradient {
+  background: linear-gradient(
+    to right,
+    $palette-blue,
+    $palette-purple 30%,
+    $palette-lavender 60%,
+    $palette-pink 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 6s linear infinite;
+  font-weight: 800;
+}
+
+@keyframes shine {
+  to { background-position: 200% center; }
 }
 
 .glass-card {
@@ -144,33 +135,14 @@ body {
   backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
   border-radius: 1.5rem;
+  padding: 2rem;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-  position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-      800px circle at var(--mouse-x, 0) var(--mouse-y, 0),
-      rgba(0, 0, 0, 0.06),
-      transparent 40%
-    );
-    opacity: 0;
-    transition: opacity 0.5s;
-    pointer-events: none;
-  }
 
   &:hover {
-    border-color: rgba(0, 0, 0, 0.1);
-    background: rgba(0, 0, 0, 0.02);
-    transform: translateY(-4px);
-    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.1);
-
-    &::before {
-      opacity: 1;
-    }
+    transform: translateY(-5px);
+    border-color: rgba($palette-pink, 0.3);
+    box-shadow: 0 20px 40px -20px rgba($palette-blue, 0.3);
+    background: rgba(var(--primary-rgb), 0.04);
   }
 }
 
@@ -178,73 +150,37 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.75rem 1.75rem;
-  border-radius: 12px;
+  padding: 0.8rem 2rem;
+  border-radius: 50px; // Modern pill shape
   font-weight: 600;
-  font-size: 0.9375rem;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
   border: none;
-  font-family: inherit;
-  gap: 0.5rem;
-  position: relative;
-  overflow: hidden;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent);
-    transform: translateX(-100%);
-    transition: transform 0.6s ease;
-  }
-
-  &:hover {
-    &::before {
-      transform: translateX(100%);
-    }
-  }
+  text-decoration: none;
+  letter-spacing: 0.02em;
 
   &--primary {
-    background: linear-gradient(135deg, $color-primary, $color-secondary);
+    // Gradient using your Purple and Lavender for best legibility
+    background: linear-gradient(135deg, $palette-purple, $palette-lavender);
     color: white;
-    box-shadow: 0 10px 20px -10px rgba($color-primary, 0.5);
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 15px -5px rgba($palette-purple, 0.4);
     
     &:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 30px -10px rgba($color-primary, 0.6),
-                  0 0 0 1px rgba(0, 0, 0, 0.2) inset;
-    }
-
-    &:active {
-      transform: translateY(-1px);
+      transform: scale(1.03);
+      box-shadow: 0 12px 20px -5px rgba($palette-purple, 0.5);
+      filter: brightness(1.1);
     }
   }
 
   &--outline {
-    background-color: rgba(0, 0, 0, 0.03);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    color: $color-text;
-    backdrop-filter: blur(10px);
+    background: transparent;
+    border: 2px solid var(--border);
+    color: var(--text);
     
     &:hover {
-      background-color: rgba(0, 0, 0, 0.08);
-      border-color: rgba(0, 0, 0, 0.2);
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.1);
+      border-color: $palette-purple;
+      color: $palette-purple;
+      background: rgba($palette-purple, 0.05);
     }
-  }
-
-  &--lg {
-    padding: 1.125rem 2.5rem;
-    font-size: 1rem;
-    border-radius: 14px;
-  }
-
-  @media (max-width: $breakpoint-sm) {
-    width: 100%;
   }
 }
