@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { useChatbotStore } from "@/store/useChatbotStore";
@@ -8,6 +9,17 @@ import styles from "./ChatbotModal.module.scss";
 
 export const ChatbotModal = () => {
   const { isOpen, closeChatbot, userContext } = useChatbotStore();
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
 
   return (
     <AnimatePresence>
