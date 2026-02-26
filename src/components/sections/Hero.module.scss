@@ -9,11 +9,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: invert(1);
 }
 
 .soft {
-  filter: invert(1);
   text-transform: uppercase;
   font-weight: 900;
   font-family: "Inter", "Helvetica", sans-serif;
@@ -136,12 +134,23 @@
   text-transform: uppercase;
   max-width: 90vw;
   line-height: 1.4;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5ch;
 
   @media (max-width: #{$breakpoint-md}) {
     margin-top: 2rem;
     font-size: 0.8rem;
     max-width: 80vw;
   }
+}
+
+.upsideDown {
+  display: inline-block;
+  transform-origin: center center;
+  will-change: transform;
 }
 
 .actions {
@@ -154,7 +163,7 @@
 
 .demoHint {
   font-size: 0.75rem;
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(var(--overlay-dark-rgb), 0.4);
   font-weight: 500;
   letter-spacing: 0.02em;
 }

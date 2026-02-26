@@ -1,7 +1,7 @@
 @use "../../styles/variables" as *;
 
 .copySection {
-  background-color: $color-bg;
+  background-color: var(--bg);
   position: relative;
   // removed overflow: hidden to allow the glow to "bleed" out if needed, 
   // though we'll manage it with z-index
@@ -28,7 +28,7 @@
     height: 500px;
     background: radial-gradient(
       ellipse at center,
-      rgba(255, 255, 255, 0.8) 0%,
+      rgba(var(--overlay-rgb), 0.8) 0%,
       var(--dawn-glow, rgba(245, 158, 11, 0.5)) 20%,
       transparent 70%
     );
@@ -69,7 +69,7 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(var(--overlay-rgb), 0.2), transparent);
   }
 }
 
@@ -83,7 +83,7 @@
 
 .description {
   font-size: clamp(1.1rem, 2vw, 1.4rem);
-  color: $color-text-dim;
+  color: var(--text-dim);
   max-width: 650px;
   line-height: 1.6;
 }

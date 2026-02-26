@@ -55,7 +55,7 @@ export const JourneyStep = memo(function JourneyStep({ step, index }: JourneySte
           boxShadow: useTransform(
             scrollYProgress,
             [0.1, 0.2],
-            ["0 0 0px rgba(0,0,0,0)", "0 0 20px var(--color-primary)"]
+            ["0 0 0px rgba(var(--overlay-dark-rgb),0)", "0 0 20px var(--color-primary)"]
           ),
           willChange: "transform, background-color, box-shadow"
         }}

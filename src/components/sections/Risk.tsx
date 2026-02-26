@@ -11,25 +11,25 @@ const risks = [
     icon: <ShieldAlert size={40} />,
     title: "Capitalization Failure",
     description: "Solving the three killers: under capitalization, wrong people, and bad markets.",
-    color: "#ff4d4d"
+    color: "var(--accent)"
   },
   {
     icon: <Lock size={40} />,
     title: "Liquidity Guardrails",
     description: "Tailored costs that scale with your budget, preventing financial race conditions.",
-    color: "#10b981"
+    color: "var(--accent)"
   },
   {
     icon: <Eye size={40} />,
     title: "Direct ROI Visibility",
     description: "Metric-driven selling points for businesses that need tools that perform without supervision.",
-    color: "#3b82f6"
+    color: "var(--primary)"
   },
   {
     icon: <AlertCircle size={40} />,
     title: "Market Erosion",
     description: "Protecting value propositions from buzzword deterioration through ROI-focused scaling.",
-    color: "#f59e0b"
+    color: "var(--primary)"
   }
 ];
 
@@ -47,8 +47,8 @@ export default function Risk() {
     smoothProgress, 
     [0.8, 1], 
     [
-      "0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(59,130,246,0.6)", 
-      "0 15px 40px rgba(245,158,11,0.4), 0 30px 80px rgba(239,68,68,0.3)"
+      "0 0 15px rgba(var(--overlay-rgb),0.8), 0 0 30px rgba(var(--primary-rgb),0.6)", 
+      "0 15px 40px rgba(var(--primary-rgb),0.4), 0 30px 80px rgba(var(--secondary-rgb),0.3)"
     ]
   );
 

@@ -66,7 +66,7 @@ export const EmailModal = () => {
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ type: "spring", stiffness: 200, damping: 20 }}
                   >
-                    <CheckCircle2 size={64} color="#10b981" style={{ margin: "0 auto 1.5rem" }} />
+                    <CheckCircle2 size={64} color="var(--accent)" style={{ margin: "0 auto 1.5rem" }} />
                   </motion.div>
                   <h3>Request Sent!</h3>
                   <p>We'll be in touch shortly.</p>

@@ -2,7 +2,7 @@
 
 .footer {
   padding: 5rem 0 2rem;
-  background-color: $color-bg;
+  background-color: var(--bg);
   border-top: 1px solid var(--glass-border);
 }
 
@@ -32,12 +32,12 @@
   gap: 0.5rem;
   
   span {
-    color: $color-primary;
+    color: var(--primary);
   }
 }
 
 .description {
-  color: $color-text-dim;
+  color: var(--text-dim);
   max-width: 300px;
 }
 
@@ -61,12 +61,12 @@
 }
 
 .link {
-  color: $color-text-dim;
+  color: var(--text-dim);
   transition: color 0.2s ease;
   font-size: 0.9375rem;
 
   &:hover {
-    color: white;
+    color: var(--text);
   }
 }
 
@@ -76,7 +76,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: $color-text-dim;
+  color: var(--text-dim);
   font-size: 0.875rem;
 
   @media (max-width: $breakpoint-sm) {

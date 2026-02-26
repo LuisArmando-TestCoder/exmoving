@@ -1,12 +1,12 @@
 @use "@/styles/variables" as *;
 
 .explorer {
-  background-color: rgba(255, 255, 255, 0.02);
+  background-color: rgba(var(--overlay-rgb), 0.02);
   backdrop-filter: blur(40px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(var(--overlay-rgb), 0.1);
   border-radius: 2.5rem;
   padding: 2rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 25px 50px -12px rgba(var(--overlay-light-rgb), 0.5);
   position: relative;
   overflow: hidden;
 
@@ -20,7 +20,7 @@
     right: 0;
     width: 16rem;
     height: 16rem;
-    background-color: rgba(59, 130, 246, 0.05);
+    background-color: rgba(var(--primary-rgb), 0.05);
     filter: blur(80px);
     border-radius: 9999px;
     margin-right: -8rem;
@@ -45,23 +45,23 @@
     flex: 1;
     display: flex;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: rgba(var(--overlay-light-rgb), 0.4);
+    border: 1px solid rgba(var(--overlay-rgb), 0.08);
     border-radius: 1.25rem;
     padding: 0.25rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 6px -1px rgba(var(--overlay-light-rgb), 0.1),
+      0 2px 4px -1px rgba(var(--overlay-light-rgb), 0.06);
 
     &:focus-within {
-      border-color: rgba(59, 130, 246, 0.4);
-      background-color: rgba(0, 0, 0, 0.6);
-      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.4),
-        0 10px 25px -5px rgba(0, 0, 0, 0.4);
+      border-color: rgba(var(--primary-rgb), 0.4);
+      background-color: rgba(var(--overlay-light-rgb), 0.6);
+      box-shadow: 0 0 0 1px rgba(var(--primary-rgb), 0.4),
+        0 10px 25px -5px rgba(var(--overlay-light-rgb), 0.4);
 
       .searchIconWrapper {
-        background-color: rgba(59, 130, 246, 0.1);
-        color: #60a5fa;
+        background-color: rgba(var(--primary-rgb), 0.1);
+        color: var(--primary);
       }
     }
 
@@ -71,7 +71,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #6b7280;
+      color: var(--text-dim);
       transition: all 0.3s;
       border-radius: 1rem;
     }
@@ -80,7 +80,7 @@
       flex: 1;
       background: transparent;
       border: none;
-      color: white;
+      color: var(--text);
       padding: 0.75rem 0.5rem;
       font-size: 0.9375rem;
       font-weight: 500;
@@ -90,7 +90,7 @@
       }
 
       &::placeholder {
-        color: #4b5563;
+        color: var(--text-dim);
       }
     }
 
@@ -114,9 +114,9 @@
         font-family: inherit;
         font-size: 0.625rem;
         font-weight: 700;
-        color: #4b5563;
-        background-color: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: var(--text-dim);
+        background-color: rgba(var(--overlay-rgb), 0.03);
+        border: 1px solid rgba(var(--overlay-rgb), 0.08);
         border-radius: 0.375rem;
       }
     }
@@ -137,18 +137,18 @@
     display: flex;
     align-items: center;
     padding: 0.625rem 1.25rem;
-    background-color: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: rgba(var(--overlay-rgb), 0.03);
+    border: 1px solid rgba(var(--overlay-rgb), 0.08);
     border-radius: 1rem;
     font-size: 0.875rem;
     font-weight: 600;
-    color: #f9fafb;
+    color: var(--text);
     cursor: pointer;
     transition: all 0.3s;
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.06);
-      border-color: rgba(255, 255, 255, 0.15);
+      background-color: rgba(var(--overlay-rgb), 0.06);
+      border-color: rgba(var(--overlay-rgb), 0.15);
     }
 
     .filterCount {
@@ -158,8 +158,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: $color-primary;
-      color: white;
+      background-color: var(--primary);
+      color: var(--text);
       border-radius: 9999px;
       font-size: 0.625rem;
       font-weight: 800;
@@ -169,31 +169,31 @@
   .divider {
     height: 1.5rem;
     width: 1px;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(var(--overlay-rgb), 0.1);
   }
 
   .viewToggle {
     position: relative;
     display: flex;
-    background: rgba(10, 10, 15, 0.6);
+    background: var(--surface);
     backdrop-filter: blur(20px);
     padding: 0.375rem;
     border-radius: 1.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(var(--overlay-rgb), 0.1);
     width: 6.5rem;
     height: 3.25rem;
     box-shadow: 
-      inset 0 2px 4px rgba(0, 0, 0, 0.4),
-      0 8px 16px -4px rgba(0, 0, 0, 0.4);
+      inset 0 2px 4px rgba(var(--overlay-light-rgb), 0.05),
+      0 8px 16px -4px rgba(var(--overlay-light-rgb), 0.1);
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 
     &:hover {
       transform: translateY(-2px);
-      border-color: rgba(255, 255, 255, 0.15);
+      border-color: rgba(var(--overlay-rgb), 0.2);
       box-shadow: 
-        inset 0 2px 4px rgba(0, 0, 0, 0.4),
-        0 12px 24px -6px rgba(0, 0, 0, 0.5),
-        0 0 20px rgba(59, 130, 246, 0.1);
+        inset 0 2px 4px rgba(var(--overlay-light-rgb), 0.05),
+        0 12px 24px -6px rgba(var(--overlay-light-rgb), 0.1),
+        0 0 20px rgba(var(--primary-rgb), 0.1);
     }
 
     &::after {
@@ -204,9 +204,9 @@
       padding: 1px;
       background: linear-gradient(
         135deg, 
-        rgba(255,255,255,0.15) 0%, 
-        rgba(255,255,255,0.02) 50%, 
-        rgba(255,255,255,0.05) 100%
+        rgba(var(--overlay-rgb), 0.15) 0%, 
+        rgba(var(--overlay-rgb), 0.02) 50%, 
+        rgba(var(--overlay-rgb), 0.05) 100%
       );
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -223,15 +223,15 @@
       height: calc(100% - 0.75rem);
       background: linear-gradient(
         135deg,
-        rgba(59, 130, 246, 0.8),
-        rgba(37, 99, 235, 0.9)
+        rgba(var(--primary-rgb), 0.8),
+        rgba(var(--primary-rgb), 0.9)
       );
       border-radius: 1.125rem;
       z-index: 1;
       box-shadow: 
-        0 4px 12px rgba(37, 99, 235, 0.4),
-        inset 0 2px 4px rgba(255, 255, 255, 0.3),
-        inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+        0 4px 12px rgba(var(--primary-rgb), 0.4),
+        inset 0 2px 4px rgba(var(--overlay-rgb), 0.3),
+        inset 0 -2px 4px rgba(var(--overlay-light-rgb), 0.2);
     }
 
     .viewBtn {
@@ -242,7 +242,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: rgba(255, 255, 255, 0.3);
+      color: var(--text-dim);
       transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
       cursor: pointer;
       border-radius: 1.125rem;
@@ -251,12 +251,12 @@
 
       svg {
         transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        filter: none;
       }
 
       &:hover:not(.active) {
-        color: rgba(255, 255, 255, 0.8);
-        background: rgba(255, 255, 255, 0.05);
+        color: var(--text);
+        background: rgba(var(--overlay-rgb), 0.05);
         
         svg {
           transform: scale(1.1);
@@ -264,12 +264,12 @@
       }
 
       &.active {
-        color: white;
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        color: var(--bg);
+        text-shadow: none;
 
         svg {
           transform: scale(1.15);
-          filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+          filter: none;
         }
       }
     }
@@ -349,15 +349,15 @@
 .card {
   display: block;
   padding: 2rem;
-  background-color: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: rgba(var(--overlay-rgb), 0.03);
+  border: 1px solid rgba(var(--overlay-rgb), 0.05);
   border-radius: 2rem;
   transition: all 0.5s;
   position: relative;
   overflow: hidden;
 
   &:hover {
-    border-color: rgba(59, 130, 246, 0.4);
+    border-color: rgba(var(--primary-rgb), 0.4);
     transform: translateY(-0.5rem);
 
     .cardIcon {
@@ -365,7 +365,7 @@
     }
 
     .cardTitle {
-      color: #60a5fa;
+      color: var(--primary);
     }
 
     .cardArrow {
@@ -384,18 +384,18 @@
     right: 1.5rem;
     opacity: 0;
     transition: opacity 0.3s;
-    color: #60a5fa;
+    color: var(--primary);
   }
 
   .cardIcon {
     width: 3rem;
     height: 3rem;
-    background-color: rgba(59, 130, 246, 0.1);
+    background-color: rgba(var(--primary-rgb), 0.1);
     border-radius: 0.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #60a5fa;
+    color: var(--primary);
     margin-bottom: 2rem;
     transition: transform 0.5s;
   }
@@ -403,13 +403,13 @@
   .cardTitle {
     font-size: 1.5rem;
     font-weight: 700;
-    color: white;
+    color: var(--text);
     margin-bottom: 1rem;
     transition: color 0.3s;
   }
 
   .cardDescription {
-    color: #6b7280;
+    color: var(--text-dim);
     line-height: 1.625;
     transition: color 0.3s;
   }
@@ -422,7 +422,7 @@
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    color: $color-primary;
+    color: var(--primary);
     opacity: 0;
     transform: translateX(-10px);
     transition: all 0.5s;
@@ -436,10 +436,10 @@
   gap: 2rem;
   align-items: center;
   padding: 2.5rem;
-  background: rgba(255, 255, 255, 0.01);
+  background: rgba(var(--overlay-rgb), 0.01);
   border-radius: 3rem;
-  border: 1px solid rgba(255, 255, 255, 0.03);
-  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(var(--overlay-rgb), 0.03);
+  box-shadow: inset 0 0 40px rgba(var(--overlay-light-rgb), 0.2);
 
   @media (min-width: 768px) {
     flex-direction: row;
@@ -451,14 +451,14 @@
     align-items: center;
     gap: 1rem;
     font-size: 0.875rem;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--overlay-rgb), 0.5);
     font-family: var(--font-mono, monospace);
     letter-spacing: -0.01em;
 
     b {
-      color: #fff;
+      color: var(--text);
       font-weight: 700;
-      background: linear-gradient(to right, #fff, rgba(255,255,255,0.7));
+      background: linear-gradient(to right, var(--text), rgba(var(--overlay-rgb), 0.7));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -466,17 +466,17 @@
     .pulse {
       width: 0.4rem;
       height: 0.4rem;
-      background-color: #60a5fa;
+      background-color: var(--primary);
       border-radius: 9999px;
       position: relative;
-      box-shadow: 0 0 10px #3b82f6;
+      box-shadow: 0 0 10px var(--primary);
 
       &::after {
         content: "";
         position: absolute;
         inset: -4px;
         border-radius: 9999px;
-        background-color: #3b82f6;
+        background-color: var(--primary);
         opacity: 0.3;
         animation: pulse-ring 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
       }
@@ -487,15 +487,14 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    background: rgba(0, 0, 0, 0.6);
+    background: var(--surface);
     backdrop-filter: blur(30px);
     padding: 0.4rem;
     border-radius: 1.75rem;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(var(--overlay-rgb), 0.1);
     box-shadow: 
-      0 20px 40px -10px rgba(0, 0, 0, 0.5),
-      inset 0 1px 1px rgba(255, 255, 255, 0.05),
-      0 0 0 1px rgba(255, 255, 255, 0.02);
+      0 10px 20px -5px rgba(var(--overlay-light-rgb), 0.1),
+      inset 0 1px 1px rgba(var(--overlay-rgb), 0.05);
   }
 
   .navButton {
@@ -504,18 +503,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(var(--overlay-rgb), 0.03);
+    border: 1px solid rgba(var(--overlay-rgb), 0.05);
     border-radius: 1.25rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(var(--overlay-rgb), 0.7);
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 
     &:hover:not(:disabled) {
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      border-color: rgba(59, 130, 246, 0.3);
-      box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+      background: rgba(var(--overlay-rgb), 0.1);
+      color: var(--text);
+      border-color: rgba(var(--primary-rgb), 0.3);
+      box-shadow: 0 0 15px rgba(var(--primary-rgb), 0.2);
     }
 
     &:disabled {
@@ -548,7 +547,7 @@
     border: none;
     border-radius: 1.25rem;
     cursor: pointer;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--overlay-rgb), 0.4);
     font-size: 0.8125rem;
     font-weight: 600;
     font-family: var(--font-mono, monospace);
@@ -560,28 +559,28 @@
     }
 
     &:hover:not(.active):not(.ellipsis) {
-      color: white;
-      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      background: var(--surface);
     }
 
     &.active {
-      color: white;
+      color: var(--text);
       font-weight: 800;
     }
 
     &.ellipsis {
       cursor: default;
       width: 1.5rem;
-      color: rgba(255, 255, 255, 0.2);
+      color: rgba(var(--overlay-rgb), 0.2);
     }
 
     .activeIndicator {
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.8), rgba(37, 99, 235, 0.5));
+      background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.8), rgba(var(--primary-rgb), 0.5));
       border-radius: 1.25rem;
       z-index: 1;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+      box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.4);
     }
   }
 }
@@ -604,30 +603,30 @@
 .emptyState {
   text-align: center;
   padding: 8rem 0;
-  border: 2px dashed rgba(255, 255, 255, 0.05);
+  border: 2px dashed rgba(var(--overlay-rgb), 0.05);
   border-radius: 2rem;
 
   .emptyIcon {
     width: 5rem;
     height: 5rem;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(var(--overlay-rgb), 0.05);
     border-radius: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #4b5563;
+    color: var(--text-dim);
     margin: 0 auto 2rem;
   }
 
   h3 {
     font-size: 1.5rem;
     font-weight: 700;
-    color: white;
+    color: var(--text);
     margin-bottom: 0.5rem;
   }
 
   p {
-    color: #6b7280;
+    color: var(--text-dim);
     max-width: 24rem;
     margin: 0 auto;
   }

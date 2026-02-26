@@ -6,7 +6,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(var(--overlay-dark-rgb), 0.4);
   backdrop-filter: blur(20px) saturate(180%);
   display: flex;
   align-items: center;
@@ -31,8 +31,8 @@
   position: absolute;
   top: 1.25rem;
   right: 1.25rem;
-  color: rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.1);
+  color: rgba(var(--overlay-rgb), 0.5);
+  background: rgba(var(--overlay-rgb), 0.1);
   border: none;
   border-radius: 50%;
   width: 32px;
@@ -45,8 +45,8 @@
   z-index: 2;
 
   &:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.2);
+    color: var(--text);
+    background: rgba(var(--overlay-rgb), 0.2);
     transform: rotate(90deg);
   }
 }
@@ -67,12 +67,12 @@
   font-weight: 800;
   letter-spacing: -0.04em;
   margin-bottom: 0.75rem;
-  color: white;
+  color: var(--text);
   line-height: 1.1;
 }
 
 .description {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(var(--overlay-rgb), 0.5);
   font-size: 1rem;
   font-weight: 500;
   line-height: 1.5;
@@ -86,29 +86,29 @@
 
 .input {
   width: 100%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(var(--overlay-rgb), 0.05);
+  border: 1px solid rgba(var(--overlay-rgb), 0.1);
   border-radius: 16px;
   padding: 1.25rem 1.5rem;
-  color: white;
+  color: var(--text);
   font-family: inherit;
   font-size: 1.125rem;
   font-weight: 500;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 2px 4px rgba(var(--overlay-dark-rgb), 0.1);
 
   &:focus {
     outline: none;
-    border-color: white;
-    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--text);
+    background: rgba(var(--overlay-rgb), 0.08);
     box-shadow: 
-      inset 0 2px 4px rgba(0, 0, 0, 0.1),
-      0 0 0 4px rgba(255, 255, 255, 0.1);
+      inset 0 2px 4px rgba(var(--overlay-dark-rgb), 0.1),
+      0 0 0 4px rgba(var(--overlay-rgb), 0.1);
     transform: translateY(-2px);
   }
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.2);
+    color: rgba(var(--overlay-rgb), 0.2);
   }
 
   &:disabled {
@@ -119,8 +119,8 @@
 
 .submitButton {
   width: 100%;
-  background: white !important;
-  color: black !important;
+  background: var(--text) !important;
+  color: var(--bg) !important;
   font-weight: 700 !important;
   height: 60px;
   border-radius: 100px !important;
@@ -132,7 +132,7 @@
 
   &:hover:not(:disabled) {
     transform: translateY(-3px) scale(1.02) !important;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4) !important;
+    box-shadow: 0 20px 40px rgba(var(--overlay-dark-rgb), 0.4) !important;
   }
 
   &:active:not(:disabled) {
@@ -142,8 +142,8 @@
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    background: rgba(255, 255, 255, 0.2) !important;
-    color: rgba(255, 255, 255, 0.5) !important;
+    background: rgba(var(--overlay-rgb), 0.2) !important;
+    color: rgba(var(--overlay-rgb), 0.5) !important;
   }
 }
 
@@ -153,7 +153,7 @@
   animation: successFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 
   h3 {
-    color: white;
+    color: var(--text);
     font-size: 2rem;
     font-weight: 800;
     letter-spacing: -0.02em;
@@ -161,7 +161,7 @@
   }
 
   p {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--overlay-rgb), 0.5);
     font-size: 1.125rem;
     font-weight: 500;
   }

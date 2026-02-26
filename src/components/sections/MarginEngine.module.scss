@@ -1,7 +1,7 @@
 @use "../../styles/variables" as *;
 
 .marginEngine {
-  background-color: $color-surface;
+  background-color: var(--surface);
   position: relative;
   overflow: hidden;
 }
@@ -24,7 +24,7 @@
 }
 
 .label {
-  color: $color-primary;
+  color: var(--primary);
   font-weight: 600;
   font-size: 0.875rem;
   text-transform: uppercase;
@@ -40,7 +40,7 @@
 
 .description {
   font-size: 1.125rem;
-  color: $color-text-dim;
+  color: var(--text-dim);
   max-width: 500px;
 }
 
@@ -58,7 +58,7 @@
   font-weight: 500;
   
   svg {
-    color: $color-accent;
+    color: var(--accent);
   }
 }
 
@@ -69,7 +69,7 @@
   border: 1px solid var(--glass-border);
   border-radius: 2rem;
   backdrop-filter: blur(12px);
-  box-shadow: 0 30px 60px -15px rgba(0,0,0,0.5), inset 0 0 30px rgba(var(--color-primary-rgb), 0.05);
+  box-shadow: 0 30px 60px -15px rgba(var(--overlay-dark-rgb), 0.5), inset 0 0 30px rgba(var(--color-primary-rgb), 0.05);
   display: flex;
   flex-direction: column;
 }
@@ -85,12 +85,12 @@
   justify-content: space-between;
   align-items: center;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(var(--overlay-rgb), 0.1);
 }
 
 .revenueTitle {
   font-size: 1.125rem;
-  color: $color-text-dim;
+  color: var(--text-dim);
   font-weight: 500;
 }
 
@@ -111,7 +111,7 @@
   font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: rgba($color-text, 0.5);
+  color: rgba(var(--text-rgb), 0.5);
   margin-bottom: 0.5rem;
 }
 
@@ -132,22 +132,22 @@
   width: 28px;
   height: 28px;
   border-radius: 6px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(var(--overlay-rgb), 0.05);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: $color-text-dim;
+  color: var(--text-dim);
 }
 
 .costLabel {
   font-size: 0.9375rem;
-  color: $color-text;
+  color: var(--text);
   font-weight: 500;
 }
 
 .costTrack {
   height: 4px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(var(--overlay-rgb), 0.05);
   border-radius: 2px;
   overflow: hidden;
   position: relative;
@@ -158,15 +158,15 @@
   top: 0;
   left: 0;
   height: 100%;
-  background: $color-secondary;
-  box-shadow: 0 0 10px $color-secondary;
+  background: var(--secondary);
+  box-shadow: 0 0 10px var(--secondary);
 }
 
 .costValue {
   text-align: right;
   font-family: var(--font-mono);
   font-size: 0.9375rem;
-  color: $color-text-dim;
+  color: var(--text-dim);
 }
 
 .marginResult {
@@ -184,14 +184,14 @@
 .marginLabel {
   font-weight: 600;
   font-size: 1.125rem;
-  color: $color-text;
+  color: var(--text);
 }
 
 .marginPercentage {
   font-size: 2rem;
   font-weight: 800;
-  color: #10b981;
-  text-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+  color: var(--accent);
+  text-shadow: 0 0 15px rgba(var(--accent-rgb), 0.4);
 }
 
 .cta {
@@ -202,24 +202,25 @@
   display: inline-flex;
   align-items: center;
   gap: 1rem;
-  background: white;
-  color: black;
+  background: var(--text);
+  color: var(--bg);
   padding: 0.75rem 0.75rem 0.75rem 1.75rem;
   border-radius: 100px;
   text-decoration: none;
   font-weight: 700;
   font-size: 0.9375rem;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 15px rgba(var(--overlay-rgb), 0.1);
 
   &:hover {
     transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    background: #f8f8f8;
+    box-shadow: 0 10px 25px rgba(var(--overlay-dark-rgb), 0.3);
+    background: var(--text);
+    filter: brightness(0.9);
 
     .pricingIcon {
-      background: black;
-      color: white;
+      background: var(--bg);
+      color: var(--text);
       transform: scale(1.1) rotate(15deg);
     }
   }
@@ -232,7 +233,7 @@
 .pricingIcon {
   width: 2.5rem;
   height: 2.5rem;
-  background: #f0f0f0;
+  background: var(--surface);
   border-radius: 50%;
   display: flex;
   align-items: center;

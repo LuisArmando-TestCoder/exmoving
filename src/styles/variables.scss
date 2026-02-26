@@ -1,10 +1,17 @@
 @use "sass:color";
 
-$color-bg: #030712;
-$color-surface: #111827;
-$color-border: rgba(255, 255, 255, 0.08);
-$color-text: #f9fafb;
-$color-text-dim: #9ca3af;
+$color-bg: #ffffff;
+$color-surface: #f3f4f6;
+$color-border: rgba(0, 0, 0, 0.08);
+$color-text: #111827;
+$color-text-dim: #4b5563;
+
+// Dark theme variables for specific components like Hero
+$color-dark-bg: #030712;
+$color-dark-surface: #111827;
+$color-dark-border: rgba(255, 255, 255, 0.08);
+$color-dark-text: #f9fafb;
+$color-dark-text-dim: #9ca3af;
 $color-primary: #3b82f6;
 $color-accent: #10b981;
 $color-secondary: #8b5cf6;
@@ -23,12 +30,53 @@ $breakpoint-xl: 1280px;
   --border: #{$color-border};
   --text: #{$color-text};
   --text-dim: #{$color-text-dim};
-  --primary: #{$color-primary};
-  --secondary: #{$color-secondary};
-  --accent: #{$color-accent};
-  --glass: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glow: rgba(59, 130, 246, 0.15);
+  
+  // Darker versions for better contrast on white background
+  --primary: #2563eb;
+  --secondary: #7c3aed;
+  --accent: #059669;
+  
+  --glass: rgba(0, 0, 0, 0.03);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glow: rgba(37, 99, 235, 0.15);
+  
+  --bg-rgb: 255, 255, 255;
+  --surface-rgb: 243, 244, 246;
+  --text-rgb: 17, 24, 39;
+  --primary-rgb: 37, 99, 235;
+  --secondary-rgb: 124, 58, 237;
+  --accent-rgb: 5, 150, 105;
+  --overlay-rgb: 0, 0, 0;
+  --overlay-dark-rgb: 0, 0, 0;
+  
+  --font-sans: #{$font-sans};
+  --font-mono: #{$font-mono};
+  
+  --color-primary: var(--primary);
+  --color-primary-rgb: var(--primary-rgb);
+  --color-bg: var(--bg);
+  --color-bg-rgb: var(--bg-rgb);
+  --color-text: var(--text);
+}
+
+.dark-theme {
+  --bg: #{$color-dark-bg};
+  --surface: #{$color-dark-surface};
+  --border: #{$color-dark-border};
+  --text: #{$color-dark-text};
+  --text-dim: #{$color-dark-text-dim};
+  
+  --primary: #3b82f6;
+  --secondary: #8b5cf6;
+  --accent: #10b981;
+  
+  --bg-rgb: 3, 7, 18;
+  --surface-rgb: 17, 24, 39;
+  --text-rgb: 249, 250, 251;
+  --primary-rgb: 59, 130, 246;
+  --secondary-rgb: 139, 92, 246;
+  --accent-rgb: 16, 185, 129;
+  --overlay-rgb: 255, 255, 255; // In dark mode, overlays are white
 }
 
 body {
@@ -105,7 +153,7 @@ body {
     inset: 0;
     background: radial-gradient(
       800px circle at var(--mouse-x, 0) var(--mouse-y, 0),
-      rgba(255, 255, 255, 0.06),
+      rgba(0, 0, 0, 0.06),
       transparent 40%
     );
     opacity: 0;
@@ -114,10 +162,10 @@ body {
   }
 
   &:hover {
-    border-color: rgba(255, 255, 255, 0.2);
-    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.02);
     transform: translateY(-4px);
-    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.1);
 
     &::before {
       opacity: 1;
@@ -147,7 +195,7 @@ body {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent);
     transform: translateX(-100%);
     transition: transform 0.6s ease;
   }
@@ -162,12 +210,12 @@ body {
     background: linear-gradient(135deg, $color-primary, $color-secondary);
     color: white;
     box-shadow: 0 10px 20px -10px rgba($color-primary, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     
     &:hover {
       transform: translateY(-3px);
       box-shadow: 0 15px 30px -10px rgba($color-primary, 0.6),
-                  0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+                  0 0 0 1px rgba(0, 0, 0, 0.2) inset;
     }
 
     &:active {
@@ -176,16 +224,16 @@ body {
   }
 
   &--outline {
-    background-color: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     color: $color-text;
     backdrop-filter: blur(10px);
     
     &:hover {
-      background-color: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.3);
+      background-color: rgba(0, 0, 0, 0.08);
+      border-color: rgba(0, 0, 0, 0.2);
       transform: translateY(-3px);
-      box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.1);
     }
   }
 

@@ -109,7 +109,7 @@ const CircuitPath = ({ progress, delay = 0, reverse = false }: { progress: Motio
         {/* Crisp highlight signal */}
         <motion.path 
           d={reverse ? "M 60 10 L 0 10" : "M 0 10 L 60 10"}
-          stroke="#fff" 
+          stroke="var(--text)" 
           strokeWidth="1" 
           fill="none"
           style={{ pathLength, opacity: 0.8 }}
@@ -120,7 +120,7 @@ const CircuitPath = ({ progress, delay = 0, reverse = false }: { progress: Motio
           cx={reverse ? "60" : "0"} 
           cy="10" 
           r="3" 
-          fill="#fff"
+          fill="var(--text)"
           style={{ scale: useTransform(pathLength, [0, 0.1], [0, 1]), boxShadow: "0 0 10px var(--color-primary)" }}
         />
         <motion.circle 
@@ -248,7 +248,7 @@ export function CircuitEquation({ scrollYProgress }: CircuitEquationProps) {
         }}
         whileHover={{ scale: 1.05, y: -5, boxShadow: "0 15px 40px -10px rgba(var(--color-primary-rgb), 0.4)" }}
       >
-        <span className={styles.symbol} style={{ color: "#fff", textShadow: "0 0 10px var(--color-primary)", display: "inline-block", position: "relative", zIndex: 2 }}>Σx</span>
+        <span className={styles.symbol} style={{ color: "var(--text)", textShadow: "0 0 10px var(--color-primary)", display: "inline-block", position: "relative", zIndex: 2 }}>Σx</span>
         <div className={styles.dataNode} style={{ boxShadow: "0 0 15px var(--color-primary)" }} />
         {/* Scanline effect */}
         <motion.div 
@@ -326,12 +326,12 @@ export function CircuitEquation({ scrollYProgress }: CircuitEquationProps) {
         whileHover={{ scale: 1.08, y: -8, boxShadow: "0 20px 50px 0px rgba(var(--color-primary-rgb), 0.6)" }}
       >
         <motion.div 
-          style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1), transparent)", pointerEvents: "none" }}
+          style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 50% 50%, rgba(var(--overlay-rgb),0.1), transparent)", pointerEvents: "none" }}
           animate={isInView ? { opacity: [0.5, 1, 0.5] } : { opacity: 0 }}
           transition={{ duration: 3, repeat: Infinity }}
         />
-        <div className={styles.dataNodeLeft} style={{ background: "#fff", boxShadow: "0 0 10px #fff" }} />
-        <span className={styles.resultText} style={{ fontSize: "1.4em", textShadow: "0 0 20px rgba(255,255,255,0.8)" }}>x</span>
+        <div className={styles.dataNodeLeft} style={{ background: "var(--text)", boxShadow: "0 0 10px var(--text)" }} />
+        <span className={styles.resultText} style={{ fontSize: "1.4em", textShadow: "0 0 20px rgba(var(--overlay-rgb),0.8)" }}>x</span>
       </motion.div>
     </motion.div>
   );

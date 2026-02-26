@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform, useSpring, useReducedMotion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import styles from "./Hero.module.scss";
 import { EmailActionButton } from "../ui/EmailActionButton";
 import { ShaderCanvas } from "./ShaderCanvas";
@@ -70,6 +70,11 @@ export default function Hero() {
   const containerRef = useRef<HTMLElement>(null);
   const isInView = useInView(containerRef, { amount: 0.1 });
   const shouldReduceMotion = useReducedMotion();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   
   // High-performance scroll tracking relative to the container
   const { scrollYProgress } = useScroll({
@@ -88,6 +93,17 @@ export default function Hero() {
   const xTitle = useTransform(scrollYProgress, [0, 1], [0, 100]);
   const xSubtitle = useTransform(scrollYProgress, [0, 1], [0, -50]);
 
+  // Opacity and blur for content
+  const opacityContent = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const blurContent = useTransform(scrollYProgress, [0, 0.5], ["blur(0px)", "blur(20px)"]);
+  
+  // Rotate animation for "Status Quo" and "Upside Down"
+  // Using only rotateX for turning, starting from 180 (flipped) to 0, no bounce config
+  const rotateX = useTransform(scrollYProgress, [0, 0.4], [180, 0]);
+  
+  const springConfigNoBounce = { stiffness: 100, damping: 30, restDelta: 0.001 };
+  const smoothRotateX = shouldReduceMotion ? rotateX : useSpring(rotateX, springConfigNoBounce);
+
   // Smoothen the movement if motion is not reduced
   const springConfig = { stiffness: 60, damping: 20, restDelta: 0.001 };
   const smoothYTitle = shouldReduceMotion ? yTitle : useSpring(yTitle, springConfig);
@@ -98,7 +114,7 @@ export default function Hero() {
   return (
     <section 
       ref={containerRef} 
-      className={styles.heroWrapper}
+      className={`${styles.heroWrapper} dark-theme`}
       aria-labelledby="hero-title"
     >
       <div className={styles.soft}>
@@ -118,12 +134,13 @@ export default function Hero() {
         </motion.div>
         
         {/* Middle Layer: Clipped Text with Mix Blend Mode */}
-        <div className={styles.titleContainer}>
+        <div className={styles.titleContainer} style={{ perspective: "1000px" }}>
           <motion.div 
             className={styles.titleContent} 
             style={{ 
               x: smoothXTitle,
-              opacity: isInView ? 1 : 0 
+              opacity: opacityContent,
+              filter: blurContent
             }}
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -138,17 +155,41 @@ export default function Hero() {
             className={styles.titleContent} 
             style={{ 
               x: smoothXSubtitle,
-              opacity: isInView ? 1 : 0 
+              opacity: opacityContent,
+              filter: blurContent
             }}
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 1.2, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           >
             <p className={styles.subtitle}>
-              Automating Industries. Turning Status Quo Upside Down.
+              <span>Automating Industries. Turning</span>
+              <motion.span 
+                className={styles.upsideDown}
+                style={{ rotateX: smoothRotateX }}
+              >
+                Status Quo
+              </motion.span>
+              <motion.span 
+                className={styles.upsideDown}
+                style={{ rotateX: smoothRotateX }}
+              >
+                Upside Down.
+              </motion.span>
             </p>
           </motion.div>
         </div>
+
+        {/* Scroll Indicator - Client-only to avoid hydration mismatch */}
+        {mounted && (
+          <motion.div 
+            className={styles.scrollIndicator}
+            style={{ opacity: opacityContent }}
+          >
+            <span className={styles.scrollText}>SCROLL</span>
+            <div className={styles.scrollLine} />
+          </motion.div>
+        )}
 
       </div>
       {/* Top Layer: UI Controls, unaffected by Title's mix-blend-mode container */}
@@ -165,7 +206,6 @@ export default function Hero() {
                 label="SCHEDULE CONSULT" 
                 subject="Consultation Request"
               />
-              <p className={styles.demoHint}>Takes less than 30 seconds</p>
             </div>
           </motion.div>
         </div>

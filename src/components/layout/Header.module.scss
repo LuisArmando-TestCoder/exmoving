@@ -11,10 +11,9 @@
 
   &--scrolled {
     padding: 1rem 0;
-    background: rgba(3, 7, 18, 0.8);
+    background: rgba(var(--bg-rgb), 0.8);
     backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    mix-blend-mode: exclusion;
+    border-bottom: 1px solid rgba(var(--overlay-rgb), 0.05);
 
     .navPill {
       box-shadow: 0 4px 24px #0003;
@@ -43,11 +42,11 @@
   align-items: center;
   gap: 0.5rem;
   z-index: 1001;
-  color: white;
+  color: var(--text);
   text-decoration: none;
   
   span {
-    color: $color-primary;
+    color: var(--primary);
   }
 }
 
@@ -60,26 +59,26 @@
 .navPill {
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(var(--overlay-rgb), 0.03);
+  border: 1px solid rgba(var(--overlay-rgb), 0.08);
   border-radius: 100px;
   padding: 0.3rem;
   backdrop-filter: blur(20px);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 0 rgba(255, 0, 0, 0.2);
+  box-shadow: 0 0 0 rgba(var(--overlay-dark-rgb), 0.2);
 
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(var(--overlay-rgb), 0.05);
+    border-color: rgba(var(--overlay-rgb), 0.15);
     transform: translateY(-1px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 32px rgba(var(--overlay-dark-rgb), 0.3);
   }
 }
 
 .pillDivider {
   width: 1px;
   height: 20px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(var(--overlay-rgb), 0.1);
   margin: 0 0.5rem;
 
   @media (max-width: $breakpoint-sm) {
@@ -90,7 +89,7 @@
 .pricingLink {
   font-size: 0.7rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(var(--overlay-rgb), 0.6);
   text-decoration: none;
   letter-spacing: 0.1em;
   padding: 0.5rem 1rem;
@@ -103,13 +102,13 @@
   }
 
   &:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+    background: rgba(var(--overlay-rgb), 0.05);
   }
 
   &Active {
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+    background: rgba(var(--overlay-rgb), 0.1);
   }
 }
 
@@ -121,20 +120,20 @@
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 100px;
-  color: white;
+  color: var(--text);
   cursor: pointer;
   transition: all 0.3s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(var(--overlay-rgb), 0.05);
   }
 
   &Active {
-    background: white;
-    color: black;
+    background: var(--text);
+    color: var(--bg);
 
     .hamburger span {
-      background: black;
+      background: var(--bg);
       
       &:first-child {
         transform: translateY(3px) rotate(45deg);
@@ -145,8 +144,8 @@
     }
 
     &:hover {
-      background: rgba(255, 255, 255, 0.9);
-      color: black;
+      background: rgba(var(--overlay-rgb), 0.9);
+      color: var(--bg);
     }
   }
 }
@@ -161,7 +160,7 @@
     display: block;
     width: 100%;
     height: 2px;
-    background: white;
+    background: var(--text);
     transition: all 0.3s ease;
   }
 }
@@ -175,7 +174,7 @@
 .modalMenu {
   position: fixed;
   inset: 0;
-  background: #030712;
+  background: var(--bg);
   z-index: 999;
   opacity: 0;
   visibility: hidden;
@@ -221,10 +220,10 @@
     width: 4px;
   }
   &::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(var(--overlay-rgb), 0.02);
   }
   &::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--overlay-rgb), 0.1);
     border-radius: 10px;
   }
 }
@@ -246,7 +245,7 @@
 .modalLabel {
   font-size: 0.75rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(var(--overlay-rgb), 0.3);
   letter-spacing: 0.2em;
 }
 
@@ -256,7 +255,7 @@
   gap: 1.5rem;
   margin-bottom: 2rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(var(--overlay-rgb), 0.05);
 
   @media (min-width: $breakpoint-sm) {
     flex-direction: row;
@@ -269,8 +268,8 @@
   position: relative;
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(var(--overlay-rgb), 0.03);
+  border: 1px solid rgba(var(--overlay-rgb), 0.08);
   border-radius: 100px;
   padding: 0.25rem 0.25rem 0.25rem 1rem;
   width: 100%;
@@ -285,33 +284,33 @@
   }
 
   &:focus-within {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(var(--overlay-rgb), 0.06);
+    border-color: rgba(var(--overlay-rgb), 0.2);
   }
 }
 
 .searchInput {
   background: transparent;
   border: none;
-  color: white;
+  color: var(--text);
   font-size: 0.75rem;
   width: 100%;
   outline: none;
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.2);
+    color: rgba(var(--overlay-rgb), 0.2);
   }
 }
 
 .searchIcon {
   width: 24px;
   height: 24px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(var(--overlay-rgb), 0.05);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(var(--overlay-rgb), 0.4);
 }
 
 // Ultramodern Nav Styles
@@ -341,7 +340,7 @@
 
 .panelHeader {
   padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(var(--overlay-rgb), 0.05);
 }
 
 .panelMainLink {
@@ -350,12 +349,12 @@
   gap: 1rem;
   font-size: 1.5rem;
   font-weight: 800;
-  color: white;
+  color: var(--text);
   text-decoration: none;
   transition: color 0.3s ease;
 
   &:hover {
-    color: $color-primary;
+    color: var(--primary);
   }
 
   @media (min-width: $breakpoint-md) {
@@ -387,7 +386,7 @@
 .panelGroupTitle {
   font-size: 0.875rem;
   font-weight: 700;
-  color: $color-primary;
+  color: var(--primary);
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -402,7 +401,7 @@
 .panelSubLink {
   font-size: 1.25rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(var(--overlay-rgb), 0.5);
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -410,7 +409,7 @@
   gap: 2rem;
   padding: 1rem 1.5rem;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.01);
+  background: rgba(var(--overlay-rgb), 0.01);
   border: 1px solid transparent;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
@@ -422,7 +421,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+    background: linear-gradient(90deg, rgba(var(--overlay-rgb), 0.05) 0%, transparent 100%);
     opacity: 0;
     transition: opacity 0.4s ease;
   }
@@ -437,15 +436,15 @@
   svg {
     position: relative;
     z-index: 1;
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(var(--overlay-rgb), 0.3);
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   &:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    color: var(--text);
+    background: rgba(var(--overlay-rgb), 0.03);
+    border-color: rgba(var(--overlay-rgb), 0.08);
+    box-shadow: 0 4px 20px rgba(var(--overlay-dark-rgb), 0.2);
     
     &::before {
       opacity: 1;
@@ -456,7 +455,7 @@
     }
 
     svg {
-      color: $color-primary;
+      color: var(--primary);
       transform: translateX(-4px);
     }
   }
@@ -464,10 +463,10 @@
 
 .nestedCount {
   font-size: 0.7rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(var(--overlay-rgb), 0.05);
   padding: 0.1rem 0.4rem;
   border-radius: 4px;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(var(--overlay-rgb), 0.3);
 }
 
 .modalInfoSection {
@@ -485,18 +484,18 @@
 .modalInfoLink {
   font-size: 1.5rem;
   font-weight: 600;
-  color: white;
+  color: var(--text);
   text-decoration: none;
   transition: color 0.3s ease;
 
   &:hover {
-    color: $color-primary;
+    color: var(--primary);
   }
 }
 
 .modalInfoText {
   font-size: 1.125rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(var(--overlay-rgb), 0.6);
   line-height: 1.6;
 }
 
@@ -513,7 +512,7 @@
   flex-direction: column;
   gap: 2rem;
   padding-top: 4rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(var(--overlay-rgb), 0.05);
 
   @media (min-width: $breakpoint-md) {
     flex-direction: row;
@@ -530,19 +529,19 @@
 .modalSocialLink {
   font-size: 0.75rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(var(--overlay-rgb), 0.4);
   text-decoration: none;
   letter-spacing: 0.1em;
   transition: color 0.3s ease;
 
   &:hover {
-    color: white;
+    color: var(--text);
   }
 }
 
 .modalCopyright {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.2);
+  color: rgba(var(--overlay-rgb), 0.2);
   letter-spacing: 0.05em;
 }
 
@@ -563,27 +562,27 @@
   transition: all 0.3s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(var(--overlay-rgb), 0.05);
   }
 }
 
 .dropdownMainLink {
   font-size: 0.7rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(var(--overlay-rgb), 0.6);
   text-decoration: none;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   transition: color 0.3s ease;
 
   .dropdownToggle:hover & {
-    color: white;
+    color: var(--text);
   }
 }
 
 .chevron {
   transition: transform 0.3s ease;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(var(--overlay-rgb), 0.3);
 }
 
 .chevronRotate {
@@ -595,8 +594,8 @@
   top: 100%;
   left: 0;
   width: 280px;
-  background: #0b0f1a;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--surface);
+  border: 1px solid rgba(var(--overlay-rgb), 0.1);
   border-radius: 12px;
   padding: 1rem;
   margin-top: 0.5rem;
@@ -604,7 +603,7 @@
   visibility: hidden;
   transform: translateY(10px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 20px 40px rgba(var(--overlay-dark-rgb), 0.4);
   z-index: 100;
 
   &Visible {
@@ -621,7 +620,7 @@
   gap: 0.25rem;
   padding-bottom: 0.75rem;
   margin-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(var(--overlay-rgb), 0.05);
 }
 
 .breadcrumbWrapper {
@@ -635,20 +634,20 @@
   border: none;
   font-size: 0.7rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(var(--overlay-rgb), 0.4);
   cursor: pointer;
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
   transition: all 0.2s ease;
 
   &:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+    background: rgba(var(--overlay-rgb), 0.05);
   }
 }
 
 .breadcrumbActive {
-  color: $color-primary;
+  color: var(--primary);
   cursor: default;
   &:hover {
     background: transparent;
@@ -656,7 +655,7 @@
 }
 
 .breadcrumbSeparator {
-  color: rgba(255, 255, 255, 0.1);
+  color: rgba(var(--overlay-rgb), 0.1);
 }
 
 .dropdownContentRelative {
@@ -671,7 +670,7 @@
   gap: 0.5rem;
   background: transparent;
   border: none;
-  color: $color-primary;
+  color: var(--primary);
   font-size: 0.75rem;
   font-weight: 700;
   cursor: pointer;
@@ -681,7 +680,7 @@
   transition: all 0.2s ease;
 
   &:hover {
-    background: rgba($color-primary, 0.1);
+    background: rgba(var(--primary-rgb), 0.1);
   }
 }
 
@@ -700,7 +699,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 1rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(var(--overlay-rgb), 0.7);
   text-decoration: none;
   font-size: 0.875rem;
   font-weight: 500;
@@ -708,8 +707,8 @@
   transition: all 0.2s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: white;
+    background: rgba(var(--overlay-rgb), 0.05);
+    color: var(--text);
     transform: translateX(4px);
   }
 
@@ -727,8 +726,8 @@
 .viewAllLink {
   margin-top: 0.5rem;
   padding-top: 0.75rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  color: $color-primary;
+  border-top: 1px solid rgba(var(--overlay-rgb), 0.05);
+  color: var(--primary);
   font-weight: 700;
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -736,7 +735,8 @@
 
   &:hover {
     background: transparent;
-    color: lighten($color-primary, 10%);
+    color: var(--primary);
+    filter: brightness(1.1);
   }
 }
 
@@ -757,7 +757,7 @@
   border: none;
   font-size: 0.7rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(var(--overlay-rgb), 0.3);
   cursor: pointer;
   padding: 0.3rem 0.5rem;
   border-radius: 6px;
@@ -773,8 +773,8 @@
   }
 
   &:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+    background: rgba(var(--overlay-rgb), 0.05);
   }
 }
 
@@ -784,7 +784,7 @@
   gap: 0.5rem;
   background: transparent;
   border: none;
-  color: $color-primary;
+  color: var(--primary);
   font-size: 0.875rem;
   font-weight: 700;
   cursor: pointer;
@@ -797,18 +797,18 @@
 }
 
 .panelSubLinkHasChildren {
-  color: white !important;
+  color: var(--text) !important;
   font-weight: 700 !important;
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.05);
+  background: rgba(var(--overlay-rgb), 0.03);
+  border-color: rgba(var(--overlay-rgb), 0.05);
   
   svg {
-    color: white;
+    color: var(--text);
   }
   
   &:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(var(--overlay-rgb), 0.06);
+    border-color: rgba(var(--overlay-rgb), 0.15);
     
     svg {
       transform: translateX(4px);

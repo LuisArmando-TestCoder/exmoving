@@ -4,7 +4,7 @@
   position: relative;
   padding: 10rem 0;
   overflow: hidden;
-  background: radial-gradient(circle at 50% 0%, rgba($color-primary, 0.05) 0%, transparent 70%);
+  background: radial-gradient(circle at 50% 0%, transparent 70%, rgba(var(--primary-rgb), 0.05) 0%);
 }
 
 .journeyContainer {
@@ -23,8 +23,8 @@
   background: linear-gradient(
     to bottom,
     transparent,
-    rgba($color-primary, 0.2) 10%,
-    rgba($color-primary, 0.2) 90%,
+    rgba(var(--primary-rgb), 0.2) 10%,
+    rgba(var(--primary-rgb), 0.2) 90%,
     transparent
   );
   transform: translateX(-50%);
@@ -40,8 +40,8 @@
   left: 0;
   top: 0;
   width: 100%;
-  background: linear-gradient(to bottom, $color-primary, $color-secondary);
-  box-shadow: 0 0 15px rgba($color-primary, 0.5);
+  background: linear-gradient(to bottom, var(--primary), var(--secondary));
+  box-shadow: 0 0 15px rgba(var(--primary-rgb), 0.5);
 }
 
 .journeyStep {
@@ -98,19 +98,19 @@
   top: 0;
   width: 1rem;
   height: 1rem;
-  background: $color-bg;
-  border: 2px solid $color-primary;
+  background: var(--bg);
+  border: 2px solid var(--primary);
   border-radius: 50%;
   transform: translateX(50%);
   z-index: 2;
-  box-shadow: 0 0 10px rgba($color-primary, 0.3);
+  box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.3);
 
   &::after {
     content: '';
     position: absolute;
     inset: -4px;
     border-radius: 50%;
-    background: rgba($color-primary, 0.1);
+    background: rgba(var(--primary-rgb), 0.1);
     animation: pulse 2s infinite;
   }
 }
@@ -128,7 +128,7 @@
 .stepLabel {
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: $color-primary;
+  color: var(--primary);
   text-transform: uppercase;
   letter-spacing: 0.2em;
   margin-bottom: 0.75rem;
@@ -139,12 +139,12 @@
   font-size: 1.75rem;
   font-weight: 800;
   margin-bottom: 1.25rem;
-  color: $color-text;
+  color: var(--text);
   line-height: 1.2;
 }
 
 .stepDescription {
-  color: $color-text-dim;
+  color: var(--text-dim);
   line-height: 1.7;
   font-size: 1rem;
   margin-bottom: 1.5rem;
@@ -168,10 +168,10 @@
 .tag {
   font-size: 0.7rem;
   padding: 0.25rem 0.6rem;
-  background: rgba($color-text, 0.05);
-  border: 1px solid rgba($color-text, 0.1);
+  background: rgba(var(--text-rgb), 0.05);
+  border: 1px solid rgba(var(--text-rgb), 0.1);
   border-radius: 4px;
-  color: $color-text-dim;
+  color: var(--text-dim);
 }
 
 .visionSection {
@@ -184,7 +184,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at center, rgba($color-primary, 0.05) 0%, transparent 70%);
+    background: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%);
     pointer-events: none;
   }
 }
@@ -198,7 +198,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  color: $color-text;
+  color: var(--text);
   perspective: 1000px;
 
   @media (max-width: $breakpoint-md) {
@@ -224,12 +224,12 @@
     position: absolute;
     width: 6px;
     height: 6px;
-    background: $color-primary;
+    background: var(--primary);
     border-radius: 50%;
     right: -3px;
     top: 50%;
     transform: translateY(-50%);
-    box-shadow: 0 0 10px $color-primary;
+    box-shadow: 0 0 10px var(--primary);
     z-index: 10;
   }
 
@@ -248,13 +248,13 @@
     align-items: center;
     justify-content: center;
     padding: 1.5rem 2.5rem;
-    background: rgba($color-bg, 0.8);
-    border: 1px solid rgba($color-primary, 0.3);
+    background: rgba(var(--bg-rgb), 0.8);
+    border: 1px solid rgba(var(--primary-rgb), 0.3);
     border-radius: 8px;
     position: relative;
     box-shadow: 
-      0 0 30px rgba(0,0,0,0.5),
-      inset 0 0 20px rgba($color-primary, 0.05);
+      0 0 30px rgba(var(--overlay-dark-rgb), 0.5),
+      inset 0 0 20px rgba(var(--primary-rgb), 0.05);
     backdrop-filter: blur(10px);
     overflow: visible;
 
@@ -265,7 +265,7 @@
       left: 10%;
       width: 80%;
       height: 1px;
-      background: linear-gradient(90deg, transparent, $color-primary, transparent);
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
       opacity: 0.8;
     }
   }
@@ -285,14 +285,14 @@
   .operator {
     font-size: 0.8rem;
     font-family: var(--font-mono);
-    color: $color-primary;
+    color: var(--primary);
     text-transform: uppercase;
     letter-spacing: 0.3em;
     padding: 0.3rem 1.2rem;
     border-radius: 30px;
     position: relative;
     z-index: 5;
-    box-shadow: 0 0 20px rgba($color-primary, 0.2);
+    box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.2);
     font-weight: 600;
   }
 
@@ -312,7 +312,7 @@
     border-radius: 12px;
 
     &::before {
-      background: linear-gradient(90deg, transparent, #fff, transparent);
+      background: linear-gradient(90deg, transparent, var(--text), transparent);
       height: 2px;
       opacity: 0.8;
       top: 0;
@@ -329,13 +329,13 @@
   margin: 0 auto;
   font-style: italic;
   font-size: 1.25rem;
-  color: $color-text-dim;
+  color: var(--text-dim);
   line-height: 1.8;
 }
 
 .footerNote {
   margin-top: 4rem;
   font-size: 0.9rem;
-  color: rgba($color-text, 0.4);
+  color: rgba(var(--text-rgb), 0.4);
   letter-spacing: 0.05em;
 }
