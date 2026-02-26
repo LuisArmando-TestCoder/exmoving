@@ -22,8 +22,8 @@ export const SplitText: React.FC<SplitTextProps> = ({ id, children, className, d
   useEffect(() => {
     if (!ref.current) return;
 
-    // Select chars by class name but we need to match the hashed class from modules
-    const chars = ref.current.children;
+    // Select all elements with the char class across all word spans
+    const chars = ref.current.querySelectorAll(`.${styles.char}`);
 
     gsap.fromTo(
       chars,
@@ -56,9 +56,19 @@ export const SplitText: React.FC<SplitTextProps> = ({ id, children, className, d
 
   return (
     <span id={id} ref={ref} className={clsx(styles.wrapper, className)}>
-      {children.split("").map((char, i) => (
-        <span key={i} className={styles.char} style={{ display: char === " " ? "inline" : "inline-block" }}>
-          {char === " " ? "\u00A0" : char}
+      {children.split(" ").map((word, wordIndex) => (
+        <span key={wordIndex} className={styles.word} style={{ display: "inline-block", whiteSpace: "nowrap" }}>
+          {word.split("").map((char, charIndex) => (
+            <span key={charIndex} className={styles.char}>
+              {char}
+            </span>
+          ))}
+          {/* Add a space after each word except the last one */}
+          {wordIndex < children.split(" ").length - 1 && (
+            <span className={styles.char} style={{ display: "inline" }}>
+              {"\u00A0"}
+            </span>
+          )}
         </span>
       ))}
     </span>
