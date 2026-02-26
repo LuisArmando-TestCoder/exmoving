@@ -33,6 +33,28 @@
     background: transparent !important;
     backdrop-filter: none !important;
     border-bottom-color: transparent !important;
+
+    .line {
+      stroke: var(--text);
+    }
+
+    .navPill {
+      box-shadow: 0 4px 24px #0003;
+      color: var(--text);
+    }
+
+    &:hover {
+      background: rgba(var(--overlay-rgb), 0.05) !important;
+      border-bottom-color: rgba(var(--overlay-rgb), 0.1) !important;
+
+      .line {
+        stroke: var(--text);
+      }
+
+      .toggleText {
+        color: var(--text);
+      }
+    }
   }
 }
 
