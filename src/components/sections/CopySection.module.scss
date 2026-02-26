@@ -1,7 +1,7 @@
 @use "../../styles/variables" as *;
 
 .copySection {
-  background-color: var(--bg);
+  background-color: var(--text);
   position: relative;
   // removed overflow: hidden to allow the glow to "bleed" out if needed, 
   // though we'll manage it with z-index
@@ -93,6 +93,7 @@
   justify-content: center;
   width: 100%;
   margin-top: 1rem;
+  filter: invert(1);
 }
 
 .submitButton {
