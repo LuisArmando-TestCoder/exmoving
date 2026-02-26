@@ -334,9 +334,14 @@
   40% { transform: scale(1); }
 }
 
-@media (max-width: 640px) {
+@media (max-width: $breakpoint-sm) {
   .glass-card {
-    height: 480px;
+    flex: 1;
+    height: auto;
+    max-height: none;
+    border-radius: 0;
+    border: none;
+    border-top: 1px solid var(--border);
   }
   
   .chat-container {
