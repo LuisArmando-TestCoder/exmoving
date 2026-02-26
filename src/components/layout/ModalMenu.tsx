@@ -231,7 +231,7 @@ export const ModalMenu = ({ isOpen, activeTab, setActiveTab, setMenuOpen }: Moda
             <a href="#" className={styles.modalSocialLink}>LINKEDIN</a>
             <a href="#" className={styles.modalSocialLink}>INSTAGRAM</a>
           </div>
-          <p className={styles.modalCopyright}>© 2026 ROADMAP. ALL RIGHTS RESERVED.</p>
+          <p className={styles.modalCopyright}>© 2026 Σxecutions. ALL RIGHTS RESERVED.</p>
         </div>
       </div>
     </div>

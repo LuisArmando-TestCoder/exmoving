@@ -44,7 +44,7 @@ export default function Header() {
         <nav className={styles.nav}>
           <Link href="/" className={styles.logo} onClick={() => setMenuOpen(false)}>
             <LayoutGrid size={24} />
-            ROADMAP<span>.</span>
+            Σxecutions<span>.</span>
           </Link>
 
           {/* Unified Navigation Pill */}
