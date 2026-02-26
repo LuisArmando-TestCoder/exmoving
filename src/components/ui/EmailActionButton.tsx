@@ -67,7 +67,7 @@ export const EmailActionButton = ({
 
     try {
       await sendEmail({
-        to: "info@aiban.news",
+        to: "oriens@aiexecutions.com",
         subject: `${subject} - ${email}`,
         text: `${label} request from: ${email}\n\nMetadata:\n${JSON.stringify(metadata, null, 2)}`,
         html: `
