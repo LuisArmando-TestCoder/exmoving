@@ -20,9 +20,9 @@ export default function Footer() {
           <div className={styles.column}>
             <h4 className={styles.columnTitle}>System</h4>
             <div className={styles.links}>
-              <Link href="#architecture" className={styles.link}>Automation Cycle</Link>
-              <Link href="#margin-engine" className={styles.link}>Pricing Agent</Link>
-              <Link href="#risk" className={styles.link}>Problem Solver</Link>
+              <Link href="/#architecture" className={styles.link}>Automation Cycle</Link>
+              <Link href="/#margin-engine" className={styles.link}>Pricing Agent</Link>
+              <Link href="/#risk" className={styles.link}>Problem Solver</Link>
             </div>
           </div>
 
