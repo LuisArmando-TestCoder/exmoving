@@ -7,7 +7,7 @@ import { marked } from "marked";
 import gsap from "gsap";
 import { clsx } from "clsx";
 import { sendEmail } from "@/app/actions";
-import { Loader2, Check, AlertCircle } from "lucide-react";
+import { Loader2, Check, AlertCircle, Mic, MicOff } from "lucide-react";
 import styles from "./Chatbot.module.scss";
 
 interface Message {
@@ -46,28 +46,23 @@ export const Chatbot = ({
   const [showEmailBtn, setShowEmailBtn] = useState(false);
   const [summaryText, setSummaryText] = useState("");
   const [isErratic, setIsErratic] = useState(false);
+  const [isListening, setIsListening] = useState(false);
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const recognitionRef = useRef<any>(null);
 
   const speak = useCallback((text: string) => {
     if (typeof window !== "undefined" && "speechSynthesis" in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      
-      // Deep male British voice configuration
-      utterance.rate = 0.9; // Slightly slower for a more serious/deep tone
-      utterance.pitch = 0.8; // Lower pitch for deepness
-      
+      utterance.rate = 0.9;
+      utterance.pitch = 0.8;
       const voices = window.speechSynthesis.getVoices();
-      
-      // Search for British voices, preferably male
       const preferredVoice = voices.find(v => 
         (v.lang.includes("en-GB") && (v.name.includes("Male") || v.name.includes("Daniel") || v.name.includes("Oliver"))) ||
         (v.lang.includes("en-GB") && v.name.includes("Google"))
       ) || voices.find(v => v.lang.includes("en-GB"));
-      
       if (preferredVoice) utterance.voice = preferredVoice;
-
       window.speechSynthesis.speak(utterance);
     }
   }, []);
@@ -115,7 +110,42 @@ export const Chatbot = ({
     if (typeof window !== "undefined" && "speechSynthesis" in window) {
       window.speechSynthesis.getVoices();
     }
+    
+    if (typeof window !== "undefined") {
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        recognitionRef.current = new SpeechRecognition();
+        recognitionRef.current.continuous = false;
+        recognitionRef.current.interimResults = false;
+        recognitionRef.current.lang = "en-US";
+
+        recognitionRef.current.onresult = (event: any) => {
+          const transcript = event.results[0][0].transcript;
+          setUserInput(transcript);
+          setIsListening(false);
+        };
+
+        recognitionRef.current.onerror = (event: any) => {
+          console.error("Speech recognition error:", event.error);
+          setIsListening(false);
+        };
+
+        recognitionRef.current.onend = () => {
+          setIsListening(false);
+        };
+      }
+    }
   }, []);
+
+  const toggleListening = () => {
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+    } else {
+      recognitionRef.current?.start();
+      setIsListening(true);
+    }
+  };
 
   const handleButtonMouseMove = (
     e: React.MouseEvent, 
@@ -359,6 +389,18 @@ export const Chatbot = ({
               onKeyDown={handleKeydown}
               disabled={loading}
             ></textarea>
+
+            {recognitionRef.current && (
+              <button
+                className={clsx(styles["mic-btn"], isListening && styles.listening)}
+                onClick={toggleListening}
+                disabled={loading}
+                title="Speak directly"
+              >
+                {isListening ? <MicOff size={18} /> : <Mic size={18} />}
+              </button>
+            )}
+
             <button
               ref={sendBtnRef}
               className={clsx(styles["send-btn"], styles["modern-btn"])}
