@@ -23,10 +23,30 @@ export class ChatBrain {
     });
   }
 
-  async sendMessage(userInput: string, history: ChatMessage[]) {
+  async *sendMessageStream(userInput: string, history: ChatMessage[]) {
     // Google Generative AI requires the first message in history to be from the 'user' role.
     const validHistory = history
-      .filter((_, index) => index > 0 || history[0].role === "user")
+      .filter((_, index) => index > 0 || (history.length > 0 && history[0].role === "user"))
+      .map((m) => ({
+        role: m.role,
+        parts: [{ text: m.text }],
+      }));
+
+    const chat = this.model.startChat({
+      history: validHistory,
+    });
+
+    const result = await chat.sendMessageStream(userInput);
+    for await (const chunk of result.stream) {
+      const chunkText = chunk.text();
+      yield chunkText;
+    }
+  }
+
+  async sendMessage(userInput: string, history: ChatMessage[]) {
+    // Keep non-streaming version for other uses if needed
+    const validHistory = history
+      .filter((_, index) => index > 0 || (history.length > 0 && history[0].role === "user"))
       .map((m) => ({
         role: m.role,
         parts: [{ text: m.text }],

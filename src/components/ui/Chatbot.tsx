@@ -251,40 +251,59 @@ export const Chatbot = ({
         throw new Error("AI not initialized");
       }
 
-      const [erraticDetected, text] = await Promise.all([
-        brain.checkErraticBehavior(userText, messages),
-        brain.sendMessage(userText, messages)
+      // Check for erratic behavior in parallel
+      const erraticCheckPromise = brain.checkErraticBehavior(userText, messages);
+
+      // Create a placeholder message for streaming
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "model",
+          text: "",
+          timestamp: formatTimestamp(),
+        },
       ]);
+
+      let fullText = "";
+      const stream = brain.sendMessageStream(userText, updatedMessages);
+
+      for await (const chunk of stream) {
+        fullText += chunk;
+        setMessages((prev) => {
+          const newMessages = [...prev];
+          const lastIndex = newMessages.length - 1;
+          newMessages[lastIndex] = {
+            ...newMessages[lastIndex],
+            text: fullText,
+          };
+          return newMessages;
+        });
+      }
+
+      const erraticDetected = await erraticCheckPromise;
 
       if (erraticDetected) {
         setIsErratic(true);
-        const erraticText = "This chat has been closed due to user erratic behavior. We only provide consultations to serious inquiries. If you believe this is a mistake, please contact us via email.";
-        setMessages((prev) => [
-          ...prev,
-          {
+        const erraticText = "This chat has been closed due to user erratic behavior. We only provide consultations to serious inquiries. If you believe this is a mistake, please contact us at [oriens@aiexecutions.com](mailto:oriens@aiexecutions.com).";
+        setMessages((prev) => {
+          const newMessages = [...prev];
+          newMessages[newMessages.length - 1] = {
             role: "model",
             text: erraticText,
             timestamp: formatTimestamp(),
-          },
-        ]);
+          };
+          return newMessages;
+        });
         speak(erraticText);
         setLoading(false);
         return;
       }
 
-      if (text) {
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: "model",
-            text,
-            timestamp: formatTimestamp(),
-          },
-        ]);
-        speak(text);
+      if (fullText) {
+        speak(fullText);
 
-        if (text.toLowerCase().includes("summar") || text.toLowerCase().includes("whatsapp") || text.toLowerCase().includes("button below") || text.toLowerCase().includes("request button")) {
-          const finalSummary = [...updatedMessages, { role: "model", text, timestamp: formatTimestamp() }]
+        if (fullText.toLowerCase().includes("summar") || fullText.toLowerCase().includes("whatsapp") || fullText.toLowerCase().includes("button below") || fullText.toLowerCase().includes("request button")) {
+          const finalSummary = [...updatedMessages, { role: "model", text: fullText, timestamp: formatTimestamp() }]
             .map((m) => `${m.role.toUpperCase()}: ${m.text}`)
             .join("\n\n");
           setSummaryText(finalSummary);
