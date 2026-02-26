@@ -23,7 +23,7 @@ export default function CopySection() {
   const dawnGlow = useTransform(
     scrollYProgress,
     [0, 0.4],
-    ["rgba(var(--primary-rgb),0)", "rgba(245,158,11,0.5)"]
+    ["rgba(var(--primary-rgb),0)", "rgba(210, 11, 245, 0.5)"]
   );
 
   const yRaw = useTransform(scrollYProgress, [0, 1], [50, -50]);

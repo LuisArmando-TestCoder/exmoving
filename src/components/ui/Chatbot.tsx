@@ -46,10 +46,11 @@ export const Chatbot = ({
   const [showEmailBtn, setShowEmailBtn] = useState(false);
   const [summaryText, setSummaryText] = useState("");
   const [isErratic, setIsErratic] = useState(false);
-  const [isListening, setIsListening] = useState(false);
+  const [isListening, setIsListening] = useState(true);
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
+  const isSpeakingRef = useRef(false);
 
   const speak = useCallback((text: string) => {
     if (typeof window !== "undefined" && "speechSynthesis" in window) {
@@ -57,15 +58,32 @@ export const Chatbot = ({
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 0.9;
       utterance.pitch = 0.8;
+      
       const voices = window.speechSynthesis.getVoices();
       const preferredVoice = voices.find(v => 
         (v.lang.includes("en-GB") && (v.name.includes("Male") || v.name.includes("Daniel") || v.name.includes("Oliver"))) ||
         (v.lang.includes("en-GB") && v.name.includes("Google"))
       ) || voices.find(v => v.lang.includes("en-GB"));
+      
       if (preferredVoice) utterance.voice = preferredVoice;
+
+      utterance.onstart = () => {
+        isSpeakingRef.current = true;
+        if (isListening) {
+          recognitionRef.current?.stop();
+        }
+      };
+
+      utterance.onend = () => {
+        isSpeakingRef.current = false;
+        if (isListening) {
+          try { recognitionRef.current?.start(); } catch(e) {}
+        }
+      };
+
       window.speechSynthesis.speak(utterance);
     }
-  }, []);
+  }, [isListening]);
 
   const brain = useMemo(() => {
     if (!apiKey) return null;
@@ -115,36 +133,58 @@ export const Chatbot = ({
       const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
       if (SpeechRecognition) {
         recognitionRef.current = new SpeechRecognition();
-        recognitionRef.current.continuous = false;
-        recognitionRef.current.interimResults = false;
+        recognitionRef.current.continuous = true;
+        recognitionRef.current.interimResults = true;
         recognitionRef.current.lang = "en-US";
 
         recognitionRef.current.onresult = (event: any) => {
-          const transcript = event.results[0][0].transcript;
+          let transcript = "";
+          for (let i = 0; i < event.results.length; ++i) {
+            transcript += event.results[i][0].transcript;
+          }
           setUserInput(transcript);
-          setIsListening(false);
         };
 
         recognitionRef.current.onerror = (event: any) => {
           console.error("Speech recognition error:", event.error);
-          setIsListening(false);
+          if (event.error !== "not-allowed" && isListening && !isSpeakingRef.current) {
+            setTimeout(() => {
+              try { recognitionRef.current.start(); } catch(e) {}
+            }, 100);
+          }
         };
 
         recognitionRef.current.onend = () => {
-          setIsListening(false);
+          if (isListening && !isSpeakingRef.current) {
+            setTimeout(() => {
+              try { recognitionRef.current.start(); } catch(e) {}
+            }, 100);
+          }
         };
+
+        if (isListening && !isSpeakingRef.current) {
+           try { recognitionRef.current.start(); } catch(e) {}
+        }
       }
     }
+
+    return () => {
+      recognitionRef.current?.stop();
+    };
   }, []);
 
-  const toggleListening = () => {
+  useEffect(() => {
     if (isListening) {
-      recognitionRef.current?.stop();
-      setIsListening(false);
+      if (!isSpeakingRef.current) {
+        try { recognitionRef.current?.start(); } catch(e) {}
+      }
     } else {
-      recognitionRef.current?.start();
-      setIsListening(true);
+      recognitionRef.current?.stop();
     }
+  }, [isListening]);
+
+  const toggleListening = () => {
+    setIsListening(prev => !prev);
   };
 
   const handleButtonMouseMove = (
@@ -251,10 +291,8 @@ export const Chatbot = ({
         throw new Error("AI not initialized");
       }
 
-      // Check for erratic behavior in parallel
       const erraticCheckPromise = brain.checkErraticBehavior(userText, messages);
 
-      // Create a placeholder message for streaming
       setMessages((prev) => [
         ...prev,
         {
@@ -371,72 +409,76 @@ export const Chatbot = ({
             <AlertCircle size={20} />
             <span>Chat Closed</span>
           </div>
-        ) : showEmailBtn ? (
-          <button
-            ref={emailBtnRef}
-            className={clsx(
-              styles["whatsapp-send-btn"], 
-              styles["modern-btn"],
-              emailStatus === "success" && styles.success
-            )}
-            onClick={handleSendEmail}
-            onMouseMove={(e) => handleButtonMouseMove(e, emailBtnRef, emailGlowRef)}
-            onMouseLeave={() => handleButtonMouseLeave(emailBtnRef, emailGlowRef)}
-            disabled={isSendingEmail || emailStatus === "success"}
-          >
-            <span className={styles.shimmer}></span>
-            <span className={styles.content}>
-              {isSendingEmail ? (
-                <Loader2 className={styles.spinner} size={18} />
-              ) : emailStatus === "success" ? (
-                <>
-                  <Check size={18} style={{ marginRight: "8px" }} />
-                  Request Sent
-                </>
-              ) : (
-                "Submit Request to oriens@aiexecutions.com"
-              )}
-            </span>
-            <span ref={emailGlowRef} className={styles.glow}></span>
-          </button>
         ) : (
-          <>
-            <textarea
-              placeholder="Type your message..."
-              value={userInput}
-              onChange={(e) => setUserInput(e.target.value)}
-              onKeyDown={handleKeydown}
-              disabled={loading}
-            ></textarea>
-
-            {recognitionRef.current && (
+          <div className={styles["controls-wrapper"]} style={{ display: 'flex', width: '100%', gap: '0.75rem', alignItems: 'flex-end' }}>
+            {!showEmailBtn && (
               <button
                 className={clsx(styles["mic-btn"], isListening && styles.listening)}
                 onClick={toggleListening}
                 disabled={loading}
                 title="Speak directly"
               >
-                {isListening ? <MicOff size={18} /> : <Mic size={18} />}
+                {isListening ? <MicOff size={20} /> : <Mic size={20} />}
               </button>
             )}
+            
+            {showEmailBtn ? (
+              <button
+                ref={emailBtnRef}
+                className={clsx(
+                  styles["whatsapp-send-btn"], 
+                  styles["modern-btn"],
+                  emailStatus === "success" && styles.success
+                )}
+                onClick={handleSendEmail}
+                onMouseMove={(e) => handleButtonMouseMove(e, emailBtnRef, emailGlowRef)}
+                onMouseLeave={() => handleButtonMouseLeave(emailBtnRef, emailGlowRef)}
+                disabled={isSendingEmail || emailStatus === "success"}
+              >
+                <span className={styles.shimmer}></span>
+                <span className={styles.content}>
+                  {isSendingEmail ? (
+                    <Loader2 className={styles.spinner} size={18} />
+                  ) : emailStatus === "success" ? (
+                    <>
+                      <Check size={18} style={{ marginRight: "8px" }} />
+                      Request Sent
+                    </>
+                  ) : (
+                    "Submit Request"
+                  )}
+                </span>
+                <span ref={emailGlowRef} className={styles.glow}></span>
+              </button>
+            ) : (
+              <>
+                <textarea
+                  placeholder="Type or speak your message..."
+                  value={userInput}
+                  onChange={(e) => setUserInput(e.target.value)}
+                  onKeyDown={handleKeydown}
+                  disabled={loading}
+                ></textarea>
 
-            <button
-              ref={sendBtnRef}
-              className={clsx(styles["send-btn"], styles["modern-btn"])}
-              onClick={() => handleSubmit()}
-              onMouseMove={(e) => handleButtonMouseMove(e, sendBtnRef, sendGlowRef)}
-              onMouseLeave={() => handleButtonMouseLeave(sendBtnRef, sendGlowRef)}
-              disabled={loading || !userInput.trim()}
-            >
-              <span className={styles.shimmer}></span>
-              <span className={styles.content}>
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z" fill="currentColor" />
-                </svg>
-              </span>
-              <span ref={sendGlowRef} className={styles.glow}></span>
-            </button>
-          </>
+                <button
+                  ref={sendBtnRef}
+                  className={clsx(styles["send-btn"], styles["modern-btn"])}
+                  onClick={() => handleSubmit()}
+                  onMouseMove={(e) => handleButtonMouseMove(e, sendBtnRef, sendGlowRef)}
+                  onMouseLeave={() => handleButtonMouseLeave(sendBtnRef, sendGlowRef)}
+                  disabled={loading || !userInput.trim()}
+                >
+                  <span className={styles.shimmer}></span>
+                  <span className={styles.content}>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z" fill="currentColor" />
+                    </svg>
+                  </span>
+                  <span ref={sendGlowRef} className={styles.glow}></span>
+                </button>
+              </>
+            )}
+          </div>
         )}
       </div>
     </div>
