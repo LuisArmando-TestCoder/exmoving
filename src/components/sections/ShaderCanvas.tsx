@@ -190,8 +190,10 @@ export const ShaderCanvas: React.FC<ShaderCanvasProps> = ({
         const dist = Math.hypot(mouseRef.current.x - lastMouseX, mouseRef.current.y - lastMouseY);
         if (dist > 0.1) {
           trailCtx.beginPath();
-          trailCtx.moveTo(lastMouseX, canvas.height - lastMouseY); // Flip Y for 2D context
-          trailCtx.lineTo(mouseRef.current.x, canvas.height - mouseRef.current.y);
+          // Fixed Y axis projection mapping for 2D context to match WebGL correctly
+          // We removed canvas.height - y here since we don't unpack flip Y later
+          trailCtx.moveTo(lastMouseX, lastMouseY); 
+          trailCtx.lineTo(mouseRef.current.x, mouseRef.current.y);
           trailCtx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
           trailCtx.lineWidth = 40; // Size of the trail "spray"
           trailCtx.lineCap = 'round';
@@ -210,7 +212,8 @@ export const ShaderCanvas: React.FC<ShaderCanvasProps> = ({
         // Update Texture from Trail Canvas
         gl.activeTexture(gl.TEXTURE1);
         gl.bindTexture(gl.TEXTURE_2D, trailTexture);
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false); // No flip here as we flipped in drawing
+        // Ensure UNPACK_FLIP_Y_WEBGL is consistently true for correct orientation
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true); 
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, trailCanvas);
       }
 

@@ -53,6 +53,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     // Sample the trail canvas from iChannel1
     // Need to use un-adjusted uv since trail canvas maps directly to screen
     vec2 screenUV = fragCoord / iResolution.xy;
+    screenUV.y = 1.0 - screenUV.y; // Flip Y-coordinate to match 2D canvas origin
     vec4 trailData = texture2D(iChannel1, screenUV);
     float trailInfluence = trailData.r; // Use red channel as intensity
 
