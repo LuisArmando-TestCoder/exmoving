@@ -23,7 +23,7 @@ interface ChatbotProps {
 
 export const Chatbot = ({
   apiKey,
-  modelId = "gemini-1.5-flash",
+  modelId = "gemini-flash-latest",
   whatsappNumber = "50689662552",
   userContext = {},
 }: ChatbotProps) => {
@@ -167,11 +167,18 @@ export const Chatbot = ({
         USER CONTEXT: ${JSON.stringify(userContext)}`
       });
 
-      const chat = model.startChat({
-        history: messages.map((m) => ({
+      // Google Generative AI requires the first message in history to be from the 'user' role.
+      // If our first message is from the 'model' (greeting), we should exclude it from the history
+      // or ensure the history starts with a 'user' message.
+      const history = messages
+        .filter((_, index) => index > 0 || messages[0].role === "user")
+        .map((m) => ({
           role: m.role === "model" ? "model" : "user",
           parts: [{ text: m.text }],
-        })),
+        }));
+
+      const chat = model.startChat({
+        history,
       });
 
       const result = await chat.sendMessage(userText);
