@@ -12,8 +12,8 @@ interface SubtitleTextProps {
 
 const phrases = [
   "We believe in expansion and enhancement",
-  "By supercharging human beings",
-  "We just happen to automate you"
+  "By supercharging everybody",
+  "We just happen to automate it"
 ];
 
 export function SubtitleText({ isInView, smoothXSubtitle, opacityContent, blurContent }: SubtitleTextProps) {
