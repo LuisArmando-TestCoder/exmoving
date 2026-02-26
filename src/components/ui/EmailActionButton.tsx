@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { clsx } from "clsx";
@@ -23,6 +24,7 @@ export const EmailActionButton = ({
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (isExpanded && inputRef.current) {
@@ -51,12 +53,38 @@ export const EmailActionButton = ({
     }
 
     setStatus("loading");
+
+    // Gather browser metadata
+    const metadata = {
+      path: pathname,
+      userAgent: navigator.userAgent,
+      language: navigator.language,
+      screenResolution: `${window.screen.width}x${window.screen.height}`,
+      windowSize: `${window.innerWidth}x${window.innerHeight}`,
+      referrer: document.referrer || "Direct",
+      timestamp: new Date().toISOString(),
+    };
+
     try {
       await sendEmail({
         to: "info@aiban.news",
-        subject: subject,
-        text: `${label} request from: ${email}`,
-        html: `<p>${label} request from: <strong>${email}</strong></p>`,
+        subject: `${subject} - ${email}`,
+        text: `${label} request from: ${email}\n\nMetadata:\n${JSON.stringify(metadata, null, 2)}`,
+        html: `
+          <h3>${label} request</h3>
+          <p><strong>Email:</strong> ${email}</p>
+          <hr />
+          <h4>Metadata</h4>
+          <ul>
+            <li><strong>Path:</strong> ${metadata.path}</li>
+            <li><strong>User Agent:</strong> ${metadata.userAgent}</li>
+            <li><strong>Language:</strong> ${metadata.language}</li>
+            <li><strong>Screen Resolution:</strong> ${metadata.screenResolution}</li>
+            <li><strong>Window Size:</strong> ${metadata.windowSize}</li>
+            <li><strong>Referrer:</strong> ${metadata.referrer}</li>
+            <li><strong>Timestamp:</strong> ${metadata.timestamp}</li>
+          </ul>
+        `,
       });
       setStatus("success");
       setTimeout(() => {
