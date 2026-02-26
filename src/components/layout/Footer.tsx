@@ -10,7 +10,7 @@ export default function Footer() {
           <div className={styles.info}>
             <Link href="/" className={styles.logo}>
               <LayoutGrid size={24} />
-              Σxecutions<span>.</span>
+              Σxecutions
             </Link>
             <p className={styles.description}>
               Expand and enhance through self-supervising systems. Converting operational friction into measurable returns.

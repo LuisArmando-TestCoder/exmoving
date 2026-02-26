@@ -24,7 +24,6 @@ export default function ProceduralHeader({ title }: ProceduralHeaderProps) {
         className={styles.title}
       >
         {title}
-        <span>.</span>
       </motion.h1>
       <motion.p
         initial={{ opacity: 0, y: 20 }}

@@ -39,53 +39,63 @@ export default function Header() {
   }, [menuOpen, lenis]);
 
   return (
-    <header className={clsx(styles.header, scrolled && styles["header--scrolled"], menuOpen && styles["header--open"])}>
-      <div className={styles.container}>
-        <nav className={styles.nav}>
-          <Link href="/" className={styles.logo} onClick={() => setMenuOpen(false)}>
-            <LayoutGrid size={24} />
-            Σxecutions<span>.</span>
-          </Link>
+    <>
+      <header className={clsx(styles.header, scrolled && styles["header--scrolled"], menuOpen && styles["header--open"])}>
+        <div className={styles.container}>
+          <nav className={styles.nav}>
+            <Link 
+              href="/" 
+              className={styles.logo} 
+              onClick={() => setMenuOpen(false)}
+              style={!menuOpen ? { mixBlendMode: 'exclusion' } : undefined}
+            >
+              <LayoutGrid size={24} />
+              Σxecutions
+            </Link>
 
-          {/* Unified Navigation Pill */}
-          <div className={styles.navControls}>
-            <div className={styles.navPill}>
-              <div className={styles.desktopNav}>
-                {navigationData.map((item) => (
-                  <NavDropdown key={item.path} item={item} />
-                ))}
-              </div>
-              <div className={styles.pillDivider} />
-              <Link 
-                href="/pricing" 
-                className={clsx(styles.pricingLink, menuOpen && styles.pricingLinkActive)}
-                onClick={() => setMenuOpen(false)}
+            {/* Unified Navigation Pill */}
+            <div className={styles.navControls}>
+              <div 
+                className={styles.navPill}
+                style={!menuOpen ? { mixBlendMode: 'exclusion' } : undefined}
               >
-                PRICING
-              </Link>
-              <div className={styles.pillDivider} />
-              <button 
-                className={clsx(styles.menuToggle, menuOpen && styles.menuToggleActive)}
-                onClick={() => setMenuOpen(!menuOpen)}
-                aria-label={menuOpen ? "Close menu" : "Open menu"}
-              >
-                <div className={styles.hamburger}>
-                  <span></span>
-                  <span></span>
+                <div className={styles.desktopNav}>
+                  {navigationData.map((item) => (
+                    <NavDropdown key={item.path} item={item} />
+                  ))}
                 </div>
-                <span className={styles.toggleText}>{menuOpen ? "CLOSE" : "MENU"}</span>
-              </button>
+                <div className={styles.pillDivider} />
+                <Link 
+                  href="/pricing" 
+                  className={clsx(styles.pricingLink, menuOpen && styles.pricingLinkActive)}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  PRICING
+                </Link>
+                <div className={styles.pillDivider} />
+                <button 
+                  className={clsx(styles.menuToggle, menuOpen && styles.menuToggleActive)}
+                  onClick={() => setMenuOpen(!menuOpen)}
+                  aria-label={menuOpen ? "Close menu" : "Open menu"}
+                >
+                  <div className={styles.hamburger}>
+                    <span></span>
+                    <span></span>
+                  </div>
+                  <span className={styles.toggleText}>{menuOpen ? "CLOSE" : "MENU"}</span>
+                </button>
+              </div>
             </div>
-          </div>
+          </nav>
+        </div>
+      </header>
 
-          <ModalMenu 
-            isOpen={menuOpen}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            setMenuOpen={setMenuOpen}
-          />
-        </nav>
-      </div>
-    </header>
+      <ModalMenu 
+        isOpen={menuOpen}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        setMenuOpen={setMenuOpen}
+      />
+    </>
   );
 }
