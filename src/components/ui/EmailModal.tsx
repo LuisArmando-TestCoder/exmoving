@@ -25,7 +25,7 @@ export const EmailModal = () => {
     
     try {
       await sendEmail({
-        to: "info@aiban.news",
+        to: "info@aiexecutions.com",
         subject: subject,
         text: `${title} request from: ${email}`,
         html: `<p>${title} request from: <strong>${email}</strong></p>`,
