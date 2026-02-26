@@ -186,25 +186,26 @@ export const ShaderCanvas: React.FC<ShaderCanvasProps> = ({
         trailCtx.fillStyle = 'rgba(0, 0, 0, 0.02)';
         trailCtx.fillRect(0, 0, trailCanvas.width, trailCanvas.height);
 
-        // Draw new trail segment
-        const dist = Math.hypot(mouseRef.current.x - lastMouseX, mouseRef.current.y - lastMouseY);
-        if (dist > 0.1) {
-          trailCtx.beginPath();
-          // Fixed Y axis projection mapping for 2D context to match WebGL correctly
-          // We removed canvas.height - y here since we don't unpack flip Y later
-          trailCtx.moveTo(lastMouseX, lastMouseY); 
-          trailCtx.lineTo(mouseRef.current.x, mouseRef.current.y);
-          trailCtx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
-          trailCtx.lineWidth = 80; // Size of the trail "spray" (thicker)
-          trailCtx.lineCap = 'round';
-          trailCtx.lineJoin = 'round';
-          
-          // Add some blur/glow to the stroke itself
-          trailCtx.shadowBlur = 40; // Increased blur for thicker spray
-          trailCtx.shadowColor = 'white';
-          
-          trailCtx.stroke();
+        // Always draw at current mouse position so it stains when stationary
+        trailCtx.beginPath();
+        trailCtx.moveTo(lastMouseX, lastMouseY); 
+        trailCtx.lineTo(mouseRef.current.x, mouseRef.current.y);
+        
+        // If mouse hasn't moved much, we just draw a point at the current location
+        if (Math.hypot(mouseRef.current.x - lastMouseX, mouseRef.current.y - lastMouseY) <= 0.1) {
+          trailCtx.lineTo(mouseRef.current.x + 0.1, mouseRef.current.y);
         }
+
+        trailCtx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+        trailCtx.lineWidth = 200; // Size of the trail "spray" (much thicker)
+        trailCtx.lineCap = 'round';
+        trailCtx.lineJoin = 'round';
+        
+        // Add some blur/glow to the stroke itself
+        trailCtx.shadowBlur = 100; // Increased blur for much thicker spray
+        trailCtx.shadowColor = 'white';
+        
+        trailCtx.stroke();
         
         lastMouseX = mouseRef.current.x;
         lastMouseY = mouseRef.current.y;
