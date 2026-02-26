@@ -3,6 +3,7 @@
 .demoContainer {
   margin: auto 1rem;
   position: relative;
+  overflow: hidden !important;
   display: flex;
   align-items: center;
   gap: 0.25rem;
