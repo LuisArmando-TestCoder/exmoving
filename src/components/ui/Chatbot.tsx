@@ -50,6 +50,7 @@ export const Chatbot = ({
   const [isListening, setIsListening] = useState(true);
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const recognitionRef = useRef<any>(null);
   const isSpeakingRef = useRef(false);
 
@@ -124,6 +125,12 @@ export const Chatbot = ({
       });
     }
   }, [messages, loading]);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.scrollTop = textareaRef.current.scrollHeight;
+    }
+  }, [userInput]);
 
   useEffect(() => {
     if (typeof window !== "undefined" && "speechSynthesis" in window) {
@@ -456,6 +463,7 @@ export const Chatbot = ({
             ) : (
               <>
                 <textarea
+                  ref={textareaRef}
                   placeholder="Type or speak your message..."
                   value={userInput}
                   onChange={(e) => setUserInput(e.target.value)}
