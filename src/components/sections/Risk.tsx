@@ -42,13 +42,28 @@ export default function Risk() {
 
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
+  // Dawn-like shadow luminosity logic
+  const dawnShadow = useTransform(
+    smoothProgress, 
+    [0.8, 1], 
+    [
+      "0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(59,130,246,0.6)", 
+      "0 15px 40px rgba(245,158,11,0.4), 0 30px 80px rgba(239,68,68,0.3)"
+    ]
+  );
+
   return (
     <section id="risk" ref={containerRef} className={styles.risk}>
       {/* Scroll Progress Indicator for Desktop */}
       <div className={styles.progressTrack}>
         <motion.div 
           className={styles.progressBar} 
-          style={{ height: useTransform(smoothProgress, [0, 1], ["0%", "100%"]) }}
+          style={{ 
+            height: useTransform(smoothProgress, [0, 1], ["0%", "100%"]),
+            // Use custom CSS variable for dynamic shadow evaluation in SCSS & Framer
+            // We'll apply it directly to the element via motion style
+            boxShadow: dawnShadow 
+          } as any}
         />
       </div>
 
