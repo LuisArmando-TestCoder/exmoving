@@ -6,8 +6,8 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(var(--overlay-rgb), 0.03);
-  border: 1px solid rgba(var(--overlay-rgb), 0.08);
+  background: rgba(var(--overlay-light-rgb), 0.03);
+  border: 1px solid rgba(var(--overlay-light-rgb), 0.08);
   padding: 6px;
   border-radius: 100px;
   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
@@ -16,7 +16,7 @@
   backdrop-filter: blur(20px);
   box-shadow: 
     0 4px 20px rgba(var(--overlay-light-rgb), 0.2),
-    inset 0 1px 1px rgba(var(--overlay-rgb), 0.1);
+    inset 0 1px 1px rgba(var(--bg), 0.1);
 
   &::after {
     content: '';
@@ -26,7 +26,7 @@
     background: linear-gradient(
       45deg,
       transparent,
-      rgba(var(--overlay-rgb), 0.1),
+      rgba(var(--overlay-light-rgb), 0.1),
       transparent
     );
     z-index: -1;
@@ -35,12 +35,12 @@
   }
 
   &:hover {
-    background: rgba(var(--overlay-rgb), 0.06);
-    border-color: rgba(var(--overlay-rgb), 0.2);
+    background: rgba(var(--overlay-light-rgb), 0.06);
+    border-color: rgba(var(--overlay-light-rgb), 0.2);
     transform: translateY(-2px);
     box-shadow: 
       0 10px 30px rgba(var(--overlay-light-rgb), 0.4),
-      0 0 15px rgba(var(--overlay-rgb), 0.1);
+      0 0 15px rgba(var(--overlay-light-rgb), 0.1);
 
     &::after {
       opacity: 1;
@@ -52,23 +52,23 @@
     }
 
     .submitButton {
-      background: var(--text);
-      color: var(--bg);
+      background: var(--bg);
+      color: var(--text);
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       transform: scale(1.05);
     }
   }
 
   &.expanded {
-    background: rgba(var(--overlay-rgb), 0.1);
-    border-color: rgba(var(--overlay-rgb), 0.3);
+    background: rgba(var(--overlay-light-rgb), 0.1);
+    border-color: rgba(var(--overlay-light-rgb), 0.3);
     cursor: default;
     width: min(500px, 100%);
     padding-right: 8px;
     transform: translateY(0);
     box-shadow: 
       0 20px 40px rgba(var(--overlay-light-rgb), 0.5),
-      inset 0 1px 1px rgba(var(--overlay-rgb), 0.2);
+      inset 0 1px 1px rgba(var(--overlay-light-rgb), 0.2);
     
     @media (max-width: 480px) {
       width: 100%;
@@ -85,7 +85,7 @@
   font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: rgba(var(--overlay-rgb), 0.7);
+  color: var(--text);
   white-space: nowrap;
   user-select: none;
   text-transform: uppercase;
@@ -113,12 +113,12 @@
   outline: none;
 
   &::placeholder {
-    color: rgba(var(--overlay-rgb), 0.3);
+    color: rgba(var(--overlay-dark-rgb), 0.3);
   }
 }
 
 .submitButton {
-  background: rgba(var(--overlay-rgb), 0.1);
+  background: rgba(var(--overlay-light-rgb), 0.1);
   color: var(--text);
   border: none;
   width: 44px;
