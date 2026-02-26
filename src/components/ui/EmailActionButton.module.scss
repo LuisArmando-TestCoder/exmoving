@@ -1,7 +1,7 @@
 @use "../../styles/variables" as *;
 
 .demoContainer {
-  margin: auto;
+  margin: auto 1rem;
   position: relative;
   display: flex;
   align-items: center;
@@ -17,7 +17,6 @@
   box-shadow: 
     0 4px 20px rgba(var(--primary-rgb), 0.1),
     inset 0 1px 1px rgba(var(--bg), 0.1);
-  overflow: hidden;
 
   @media (min-width: $breakpoint-sm) {
     gap: 0.5rem;
@@ -358,4 +357,26 @@
 @keyframes pulse {
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+.errorBanner {
+  position: absolute;
+  bottom: -40px;
+  left: 0;
+  right: 0;
+  background: rgba(220, 38, 38, 0.9);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  white-space: nowrap;
+  pointer-events: none;
 }

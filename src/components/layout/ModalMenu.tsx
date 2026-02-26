@@ -98,6 +98,13 @@ export const ModalMenu = ({ isOpen, activeTab, setActiveTab, setMenuOpen }: Moda
       style={mounted ? { pointerEvents: isOpen ? 'auto' : 'none' } : {}}
     >
       <div className={styles.modalContent}>
+        <button 
+          className={styles.modalCloseButton} 
+          onClick={() => setMenuOpen(false)}
+          aria-label="Close menu"
+        >
+          <LayoutGrid size={24} />
+        </button>
         <div className={styles.modalGrid}>
           <div className={styles.modalNavSection}>
             <div className={styles.navHeader}>

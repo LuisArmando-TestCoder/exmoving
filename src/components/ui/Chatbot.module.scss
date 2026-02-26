@@ -23,10 +23,10 @@
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.5rem;
   scroll-behavior: smooth;
-  background: var(--surface);
 
+  /* Custom Scrollbar */
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -34,9 +34,24 @@
     background: transparent;
   }
   &::-webkit-scrollbar-thumb {
-    background: var(--border);
+    background: rgba(var(--primary-rgb), 0.2);
     border-radius: 10px;
   }
+}
+
+.chatbotEmailBtnWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(var(--bg-rgb), 0.5);
+  border-top: 1px solid rgba(var(--primary-rgb), 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.chatbotEmailActionBtn {
+  width: 100% !important;
+  max-width: none !important;
 }
 
 .message {

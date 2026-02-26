@@ -9,6 +9,7 @@ import gsap from "gsap";
 import { clsx } from "clsx";
 import { sendEmail } from "@/app/actions";
 import { Loader2, Check, AlertCircle, Mic, MicOff } from "lucide-react";
+import { EmailActionButton } from "./EmailActionButton";
 import styles from "./Chatbot.module.scss";
 
 interface Message {
@@ -36,7 +37,8 @@ export const Chatbot = ({
     showEmailBtn, 
     setShowEmailBtn, 
     summaryText, 
-    setSummaryText 
+    setSummaryText,
+    openChatbot
   } = useChatbotStore();
 
   const formatTimestamp = () => {
@@ -451,33 +453,16 @@ export const Chatbot = ({
             )}
             
             {showEmailBtn ? (
-              <button
-                ref={emailBtnRef}
-                className={clsx(
-                  styles["whatsapp-send-btn"], 
-                  styles["modern-btn"],
-                  emailStatus === "success" && styles.success
-                )}
-                onClick={handleSendEmail}
-                onMouseMove={(e) => handleButtonMouseMove(e, emailBtnRef, emailGlowRef)}
-                onMouseLeave={() => handleButtonMouseLeave(emailBtnRef, emailGlowRef)}
-                disabled={isSendingEmail || emailStatus === "success"}
-              >
-                <span className={styles.shimmer}></span>
-                <span className={styles.content}>
-                  {isSendingEmail ? (
-                    <Loader2 className={styles.spinner} size={18} />
-                  ) : emailStatus === "success" ? (
-                    <>
-                      <Check size={18} style={{ marginRight: "8px" }} />
-                      Request Sent
-                    </>
-                  ) : (
-                    "Submit Request"
-                  )}
-                </span>
-                <span ref={emailGlowRef} className={styles.glow}></span>
-              </button>
+              <div className={styles.chatbotEmailBtnWrapper}>
+                <EmailActionButton 
+                  label="Submit Request"
+                  subject="Chatbot Consultation Summary"
+                  className={styles.chatbotEmailActionBtn}
+                  onSuccess={() => {
+                    handleSendEmail();
+                  }}
+                />
+              </div>
             ) : (
               <>
                 <textarea

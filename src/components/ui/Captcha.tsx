@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { ChevronRight, Check } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import styles from './Captcha.module.scss';
 
 interface CaptchaProps {
@@ -34,7 +34,7 @@ export const Captcha: React.FC<CaptchaProps> = ({ onResolve, id = 'default' }) =
   // Dragging logic with Framer Motion
   const x = useMotionValue(0);
   const xSpring = useSpring(x, { stiffness: 400, damping: 40 });
-  const progressWidth = useTransform(xSpring, (val) => val + 30);
+  const progressWidth = useTransform(xSpring, (val) => val + 34);
 
   useEffect(() => {
     const stored = localStorage.getItem(`${STORAGE_KEY}_${id}`);
@@ -52,7 +52,7 @@ export const Captcha: React.FC<CaptchaProps> = ({ onResolve, id = 'default' }) =
     setTimeout(() => {
       setIsResolved(true);
       onResolve();
-    }, 1200);
+    }, 1500);
   }, [id, onResolve]);
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -71,9 +71,8 @@ export const Captcha: React.FC<CaptchaProps> = ({ onResolve, id = 'default' }) =
   const onDrag = (_: any, info: any) => {
     if (isSuccess || !trackRef.current) return;
     const trackWidth = trackRef.current.offsetWidth;
-    const dragLimit = trackWidth - 66; // 60px slider + 6px padding
+    const dragLimit = trackWidth - 66; 
     
-    // Convert relative movement to track position
     if (info.offset.x >= dragLimit) {
       handleResolve();
     }
@@ -137,7 +136,7 @@ export const Captcha: React.FC<CaptchaProps> = ({ onResolve, id = 'default' }) =
             
             <motion.div 
               drag="x"
-              dragConstraints={{ left: 0, right: trackRef.current ? trackRef.current.offsetWidth - 66 : 300 }}
+              dragConstraints={{ left: 0, right: trackRef.current ? trackRef.current.offsetWidth - 76 : 300 }}
               dragElastic={0}
               dragMomentum={false}
               onDrag={onDrag}
@@ -148,27 +147,56 @@ export const Captcha: React.FC<CaptchaProps> = ({ onResolve, id = 'default' }) =
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               animate={isSuccess ? { 
-                x: trackRef.current ? trackRef.current.offsetWidth - 66 : 0,
-                scale: [1, 1.2, 1],
-                backgroundColor: "#B153D7"
+                x: trackRef.current ? trackRef.current.offsetWidth - 76 : 0,
+                scale: 1,
+                backgroundColor: "#05070a"
               } : {}}
             >
               <div className={styles.arrow}>
-                {isSuccess ? (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                  >
-                    <Check size={28} strokeWidth={3} />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    animate={isDragging ? { x: 5 } : { x: 0 }}
-                  >
-                    <ChevronRight size={28} strokeWidth={2.5} />
-                  </motion.div>
-                )}
+                <AnimatePresence mode="wait">
+                  {!isSuccess ? (
+                    <motion.div
+                      key="arrow"
+                      initial={{ opacity: 0, rotate: -90 }}
+                      animate={{ opacity: 1, rotate: 0 }}
+                      exit={{ opacity: 0, rotate: 90 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <ChevronRight size={32} strokeWidth={2.5} />
+                    </motion.div>
+                  ) : (
+                    <motion.svg
+                      key="check"
+                      viewBox="0 0 50 50"
+                      initial="initial"
+                      animate="animate"
+                      className={styles.modernCheck}
+                    >
+                      <motion.circle
+                        cx="25"
+                        cy="25"
+                        r="20"
+                        stroke="#B153D7"
+                        strokeWidth="2"
+                        fill="transparent"
+                        initial={{ pathLength: 0, opacity: 0 }}
+                        animate={{ pathLength: 1, opacity: 1 }}
+                        transition={{ duration: 0.6, ease: "easeInOut" }}
+                      />
+                      <motion.path
+                        d="M15 24.5l7 7 13-13"
+                        fill="transparent"
+                        stroke="#B153D7"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ duration: 0.4, delay: 0.5, ease: "easeOut" }}
+                      />
+                    </motion.svg>
+                  )}
+                </AnimatePresence>
               </div>
             </motion.div>
             
@@ -183,7 +211,6 @@ export const Captcha: React.FC<CaptchaProps> = ({ onResolve, id = 'default' }) =
             </motion.span>
           </div>
 
-          {/* Decorative element */}
           <motion.div 
             className={styles.glow}
             style={{

@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Check, Loader2, MessageSquare } from "lucide-react";
+import { ArrowRight, Check, Loader2, MessageSquare, AlertCircle } from "lucide-react";
 import { clsx } from "clsx";
 import { useChatbotStore } from "@/store/useChatbotStore";
 import styles from "./EmailActionButton.module.scss";
@@ -13,16 +13,19 @@ interface EmailActionButtonProps {
   label: string;
   subject?: string;
   className?: string;
+  onSuccess?: () => void;
 }
 
 export const EmailActionButton = ({
   label,
   subject = "Contact Request",
   className,
+  onSuccess,
 }: EmailActionButtonProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
   const [hasSent, setHasSent] = useState(false);
   
   const inputRef = useRef<HTMLInputElement>(null);
@@ -59,13 +62,21 @@ export const EmailActionButton = ({
 
   const handleSubmitInternal = async (e?: React.FormEvent) => {
     e?.preventDefault();
-    if (!email || !validateEmail(email)) {
+    if (!email) {
+      setErrorMsg("Email is required");
       setStatus("error");
-      setTimeout(() => setStatus("idle"), 2000);
+      setTimeout(() => setStatus("idle"), 3000);
+      return;
+    }
+    if (!validateEmail(email)) {
+      setErrorMsg("Invalid email format");
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 3000);
       return;
     }
 
     setStatus("loading");
+    setErrorMsg("");
 
     // Gather exhaustive browser metadata
     const metadata = {
@@ -124,16 +135,22 @@ export const EmailActionButton = ({
       });
       setStatus("success");
       setHasSent(true);
+      if (onSuccess) {
+        onSuccess();
+      }
       setTimeout(() => {
         setStatus("idle");
         setIsExpanded(false);
         setEmail("");
-        openChatbot({ email, ...metadata });
+        if (!onSuccess) {
+          openChatbot({ email, ...metadata });
+        }
       }, 3000);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      setErrorMsg(error?.message || "Something went wrong");
       setStatus("error");
-      setTimeout(() => setStatus("idle"), 2000);
+      setTimeout(() => setStatus("idle"), 4000);
     }
   };
 
@@ -263,6 +280,19 @@ export const EmailActionButton = ({
           >
             <Check size={18} />
             <span>Request Sent</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {status === "error" && errorMsg && (
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            className={styles.errorBanner}
+          >
+            <AlertCircle size={14} />
+            <span>{errorMsg}</span>
           </motion.div>
         )}
       </AnimatePresence>
