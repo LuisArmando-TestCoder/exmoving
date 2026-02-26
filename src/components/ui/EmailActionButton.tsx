@@ -78,6 +78,7 @@ export const EmailActionButton = ({
       className={clsx(
         styles.demoContainer, 
         isExpanded && styles.expanded,
+        status === "success" && styles.success,
         className
       )}
       onClick={() => !isExpanded && setIsExpanded(true)}
