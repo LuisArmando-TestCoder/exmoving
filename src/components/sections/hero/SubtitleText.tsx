@@ -11,7 +11,7 @@ interface SubtitleTextProps {
 }
 
 const phrases = [
-  "We believe in expansion enhancement",
+  "We believe in expansion / enhancement",
   "By supercharging everybody",
   "We just happen to automate it"
 ];
