@@ -11,6 +11,7 @@ interface HeroTitleProps {
   smoothXSubtitle: MotionValue<number>;
   opacityContent: MotionValue<number>;
   blurContent: MotionValue<string | any>;
+  scrollYProgress: MotionValue<number>;
 }
 
 export function HeroTitle({
@@ -19,6 +20,7 @@ export function HeroTitle({
   smoothXSubtitle,
   opacityContent,
   blurContent,
+  scrollYProgress,
 }: HeroTitleProps) {
   return (
     <div className={styles.titleContainer} style={{ perspective: "1000px" }}>
@@ -36,6 +38,7 @@ export function HeroTitle({
             smoothXSubtitle={smoothXSubtitle}
             opacityContent={opacityContent}
             blurContent={blurContent}
+            scrollYProgress={scrollYProgress}
           />
         </>
       )}

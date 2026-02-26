@@ -1,0 +1,14 @@
+.wrapper {
+  overflow: hidden;
+  display: inline-block;
+  line-height: 1;
+  perspective: 1000px;
+}
+
+.char {
+  display: inline-block;
+  transform: translateY(100%);
+  opacity: 0;
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+}

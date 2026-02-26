@@ -3,19 +3,16 @@
 .heroWrapper {
   position: relative;
   width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: 400vh;
+  background: #fff;
 }
 
 .soft {
   text-transform: uppercase;
   font-weight: 900;
   font-family: "Inter", "Helvetica", sans-serif;
-  position: relative;
+  position: sticky;
+  top: 0;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
@@ -52,7 +49,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  mix-blend-mode: screen;
+  mix-blend-mode: multiply;
   height: 100vh;
   width: 100%;
   background: white;
@@ -126,26 +123,30 @@
 }
 
 .subtitle {
-  margin: 1.5rem 0 0 0;
-  font-size: clamp(0.9rem, 1.4vw, 1.8rem);
+  margin: 0;
+  font-size: clamp(1.2rem, 2.5vw, 3rem);
   font-family: var(--font-jost, 'Jost', sans-serif);
   font-weight: 300;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   max-width: 90vw;
-  line-height: 1.6;
+  line-height: 1.2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  justify-content: center;
   color: rgba(0, 0, 0, 0.85);
   text-wrap: balance;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
 
   @media (max-width: #{$breakpoint-md}) {
-    margin-top: 1.5rem;
-    font-size: 0.7rem;
+    font-size: 1.2rem;
     max-width: 85vw;
-    gap: 0.5rem;
     letter-spacing: 0.15em;
   }
 }
@@ -153,13 +154,17 @@
 .subtitleLine {
   display: block;
   overflow: hidden;
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
   padding-bottom: 0.1em;
-  // Ensure lines don't collapse or shift
   min-height: 1.6em;
   backface-visibility: hidden;
-  // Stabilize vertical alignment
   vertical-align: top;
+  will-change: transform, opacity, filter;
 }
 
 .word {

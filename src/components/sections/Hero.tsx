@@ -19,19 +19,18 @@ export default function Hero() {
   });
   
   // Parallax and scale effects
-  const yTitle = useTransform(scrollYProgress, [0, 1], [0, 200]);
-  const ySubtitle = useTransform(scrollYProgress, [0, 1], [0, 150]);
-  const scaleVideo = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
-  const opacityVideo = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-  const blurVideo = useTransform(scrollYProgress, [0, 0.8], ["blur(0px)", "blur(10px)"]);
+  const yTitle = useTransform(scrollYProgress, [0, 1], [0, 0]); // Keep centered in sticky
+  const scaleVideo = useTransform(scrollYProgress, [0, 1], [1, 1.2]);
+  const opacityVideo = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [1, 1, 0.5, 0]);
+  const blurVideo = useTransform(scrollYProgress, [0, 0.2], ["blur(0px)", "blur(5px)"]);
   
   // Horizontal parallax for extra depth
-  const xTitle = useTransform(scrollYProgress, [0, 1], [0, 100]);
-  const xSubtitle = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  const xTitle = useTransform(scrollYProgress, [0, 0.2], [0, 100]);
+  const xSubtitle = useTransform(scrollYProgress, [0, 1], [0, 0]); // Handled individually now
 
-  // Opacity and blur for content
-  const opacityContent = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const blurContent = useTransform(scrollYProgress, [0, 0.5], ["blur(0px)", "blur(20px)"]);
+  // Opacity and blur for main title specifically
+  const opacityContent = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+  const blurContent = useTransform(scrollYProgress, [0, 0.15], ["blur(0px)", "blur(20px)"]);
   
   // Smoothen the movement if motion is not reduced
   const springConfig = { stiffness: 60, damping: 20, restDelta: 0.001 };
@@ -41,7 +40,7 @@ export default function Hero() {
   return (
     <section 
       ref={containerRef} 
-      className={`${styles.heroWrapper} dark-theme`}
+      className={styles.heroWrapper}
       aria-labelledby="hero-title"
     >
       <div className={styles.soft}>
@@ -59,6 +58,7 @@ export default function Hero() {
           smoothXSubtitle={smoothXSubtitle}
           opacityContent={opacityContent}
           blurContent={blurContent}
+          scrollYProgress={scrollYProgress}
         />
 
         {isInView && <ScrollIndicator opacityContent={opacityContent} />}
