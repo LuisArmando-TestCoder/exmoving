@@ -8,7 +8,6 @@ import { SubtitleText } from "./SubtitleText";
 interface HeroTitleProps {
   isInView: boolean;
   smoothXTitle: MotionValue<number>;
-  smoothXSubtitle: MotionValue<number>;
   opacityContent: MotionValue<number>;
   blurContent: MotionValue<string | any>;
   scrollYProgress: MotionValue<number>;
@@ -17,30 +16,18 @@ interface HeroTitleProps {
 export function HeroTitle({
   isInView,
   smoothXTitle,
-  smoothXSubtitle,
   opacityContent,
   blurContent,
-  scrollYProgress,
 }: HeroTitleProps) {
   return (
     <div className={styles.titleContainer} style={{ perspective: "1000px" }}>
       {isInView && (
-        <>
-          <TitleText 
-            isInView={isInView}
-            smoothXTitle={smoothXTitle}
-            opacityContent={opacityContent}
-            blurContent={blurContent}
-          />
-
-          <SubtitleText 
-            isInView={isInView}
-            smoothXSubtitle={smoothXSubtitle}
-            opacityContent={opacityContent}
-            blurContent={blurContent}
-            scrollYProgress={scrollYProgress}
-          />
-        </>
+        <TitleText 
+          isInView={isInView}
+          smoothXTitle={smoothXTitle}
+          opacityContent={opacityContent}
+          blurContent={blurContent}
+        />
       )}
     </div>
   );

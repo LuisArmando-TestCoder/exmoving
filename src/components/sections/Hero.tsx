@@ -26,7 +26,6 @@ export default function Hero() {
   
   // Horizontal parallax for extra depth
   const xTitle = useTransform(scrollYProgress, [0, 0.2], [0, 100]);
-  const xSubtitle = useTransform(scrollYProgress, [0, 1], [0, 0]); // Handled individually now
 
   // Opacity and blur for main title specifically
   const opacityContent = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
@@ -35,12 +34,11 @@ export default function Hero() {
   // Smoothen the movement if motion is not reduced
   const springConfig = { stiffness: 60, damping: 20, restDelta: 0.001 };
   const smoothXTitle = shouldReduceMotion ? xTitle : useSpring(xTitle, springConfig);
-  const smoothXSubtitle = shouldReduceMotion ? xSubtitle : useSpring(xSubtitle, springConfig);
 
   return (
     <section 
       ref={containerRef} 
-      className={styles.heroWrapper}
+      className={`${styles.heroWrapper} dark-theme`}
       aria-labelledby="hero-title"
     >
       <div className={styles.soft}>
@@ -55,7 +53,6 @@ export default function Hero() {
         <HeroTitle 
           isInView={isInView}
           smoothXTitle={smoothXTitle}
-          smoothXSubtitle={smoothXSubtitle}
           opacityContent={opacityContent}
           blurContent={blurContent}
           scrollYProgress={scrollYProgress}

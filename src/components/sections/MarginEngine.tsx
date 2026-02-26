@@ -6,6 +6,7 @@ import { useRef } from "react";
 import styles from "./MarginEngine.module.scss";
 import { Reveal } from "../ui/Common";
 import Link from "next/link";
+import { SplitText } from "../ui/SplitText";
 
 const CostRow = ({ icon: Icon, label, value, scrollYProgress, index, shouldReduceMotion }: any) => {
   const yRaw = useTransform(scrollYProgress, [0.3, 0.6], [50, 0]);
@@ -72,7 +73,7 @@ export default function MarginEngine() {
           <Reveal direction="left" className={styles.content}>
             <span className={styles.label}>Pricing Agent Deployment</span>
             <h2 className={styles.title}>
-              Recover <span className="text-gradient">Lost Liquidity</span> in Real-Time.
+              <SplitText id="margin-engine-title">Recover Lost Liquidity in Real-Time.</SplitText>
             </h2>
             <p className={styles.description}>
               Avoid value proposition erosion with ROI-driven scaling terms. Our agent handles thousands of requests without compromising your liquidity.

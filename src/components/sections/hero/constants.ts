@@ -54,6 +54,6 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
     // Modulate texture with swirling noise
     float colorModulation = 0.5 + 0.5 * sin(liquidPattern * 10.0 + t);
-    fragColor = vec4(textureColor.rgb * colorModulation, 1.0);
+    fragColor = vec4(textureColor.rgb * colorModulation * vec3(1.0, 0.5, 7.0), 1.0);
 }
 `;

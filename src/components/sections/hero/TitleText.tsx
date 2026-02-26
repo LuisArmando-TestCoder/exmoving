@@ -2,6 +2,7 @@
 
 import { motion, MotionValue } from "framer-motion";
 import styles from "../Hero.module.scss";
+import { SplitText } from "../../ui/SplitText";
 
 interface TitleTextProps {
   isInView: boolean;
@@ -24,7 +25,7 @@ export function TitleText({ isInView, smoothXTitle, opacityContent, blurContent 
       transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
     >
       <h1 id="hero-title" className={styles.mainTitle}>
-        Σxecutions
+        <SplitText id="hero-split-title">Σxecutions</SplitText>
       </h1>
     </motion.div>
   );

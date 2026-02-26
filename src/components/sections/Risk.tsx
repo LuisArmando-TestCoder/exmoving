@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform, useSpring, useReducedMotion, useInView
 import { useRef, useState, useEffect } from "react";
 import styles from "./Risk.module.scss";
 import { SectionHeader } from "../ui/Common";
+import { SplitText } from "../ui/SplitText";
 
 const risks = [
   {
@@ -144,7 +145,9 @@ function RiskCard({ risk, index, totalRisks }: any) {
         </div>
         
         <div className={styles.content}>
-          <h3 className={styles.cardTitle}>{risk.title}</h3>
+          <h3 className={styles.cardTitle}>
+            <SplitText id={`risk-card-title-${index}`}>{risk.title}</SplitText>
+          </h3>
           <p className={styles.cardDescription}>{risk.description}</p>
         </div>
 

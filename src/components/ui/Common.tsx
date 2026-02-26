@@ -3,6 +3,7 @@
 import { motion, Variants, HTMLMotionProps } from "framer-motion";
 import { ReactNode } from "react";
 import { clsx } from "clsx";
+import { SplitText } from "./SplitText";
 
 interface RevealProps extends HTMLMotionProps<"div"> {
   children: ReactNode;
@@ -124,13 +125,9 @@ export const SectionHeader = ({ title, subtitle, alignment = "center", className
     >
       <Reveal>
         <h2 className="section-title" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 800, letterSpacing: '-0.02em', marginBottom: '1rem' }}>
-          {title.split(' ').map((word, i) => (
-            word.endsWith('.') ? (
-              <span key={i} className="text-gradient">{word}</span>
-            ) : (
-              <span key={i}>{word} </span>
-            )
-          ))}
+          <SplitText id={`section-title-${title.toLowerCase().replace(/\s+/g, '-')}`}>
+            {title}
+          </SplitText>
         </h2>
       </Reveal>
       {subtitle && (

@@ -1,6 +1,7 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Hero from "@/components/sections/Hero";
+import Subtitles from "@/components/sections/Subtitles";
 import Architecture from "@/components/sections/Architecture";
 import MarginEngine from "@/components/sections/MarginEngine";
 import Risk from "@/components/sections/Risk";
@@ -12,6 +13,7 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
+        <Subtitles />
         <Architecture />
         <MarginEngine />
         <Risk />

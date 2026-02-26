@@ -34,12 +34,6 @@ export function SubtitleText({ scrollYProgress }: SubtitleTextProps) {
 
 function Line({ phrase, index, scrollYProgress }: { phrase: string; index: number; scrollYProgress: MotionValue<number> }) {
   // Define scroll ranges for each line
-  // Total scroll is 0 to 1.
-  // 0.0 to 0.15: Main title is visible and then fades.
-  // 0.15 to 0.35: Line 1
-  // 0.40 to 0.60: Line 2
-  // 0.65 to 0.85: Line 3
-  
   const start = 0.15 + index * 0.25;
   const end = start + 0.20;
   const peak = (start + end) / 2;
@@ -54,7 +48,7 @@ function Line({ phrase, index, scrollYProgress }: { phrase: string; index: numbe
   const y = useTransform(
     scrollYProgress,
     [start, peak, end],
-    [20, 0, -20]
+    [0, 0, 0] // Keep it centered while active
   );
 
   const filter = useTransform(
@@ -69,17 +63,31 @@ function Line({ phrase, index, scrollYProgress }: { phrase: string; index: numbe
     [0.9, 1, 1.1]
   );
 
+  // Background opacity for each individual line sequence
+  const bgOpacity = useTransform(
+    scrollYProgress,
+    [start, start + 0.05, end - 0.05, end],
+    [0, 1, 1, 0]
+  );
+
   return (
-    <motion.div
-      className={styles.subtitleLine}
-      style={{
-        opacity,
-        y,
-        filter,
-        scale,
-      }}
-    >
-      {phrase}
-    </motion.div>
+    <>
+      <motion.div 
+        className={styles.subtitleLineBg} 
+        style={{ opacity: bgOpacity }} 
+      />
+      <motion.div
+        className={styles.subtitleLine}
+        style={{
+          opacity,
+          y,
+          filter,
+          scale,
+          color: "black" // Explicitly black for these lines
+        }}
+      >
+        {phrase}
+      </motion.div>
+    </>
   );
 }

@@ -1,0 +1,103 @@
+@use "../../styles/variables" as *;
+
+.subtitlesWrapper {
+  position: relative;
+  width: 100%;
+  height: 400vh; // Increased scroll range for smoother cinematic feel
+  background: var(--bg);
+  color: var(--text);
+  overflow: clip; // Better than hidden for scroll containers
+}
+
+.stickyContainer {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  
+  // Subtle background gradient that reacts to scroll could be added here
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+}
+
+.content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: $breakpoint-xl;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.line {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity, filter;
+  pointer-events: none;
+}
+
+.lineText {
+  font-size: clamp(2rem, 6vw, 5rem);
+  font-family: var(--font-sans);
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--text);
+  text-shadow: 0 0 40px rgba(var(--text-rgb), 0.1);
+  white-space: nowrap;
+
+  @media (max-width: $breakpoint-md) {
+    font-size: clamp(1.5rem, 10vw, 3rem);
+    white-space: normal;
+    padding: 0 1rem;
+  }
+}
+
+.lineGlow {
+  position: absolute;
+  width: 60%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, rgba(var(--primary-rgb), 0.15) 0%, transparent 80%);
+  filter: blur(40px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.progressContainer {
+  position: absolute;
+  right: 3rem;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 30vh;
+  width: 1px;
+  background: rgba(var(--text-rgb), 0.05);
+
+  @media (max-width: $breakpoint-md) {
+    right: 1.5rem;
+    height: 20vh;
+  }
+}
+
+.progressBar {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, var(--primary), transparent);
+  transform-origin: top;
+  box-shadow: 0 0 20px var(--primary);
+}
