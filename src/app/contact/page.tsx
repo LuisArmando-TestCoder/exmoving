@@ -1,5 +1,6 @@
 import ModernPage from "@/components/ModernPage";
 import styles from "@/components/ModernPage.module.scss";
+import ContactForm from "./ContactForm";
 
 export default function ContactPage() {
   return (
@@ -16,7 +17,7 @@ export default function ContactPage() {
           <div className="space-y-6">
             <div>
               <span className={styles.label}>Email</span>
-              <p className="text-xl">systems@executions.com</p>
+              <p className="text-xl">info@executions.com</p>
             </div>
             <div>
               <span className={styles.label}>Location</span>
@@ -25,25 +26,7 @@ export default function ContactPage() {
           </div>
         </div>
         
-        <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Full Name</label>
-            <input type="text" className={styles.input} placeholder="John Doe" />
-          </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Corporate Email</label>
-            <input type="email" className={styles.input} placeholder="john@company.com" />
-          </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>System Focus</label>
-            <input type="text" className={styles.input} placeholder="e.g. Logistics, Margin Optimization" />
-          </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Message</label>
-            <textarea className={styles.textarea} placeholder="Describe your operational friction..."></textarea>
-          </div>
-          <button type="submit" className={styles.submitBtn}>Initialize Connection</button>
-        </form>
+        <ContactForm />
       </div>
     </ModernPage>
   );

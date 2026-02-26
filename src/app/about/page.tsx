@@ -1,81 +1,90 @@
 "use client";
 
-import ModernPage from "@/components/ModernPage";
-import styles from "@/components/ModernPage.module.scss";
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
-import { Shield, Zap, Target, Cpu, Users, Globe } from "lucide-react";
+import { Shield, Cpu, Globe } from "lucide-react";
+import { HeroSection, LeaderCard, ValuesSection } from "./AboutSections";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import CopySection from "@/components/sections/CopySection";
+import styles from "./AboutSections.module.scss";
+
+const LEADERS = [
+  {
+    name: "Szilvia Galambosi",
+    role: "Chief Executive Officer",
+    icon: Shield,
+    description: "Strategic Thinking Partner for International Leaders and Expat Relocation Coach. Szilvia brings a profound sense of empowerment and self-awareness to leadership, enabling navigation of complexities with resilience and authenticity.",
+    experience: [
+      "Founder & Strategic Thinking Partner (2015 - Present)",
+      "2nd Line Operations Manager at IBM (2009 - 2012)",
+      "Global experience across 3 continents",
+      "Specialized in process optimization & HR systems"
+    ],
+    education: "Master's in Management & Consulting (University of Pécs), Post-Grad in Psychology (Pázmány Péter Katolikus Egyetem). Certified in Six Sigma and DISC analysis."
+  },
+  {
+    name: "Pablo E Arias",
+    role: "Chief Operations Officer",
+    icon: Globe,
+    description: "Managing Director of International Relocation Partner® with 16+ years of experience connecting people to new destinations. Pablo operates at the intersection of international relocation and market expansion.",
+    experience: [
+      "Regional Alliances Manager at IRP® (2020 - Present)",
+      "Head of Operations at Grupo Relocations Arivi (2018 - 2025)",
+      "Account Manager at Crown Worldwide Group (2017 - 2018)",
+      "Specialist in expat client psychology & global mobility"
+    ],
+    education: "Estrategia Empresarial (Growth Institute), Administration (ULACIT). Certified in Small Business Marketing and Storytelling."
+  },
+  {
+    name: "Luis Armando Murillo",
+    role: "Chief Technology Officer",
+    icon: Cpu,
+    description: "Automation Architect and Founder of Σx with 13+ years of multi-disciplinary experience. Luis is a pioneer in neural networks, XR technology, and full-stack architecture, focusing on the elimination of operational friction.",
+    experience: [
+      "Founder of Σxecutions & AIExecutions (2025 - Present)",
+      "Software Architect at Babaluum (2024 - Present)",
+      "Senior Creative Engineer at Publicis Groupe (2022 - 2024)",
+      "Open Source Developer (Canvas Preset, Scene Preset, VFX Trigger)"
+    ],
+    education: "Web Design & Development (CETAV), Technician in System & Network Management (Universidad Fidélitas)."
+  }
+];
 
 export default function AboutPage() {
   return (
-    <ModernPage 
-      title="Architecture of Execution" 
-      subtitle="We build self-supervising systems that eliminate operational friction and convert manual overhead into autonomous growth cycles."
-      visualText="AGENCY"
-    >
-      <section className="mt-24 space-y-32">
-        {/* Leadership Section */}
-        <div>
-          <h2 className="text-4xl font-bold mb-12 tracking-tight">Executive Architecture</h2>
-          <div className={styles.grid}>
-            {/* CEO */}
-            <TeamMember 
-              name="Szilvia Galambosi"
-              role="Chief Executive Officer"
-              bio="Strategic Thinking Partner for International Leaders. With over 20 years of experience at IBM and as an independent consultant, Szilvia specializes in leadership coaching, organizational development, and human resources. She has lived across 3 continents and brings a global perspective to systemic optimization."
-              icon={<Shield size={32} />}
-            />
-            {/* CTO */}
-            <TeamMember 
-              name="Luis Armando Murillo"
-              role="Chief Technology Officer"
-              bio="Automation Architect and Founder of Σx with 13+ years of experience in automation, neural networks, XR tech, and full-stack software architecture. Expert in DevOps, mathematics for computing, cybersecurity (CCNA 5), and design thinking. Previously Senior Motion Engineer at Publicis Groupe."
-              icon={<Cpu size={32} />}
-            />
-            {/* CMO / COO / IRP Connection */}
-            <TeamMember 
-              name="Pablo E Arias"
-              role="Chief Operations Officer"
-              bio="16+ years of experience in global logistics and international relocation. Managing Director of International Relocation Partner®. Specialized in expat investment psychology, cross-border regulations, and regional market expansion across Latin America."
-              icon={<Globe size={32} />}
-            />
-          </div>
+    <div className={styles.aboutPage}>
+      <Header />
+      <main className={styles.mainContent}>
+        <HeroSection />
+        
+        <div className={styles.contentWrapper}>
+          <ValuesSection />
+          
+          <section>
+            <div className={styles.sectionHeader}>
+              <div className={styles.headerLeft}>
+                <span className={styles.vanguardTag}>THE VANGUARD</span>
+                <h3 className={styles.vanguardTitle}>
+                  EXECUTIVE<br />ARCHITECTURE
+                </h3>
+              </div>
+              <p className={styles.headerDescription}>
+                A multi-disciplinary collective engineered to solve the most complex operational challenges.
+              </p>
+            </div>
+
+            <div className={styles.leadersGrid}>
+              {LEADERS.map((leader, index) => (
+                <LeaderCard key={leader.name} {...leader} index={index} />
+              ))}
+            </div>
+          </section>
         </div>
 
-        {/* Core Principles */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div className={styles.card}>
-            <Zap className="mb-4 text-blue-400" size={32} />
-            <h3 className={styles.cardTitle}>Recursive Optimization</h3>
-            <p className={styles.cardText}>Our systems don't just execute; they learn from every cycle. We utilize pattern recognition and automated feedback loops to continuously reduce friction.</p>
-          </div>
-          <div className={styles.card}>
-            <Target className="mb-4 text-blue-400" size={32} />
-            <h3 className={styles.cardTitle}>Atomic Design Strategy</h3>
-            <p className={styles.cardText}>Built on modular, scalable principles that allow for seamless integration into existing corporate structures while maintaining the agility of a startup.</p>
-          </div>
+        <div className={styles.deploySectionWrapper}>
+          <CopySection />
         </div>
-      </section>
-    </ModernPage>
-  );
-}
-
-function TeamMember({ name, role, bio, icon }: { name: string; role: string; bio: string; icon: React.ReactNode }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
-
-  return (
-    <motion.div 
-      ref={ref}
-      className={styles.card}
-      initial={{ y: 50, opacity: 0 }}
-      animate={isInView ? { y: 0, opacity: 1 } : {}}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-    >
-      <div className="mb-6 opacity-80">{icon}</div>
-      <h3 className="text-xl font-bold mb-1">{name}</h3>
-      <p className="text-blue-400 text-sm uppercase tracking-widest mb-4 font-medium">{role}</p>
-      <p className={styles.cardText}>{bio}</p>
-    </motion.div>
+      </main>
+      <Footer />
+    </div>
   );
 }

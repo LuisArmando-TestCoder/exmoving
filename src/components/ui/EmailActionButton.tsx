@@ -43,7 +43,7 @@ export const EmailActionButton = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [status]);
 
-  const handleSubmit = async (e?: React.FormEvent) => {
+  const handleSubmitInternal = async (e?: React.FormEvent) => {
     e?.preventDefault();
     if (!email || !email.includes("@")) {
       setStatus("error");
@@ -101,14 +101,10 @@ export const EmailActionButton = ({
             {label}
           </motion.div>
         ) : (
-          <motion.form 
+          <form 
             key="form"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className={styles.inputWrapper}
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmitInternal}
           >
             <input
               ref={inputRef}
@@ -119,7 +115,7 @@ export const EmailActionButton = ({
               onChange={(e) => setEmail(e.target.value)}
               disabled={status === "loading" || status === "success"}
             />
-          </motion.form>
+          </form>
         )}
       </AnimatePresence>
 
@@ -129,7 +125,7 @@ export const EmailActionButton = ({
         onClick={(e) => {
           if (isExpanded) {
             e.stopPropagation();
-            handleSubmit();
+            handleSubmitInternal();
           }
         }}
         disabled={status === "loading" || (isExpanded && !email)}

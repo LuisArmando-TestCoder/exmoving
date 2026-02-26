@@ -1,0 +1,461 @@
+@use "@/styles/variables" as v;
+
+$about-container-padding: 2rem;
+$about-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+.hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--bg); // Switched to CSS var
+}
+
+.shaderWrapper {
+  position: absolute;
+  inset: 0;
+  opacity: 0.3;
+  pointer-events: none;
+  filter: contrast(1.2) brightness(0.8);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  max-width: 1000px;
+  padding: 0 $about-container-padding;
+}
+
+.heroTag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.5em;
+  color: var(--primary); // Switched to CSS var
+  background: rgba(var(--primary-rgb), 0.1); // Switched to RGB CSS var
+  backdrop-filter: blur(10px);
+  padding: 0.6rem 1.4rem;
+  border-radius: 100px;
+  margin-bottom: 2.5rem;
+  border: 1px solid rgba(var(--primary-rgb), 0.2);
+  text-transform: uppercase;
+}
+
+.title {
+  font-size: clamp(3.5rem, 12vw, 10rem);
+  font-weight: 950;
+  line-height: 0.85;
+  letter-spacing: -0.06em;
+  color: var(--text); // Switched to CSS var
+  margin-bottom: 2.5rem;
+  
+  span {
+    display: block;
+  }
+}
+
+.gradientText {
+  background: linear-gradient(to bottom right, var(--text), rgba(var(--text-rgb), 0.3)); // Switched to CSS vars
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  color: var(--text-dim); // Switched to CSS var
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+.scrollIndicator {
+  position: absolute;
+  bottom: 4vh;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0.5;
+}
+
+.mouse {
+  width: 20px;
+  height: 35px;
+  border: 1.5px solid var(--border); // Switched to CSS var
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  padding-top: 6px;
+}
+
+.wheel {
+  width: 2px;
+  height: 6px;
+  background-color: var(--text); // Switched to CSS var
+  border-radius: 2px;
+}
+
+// Leaders Section Styles
+.leaderCard {
+  position: relative;
+  border-radius: 40px;
+  padding: 4rem;
+  background: rgba(var(--surface-rgb), 0.2); // Switched to RGB CSS var
+  border: 1px solid var(--border); // Switched to CSS var
+  backdrop-filter: blur(20px);
+  transition: all 0.6s $about-ease-out;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(var(--text-rgb), 0.06), transparent 40%);
+    opacity: 0;
+    transition: opacity 0.5s;
+    z-index: 1;
+  }
+
+  &:hover {
+    border-color: rgba(var(--text-rgb), 0.1);
+    background: rgba(var(--surface-rgb), 0.3);
+    
+    &::before {
+      opacity: 1;
+    }
+
+    .iconWrapper {
+      transform: rotate(10deg) scale(1.1);
+      background-color: var(--text);
+      color: var(--bg);
+    }
+  }
+}
+
+.cardInner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 4rem;
+}
+
+.cardHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.iconWrapper {
+  width: 80px;
+  height: 80px;
+  background-color: rgba(var(--text-rgb), 0.05);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  transition: all 0.5s $about-ease-out;
+}
+
+.titleWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.leaderName {
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--text);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.leaderRole {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.leaderDescription {
+  font-size: 1.4rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+  font-weight: 300;
+}
+
+.detailsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.sectionLabel {
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.4em;
+  color: rgba(var(--text-rgb), 0.3);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+
+.experienceGrid {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: relative;
+  padding-left: 2rem;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--primary), transparent);
+    opacity: 0.3;
+  }
+}
+
+.experienceItem {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 1.1rem;
+  color: var(--text);
+  align-items: flex-start;
+  position: relative;
+  
+  p {
+    line-height: 1.4;
+  }
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  position: absolute;
+  left: -2rem;
+  top: 0.6rem;
+  box-shadow: 0 0 10px var(--primary);
+}
+
+.educationSection p {
+  font-size: 1.1rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+// Values Section
+.values {
+  padding: 15rem 0;
+  position: relative;
+}
+
+.scrollingTextContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.scrollingText {
+  font-size: 15vw;
+  font-weight: 950;
+  white-space: nowrap;
+  color: var(--text);
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  padding: 0 $about-container-padding;
+  max-width: 1600px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.valueCard {
+  background: rgba(var(--surface-rgb), 0.2);
+  border: 1px solid var(--border);
+  padding: 5rem 4rem;
+  border-radius: 48px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s $about-ease-out;
+  backdrop-filter: blur(10px);
+
+  &:hover {
+    transform: translateY(-15px) scale(1.02);
+    border-color: rgba(var(--primary-rgb), 0.3);
+    background: rgba(var(--primary-rgb), 0.05);
+
+    .iconCircle {
+      transform: scale(1.2) rotate(-5deg);
+      background-color: var(--primary);
+      color: var(--bg);
+    }
+  }
+}
+
+.iconCircle {
+  width: 80px;
+  height: 80px;
+  border-radius: 28px;
+  background-color: rgba(var(--text-rgb), 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  margin-bottom: 3rem;
+  transition: all 0.5s $about-ease-out;
+  border: 1px solid var(--border);
+}
+
+.valueTitle {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.03em;
+}
+
+.valueText {
+  color: var(--text-dim);
+  line-height: 1.6;
+  font-size: 1.1rem;
+  font-weight: 300;
+}
+
+// Page Specific Layout
+.aboutPage {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--bg);
+}
+
+.mainContent {
+  flex-grow: 1;
+}
+
+.contentWrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 8rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 16rem;
+}
+
+.sectionHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 8rem;
+
+  @media (min-width: v.$breakpoint-md) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+}
+
+.headerLeft {
+  max-width: 48rem;
+}
+
+.vanguardTag {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 2rem;
+  display: block;
+}
+
+.vanguardTitle {
+  font-size: clamp(3.75rem, 8vw, 8rem);
+  font-weight: 900;
+  color: var(--text);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+}
+
+.headerDescription {
+  color: var(--text-dim);
+  max-width: 24rem;
+  text-align: left;
+  font-size: 1.25rem;
+  font-weight: 300;
+  line-height: 1.625;
+
+  @media (min-width: v.$breakpoint-md) {
+    text-align: right;
+  }
+}
+
+.leadersGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6rem;
+}
+
+.deploySectionWrapper {
+  margin-top: 8rem;
+  border-top: 1px solid var(--border);
+  background-color: var(--bg);
+}
+
+@media (max-width: 1200px) {
+  .cardInner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  
+  .cardsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: v.$breakpoint-md) {
+  .leaderCard {
+    padding: 2.5rem;
+  }
+
+  .leaderName {
+    font-size: 2.2rem;
+  }
+
+  .cardsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .valueCard {
+    padding: 3.5rem 2.5rem;
+  }
+}
