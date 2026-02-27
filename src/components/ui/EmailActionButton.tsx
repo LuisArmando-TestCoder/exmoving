@@ -8,6 +8,7 @@ import { clsx } from "clsx";
 import { useChatbotStore } from "@/store/useChatbotStore";
 import styles from "./EmailActionButton.module.scss";
 import { sendEmail } from "@/app/actions";
+import { getRequestTemplate } from "@/utils/emailTemplates";
 
 interface EmailActionButtonProps {
   label: string;
@@ -121,28 +122,7 @@ export const EmailActionButton = ({
     try {
       await sendEmail({
         to: "oriens@aiexecutions.com",
-        subject: `${subject} - ${email}`,
-        text: `${label} request from: ${email}\n\nMetadata:\n${JSON.stringify(metadata, null, 2)}`,
-        html: `
-          <h3>${label} request</h3>
-          <p><strong>Email:</strong> ${email}</p>
-          <hr />
-          <h4>Metadata</h4>
-          <ul>
-            <li><strong>Path:</strong> ${metadata.path}</li>
-            <li><strong>User Agent:</strong> ${metadata.userAgent}</li>
-            <li><strong>Language:</strong> ${metadata.language}</li>
-            <li><strong>Platform:</strong> ${metadata.platform}</li>
-            <li><strong>Hardware Concurrency:</strong> ${metadata.hardwareConcurrency} cores</li>
-            <li><strong>Device Memory:</strong> ~${metadata.deviceMemory} GB</li>
-            <li><strong>Screen Resolution:</strong> ${metadata.screenResolution}</li>
-            <li><strong>Window Size:</strong> ${metadata.windowSize}</li>
-            <li><strong>Referrer:</strong> ${metadata.referrer}</li>
-            <li><strong>Timezone:</strong> ${metadata.timezone}</li>
-            <li><strong>Connection:</strong> ${typeof metadata.connection === 'object' ? metadata.connection.effectiveType : metadata.connection}</li>
-            <li><strong>Timestamp:</strong> ${metadata.timestamp}</li>
-          </ul>
-        `,
+        ...getRequestTemplate(label, email, metadata)
       });
       setStatus("success");
       setHasSent(true);

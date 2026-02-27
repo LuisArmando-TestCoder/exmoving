@@ -83,6 +83,138 @@ export const getNewsletterTemplate = (email: string, extractedInfo?: any) => {
   };
 };
 
+export const getRequestTemplate = (label: string, email: string, metadata: any) => {
+  return {
+    subject: `🚀 New ${label}: ${email}`,
+    text: `${label} from ${email}\n\nMetadata:\n${JSON.stringify(metadata, null, 2)}`,
+    html: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${label}</title>
+  <style>
+    @media screen and (max-width: 600px) {
+      .container { width: 100% !important; padding: 16px !important; }
+      .header { padding: 24px 16px !important; }
+      .content { padding: 24px 16px !important; }
+    }
+  </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #0F172A; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <div role="article" aria-roledescription="email" aria-label="${label}" lang="en">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #0F172A; padding: 40px 0;">
+      <tr>
+        <td align="center">
+          <table class="container" width="600" border="0" cellspacing="0" cellpadding="0" style="background-color: #1E293B; border-radius: 24px; overflow: hidden; border: 1px solid #334155; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);">
+            <!-- Header with Gradient-like feel -->
+            <tr>
+              <td class="header" style="background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%); padding: 48px 32px; text-align: center; border-bottom: 1px solid #334155;">
+                <div style="display: inline-block; padding: 12px; background: rgba(59, 130, 246, 0.1); border-radius: 16px; margin-bottom: 20px;">
+                  <span style="font-size: 32px;">🚀</span>
+                </div>
+                <h1 style="margin: 0; color: #FFFFFF; font-size: 28px; font-weight: 800; letter-spacing: -0.025em; text-transform: uppercase;">
+                  ${label}
+                </h1>
+                <p style="margin: 12px 0 0 0; color: #94A3B8; font-size: 16px; font-weight: 500;">
+                  Incoming priority engagement from the edge
+                </p>
+              </td>
+            </tr>
+
+            <!-- Main Content -->
+            <tr>
+              <td class="content" style="padding: 40px 32px;">
+                <!-- User Identity Card -->
+                <div style="background: rgba(255, 255, 255, 0.03); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 24px; margin-bottom: 32px;">
+                  <p style="margin: 0 0 8px 0; color: #64748B; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;">
+                    IDENTIFIED USER
+                  </p>
+                  <p style="margin: 0; color: #3B82F6; font-size: 20px; font-weight: 700; word-break: break-all;">
+                    ${email}
+                  </p>
+                </div>
+
+                <!-- Metadata Grid -->
+                <h2 style="margin: 0 0 20px 0; color: #FFFFFF; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;">
+                  System Intelligence
+                </h2>
+                
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td style="padding-bottom: 12px;">
+                      <div style="background: rgba(255, 255, 255, 0.02); border-radius: 12px; padding: 16px; border: 1px solid rgba(255, 255, 255, 0.05);">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td style="color: #94A3B8; font-size: 13px; padding-bottom: 4px;">Entry Point</td>
+                            <td style="color: #94A3B8; font-size: 13px; padding-bottom: 4px;">Platform</td>
+                          </tr>
+                          <tr>
+                            <td style="color: #E2E8F0; font-size: 14px; font-weight: 600;">${metadata.path}</td>
+                            <td style="color: #E2E8F0; font-size: 14px; font-weight: 600;">${metadata.platform}</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding-bottom: 12px;">
+                      <div style="background: rgba(255, 255, 255, 0.02); border-radius: 12px; padding: 16px; border: 1px solid rgba(255, 255, 255, 0.05);">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td style="color: #94A3B8; font-size: 13px; padding-bottom: 4px;">Resolution</td>
+                            <td style="color: #94A3B8; font-size: 13px; padding-bottom: 4px;">Cores / Memory</td>
+                          </tr>
+                          <tr>
+                            <td style="color: #E2E8F0; font-size: 14px; font-weight: 600;">${metadata.screenResolution}</td>
+                            <td style="color: #E2E8F0; font-size: 14px; font-weight: 600;">${metadata.hardwareConcurrency} / ${metadata.deviceMemory}GB</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div style="background: rgba(255, 255, 255, 0.02); border-radius: 12px; padding: 16px; border: 1px solid rgba(255, 255, 255, 0.05);">
+                        <p style="margin: 0 0 4px 0; color: #94A3B8; font-size: 13px;">Timezone / Location</p>
+                        <p style="margin: 0; color: #E2E8F0; font-size: 14px; font-weight: 600;">${metadata.timezone}</p>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+
+                <!-- UA String -->
+                <div style="margin-top: 32px;">
+                  <p style="margin: 0 0 8px 0; color: #64748B; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;">
+                    User Agent String
+                  </p>
+                  <p style="margin: 0; color: #64748B; font-size: 12px; font-family: monospace; line-height: 1.5; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px;">
+                    ${metadata.userAgent}
+                  </p>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td style="background: #0F172A; padding: 32px; text-align: center; border-top: 1px solid #334155;">
+                <p style="margin: 0; color: #475569; font-size: 12px; font-weight: 600; letter-spacing: 0.05em;">
+                  ΣXECUTIONS INTELLIGENCE UNIT &bull; ${new Date().toISOString()}
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>
+    `
+  };
+};
+
 export const getEmailTemplate = (text: string, isAuto: boolean = false, isAbandoned: boolean = false, historyRecords: any[] = []) => {
   // Parse out sections if they exist
   const historyMatch = text.match(/CHAT HISTORY:\n([\s\S]*?)(?=\n\nBEHAVIORAL OBSERVATIONS:|$)/);
