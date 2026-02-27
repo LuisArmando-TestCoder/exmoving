@@ -1,6 +1,6 @@
 # ΣXECUTIONS Design & Architecture Rulebook
 
-ULTRA MODERN, ULTRA RESPONSIVE, ULTRA ACCESIBLE, ULTRA SCROLL REACTIVE (normal lucide lenis and framer motion only when in view stuff), ULTRA PERFORMANT, MODULAR, NO TAILWIND
+ULTRA MODERN, ULTRA RESPONSIVE, ULTRA ACCESIBLE, ULTRA SCROLL REACTIVE (normal lucide lenis and framer motion only when in view stuff), ULTRA PERFORMANT, MODULAR, NO TAILWIND, ONLY SCSS MODULES, ALL ELEMENTS HAVE CLASSES, ALL CLASSES HAVE COHESIVE STYLES, ALL ELEMENTS HAVE UNIQUE ID BASED ON THEIR COMPONENT PATH AND THEIR INDIVIDUAL NAME 
 
 This guide outlines the mandatory standards for adding or refactoring pages within the ΣXECUTIONS platform. Follow these rules to maintain the "Ultra-Modern Business" aesthetic and technical excellence established in Feb 2026.
 
