@@ -2,18 +2,15 @@
 
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { Reveal, GlassCard, StaggerContainer } from "@/components/ui/Common";
-import { Zap, Cloud, ShieldCheck, Info } from "lucide-react";
+import { Reveal } from "@/components/ui/Common";
+import { Zap } from "lucide-react";
 import styles from "./Pricing.module.scss";
 import { EmailActionButton } from "@/components/ui/EmailActionButton";
-import { IntelligenceAPI } from "./IntelligenceAPI";
-import { usePricingStore } from "@/store/usePricingStore";
 import { InfrastructureExplorer } from "./InfrastructureExplorer";
 import { CostCalculator } from "./CostCalculator";
+import { ConversationJourney } from "./ConversationJourney";
 
 export default function PricingPage() {
-  const { apiPrices } = usePricingStore();
-
   return (
     <>
       <Header />
@@ -44,88 +41,7 @@ export default function PricingPage() {
               <CostCalculator />
             </div>
 
-            <StaggerContainer className={styles.grid} id="pricing-grid-main" style={{ marginTop: '4rem' }}>
-              {/* Core Costs */}
-              <Reveal id="pricing-card-hosting-reveal">
-                <GlassCard className={styles.card} id="pricing-card-hosting">
-                  <div className={styles.cardTitle}>
-                    <Cloud size={24} className="text-gradient" />
-                    Server & Hosting
-                  </div>
-                  <p className={styles.cardDesc}>
-                    Render Hosting infrastructure scaled to your specific request volume and security needs.
-                  </p>
-                  <div className={styles.priceList}>
-                    <div className={styles.priceItem}>
-                      <span className={styles.label}>Base (512MB RAM)</span>
-                      <span className={styles.value}>$7/mo</span>
-                    </div>
-                    <div className={styles.priceItem}>
-                      <span className={styles.label}>Extreme (32GB RAM)</span>
-                      <span className={styles.value}>$450/mo</span>
-                    </div>
-                  </div>
-                </GlassCard>
-              </Reveal>
-
-              {/* Generative APIs - Modularized */}
-              {apiPrices.filter(api => api.isGenerative).map((api) => (
-                <IntelligenceAPI key={api.id} id={api.id} />
-              ))}
-
-              {/* Implementation */}
-              <Reveal delay={0.2} id="pricing-card-setup-reveal">
-                <GlassCard className={styles.card} id="pricing-card-setup">
-                  <div className={styles.cardTitle}>
-                    <ShieldCheck size={24} className="text-gradient" />
-                    Automation Setup
-                  </div>
-                  <p className={styles.cardDesc}>
-                    One-time implementation fee for quality clients. Includes custom tool generation and initial deployment.
-                  </p>
-                  <div className={styles.priceList}>
-                    <div className={styles.priceItem}>
-                      <span className={styles.label}>Standard Setup</span>
-                      <span className={styles.value}>$10k</span>
-                    </div>
-                    <div className={styles.priceItem}>
-                      <span className={styles.label}>Support (Monthly)</span>
-                      <span className={styles.value}>$200</span>
-                    </div>
-                  </div>
-                </GlassCard>
-              </Reveal>
-            </StaggerContainer>
-
-            <Reveal className={styles.comparisonSection} id="pricing-token-efficiency-reveal" style={{ marginTop: '4rem' }}>
-              <div style={{ marginBottom: '2rem', textAlign: 'center' }} id="pricing-table-header">
-                <h2 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '1rem' }} id="pricing-table-title">Token <span className="text-gradient">Efficiency.</span></h2>
-                <p style={{ color: 'var(--text-dim)' }} id="pricing-table-desc">Comparative summary of what a $300 budget yields across models (500-word emails)</p>
-              </div>
-              <div className={styles.tableContainer} id="pricing-table-container">
-                <table id="pricing-comparison-table">
-                  <thead>
-                    <tr>
-                      <th>Model</th>
-                      <th>Intelligence Level</th>
-                      <th>Email Capacity</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {apiPrices.map((api) => (
-                      <tr key={api.id} id={`pricing-row-${api.id}`}>
-                        <td className={api.id === 'gemini-flash' ? styles.highlight : ''}>{api.name}</td>
-                        <td>{api.intelligence}</td>
-                        <td>{api.emailCapacity.toLocaleString()}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <p style={{ marginTop: '1.5rem', fontSize: '0.875rem', color: 'var(--text-dim)', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }} id="pricing-table-footer">
-                <Info size={14} /> 1 Million Tokens represent ~1.5k emails (500 words each)
-              </p>
-            </Reveal>
+            <ConversationJourney />
 
             <Reveal className={styles.visionSection}>
               <div className={styles.visionContent}>

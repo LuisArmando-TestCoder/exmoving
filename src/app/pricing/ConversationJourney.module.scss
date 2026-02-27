@@ -1,0 +1,192 @@
+.journeyContainer {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 10rem auto;
+  padding: 0 2rem;
+  min-height: 250vh;
+}
+
+.timelineLine {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateX(-50%);
+  z-index: 1;
+
+  @media (max-width: 768px) {
+    left: 20px;
+  }
+}
+
+.timelineProgress {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--color-primary, #0070f3), var(--color-secondary, #7928ca));
+  box-shadow: 0 0 15px var(--color-primary, #0070f3);
+}
+
+.stickyHeader {
+  position: sticky;
+  top: 10rem;
+  z-index: 10;
+  text-align: center;
+  margin-bottom: 10rem;
+  pointer-events: none;
+}
+
+.journeyTitle {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  margin-bottom: 1.5rem;
+}
+
+.journeySubtitle {
+  color: var(--text-dim);
+  font-size: 1.25rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.messagesWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 25vh;
+  padding-bottom: 50vh;
+  z-index: 2;
+  position: relative;
+}
+
+.journeyStep {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 40vh;
+}
+
+.stepNode {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  border: 2px solid var(--color-bg, #000);
+
+  @media (max-width: 768px) {
+    left: 20px;
+  }
+}
+
+.messageCard {
+  width: 100%;
+  max-width: 480px;
+  padding: 2.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 32px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+  position: relative;
+  
+  &.odd {
+    margin-right: 55%;
+    @media (max-width: 768px) {
+      margin-right: 0;
+      margin-left: 40px;
+    }
+  }
+  
+  &.even {
+    margin-left: 55%;
+    @media (max-width: 768px) {
+      margin-left: 40px;
+    }
+  }
+
+  &.user { border-top: 1px solid rgba(0, 112, 243, 0.3); }
+  &.expert { border-top: 1px solid rgba(121, 40, 202, 0.3); }
+  &.bot { border-top: 1px solid rgba(255, 0, 128, 0.3); }
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  display: grid;
+  place-items: center;
+  color: var(--text-dim);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stepLabel {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 900;
+  color: var(--color-primary, #0070f3);
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+}
+
+.username {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-main);
+}
+
+.roleBadge {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 900;
+  padding: 0.35rem 0.85rem;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-dim);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.messageText {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--text-dim);
+  margin: 0;
+  font-weight: 450;
+}
+
+@media (max-width: 768px) {
+  .messageCard {
+    max-width: calc(100% - 60px);
+  }
+  
+  .stickyHeader {
+    top: 6rem;
+    margin-bottom: 5rem;
+  }
+
+  .journeyContainer {
+    margin: 5rem auto;
+  }
+}
