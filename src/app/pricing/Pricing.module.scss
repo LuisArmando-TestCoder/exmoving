@@ -531,6 +531,7 @@
         position: relative;
         overflow: hidden;
         gap: 20px;
+        min-height: 100px; // Lock height to prevent card jumping
 
         .baStep {
           display: flex;
@@ -538,16 +539,20 @@
           gap: 4px;
           position: relative;
           z-index: 1;
+          min-width: 0; // Prevent flex item overflow
 
           .baValue {
+            font-family: var(--font-geist-mono), monospace;
             font-size: clamp(1.25rem, 4vw, 1.75rem);
             font-weight: 900;
             color: var(--text);
             letter-spacing: -0.05em;
             line-height: 1;
+            white-space: nowrap;
           }
 
           .baValueHighlight {
+            font-family: var(--font-geist-mono), monospace;
             font-size: clamp(1.25rem, 4vw, 1.75rem);
             font-weight: 900;
             display: flex;
@@ -556,6 +561,7 @@
             color: var(--primary);
             letter-spacing: -0.05em;
             line-height: 1;
+            white-space: nowrap;
 
             .sparkle {
               color: var(--primary);
@@ -569,6 +575,9 @@
             color: var(--text-dim);
             letter-spacing: 0.1em;
             opacity: 0.8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
         }
 
