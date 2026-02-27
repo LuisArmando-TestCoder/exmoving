@@ -31,7 +31,18 @@ export const EmailActionButton = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-  const { openChatbot, setUserEmail } = useChatbotStore();
+  const { openChatbot, setUserEmail, openNewsletter, interactionHistory } = useChatbotStore();
+
+  const isBlocked = interactionHistory.length >= 3 && 
+                    interactionHistory.slice(-3).every(record => record.status === 'erratic');
+
+  const handleOpenInteraction = (context?: any) => {
+    if (isBlocked) {
+      openNewsletter();
+    } else {
+      openChatbot(context);
+    }
+  };
 
   useEffect(() => {
     if (isExpanded && inputRef.current) {
@@ -144,7 +155,7 @@ export const EmailActionButton = ({
         setUserEmail(email);
         setEmail("");
         if (!onSuccess) {
-          openChatbot({ email, ...metadata });
+          handleOpenInteraction({ email, ...metadata });
         }
       }, 3000);
     } catch (error: any) {
@@ -168,7 +179,7 @@ export const EmailActionButton = ({
       )}
       onClick={() => {
         if (hasSent && !isExpanded) {
-          openChatbot();
+          handleOpenInteraction();
         } else if (!isExpanded) {
           setIsExpanded(true);
         }
@@ -220,7 +231,7 @@ export const EmailActionButton = ({
             handleSubmitInternal();
           } else if (hasSent) {
             e.stopPropagation();
-            openChatbot();
+            handleOpenInteraction();
           }
         }}
         disabled={status === "loading" || (isExpanded && !email)}

@@ -108,7 +108,7 @@ export const Chatbot = ({
         - Ask ONLY 1 question at a time.
         - Professional tone.
         - Keep track of the "5 Whys" chain internally.
-        - When complete, provide a 3-bullet point summary and tell them to use the Submit Request button.
+        - When complete, provide a 3-bullet point summary and tell them their inquiry has been sent to the research team.
         
         USER CONTEXT: ${JSON.stringify(userContext)}`
     });
@@ -333,7 +333,11 @@ export const Chatbot = ({
       if (fullText) {
         speak(fullText);
 
-        if (fullText.toLowerCase().includes("summar") || fullText.toLowerCase().includes("whatsapp") || fullText.toLowerCase().includes("button below") || fullText.toLowerCase().includes("request button")) {
+        if (fullText.toLowerCase().includes("summar") || 
+            fullText.toLowerCase().includes("whatsapp") || 
+            fullText.toLowerCase().includes("button below") || 
+            fullText.toLowerCase().includes("request button") ||
+            fullText.toLowerCase().includes("research team")) {
           const finalSummary = [...updatedMessages, { role: "model", text: fullText, timestamp: formatTimestamp() }]
             .map((m) => `${m.role.toUpperCase()}: ${m.text}`)
             .join("\n\n");
@@ -365,7 +369,7 @@ export const Chatbot = ({
           setTimeout(() => {
             closeChatbot();
             openNewsletter();
-          }, 1500); // Small delay to let the user hear/read the final message
+          }, 3500); // Increased delay to 3.5s to allow reading/hearing the final message
         }
       }
     } catch (error: any) {

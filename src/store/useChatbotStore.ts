@@ -67,7 +67,7 @@ export const useChatbotStore = create<ChatbotState>()(
       interactionHistory: [],
       showEmailBtn: false,
       summaryText: "",
-      isNewsletterOpen: false,
+      isNewsletterOpen: true,
       openChatbot: (context = {}) => {
         set((state) => {
           const mergedContext = { ...state.userContext, ...context };

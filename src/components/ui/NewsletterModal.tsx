@@ -75,7 +75,6 @@ export const NewsletterModal = () => {
                     borderRadius: '16px',
                     padding: '4px 10px',
                     fontSize: '0.7rem',
-                    color: 'rgba(255, 255, 255, 0.7)',
                     marginBottom: '12px',
                     letterSpacing: '0.02em',
                     backdropFilter: 'blur(4px)'
@@ -86,7 +85,8 @@ export const NewsletterModal = () => {
                       borderRadius: '50%',
                       background: '#10b981',
                       marginRight: '6px',
-                      boxShadow: '0 0 8px rgba(16, 185, 129, 0.5)'
+                      boxShadow: '0 0 8px rgba(18, 140, 255, 0.5)',
+                      color: 'var(--text)',
                     }} />
                     {userContext?.email || userEmail}
                   </div>
