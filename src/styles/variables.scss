@@ -128,9 +128,10 @@ body {
   background: linear-gradient(
     to right,
     $palette-blue,
-    $palette-purple 30%,
-    $palette-lavender 60%,
-    $palette-pink 100%
+    $palette-purple 25%,
+    $palette-lavender 50%,
+    $palette-pink 75%,
+    $palette-blue 100%
   );
   background-size: 200% auto;
   -webkit-background-clip: text;

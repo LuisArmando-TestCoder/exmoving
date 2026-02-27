@@ -23,9 +23,9 @@ export interface Tier {
 }
 
 export interface BATranslation {
-  metric: string;
-  human: string;
-  roi: string;
+  metric: string;    // e.g., "1M Tokens"
+  human: string;     // e.g., "~1.5k Emails"
+  roi: string;       // e.g., "Saves 40h of writing"
 }
 
 export interface SliderConfig {
@@ -37,10 +37,10 @@ export interface SliderConfig {
   basePrice?: number;
   freeLimit?: string;
   baTranslation?: {
-    multiplier: number;
-    humanUnit: string;
-    roiUnit: string;
-    roiMultiplier: number;
+    multiplier: number; // e.g., 1M Tokens = 1.5 (k emails)
+    humanUnit: string;  // e.g., "k Emails Generated"
+    roiUnit: string;    // e.g., "Hours Saved"
+    roiMultiplier: number; // e.g., 1M Tokens = 40 (hours saved)
   };
 }
 
