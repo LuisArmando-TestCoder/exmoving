@@ -164,13 +164,14 @@ export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
 
         {renderBATranslation()}
 
-        <div className={styles.interactiveTrackCustom}>
+        <div className={styles.interactiveTrackCustom} style={{ position: "relative", display: "flex", alignItems: "center" }}>
           <AnimatePresence>
             {!hasInteracted && (
               <motion.div 
                 className={styles.sliderHint}
-                initial={{ opacity: 0, y: 10, x: "-50%" }}
-                animate={{ opacity: 1, y: 0, x: "-50%" }}
+                style={{ pointerEvents: "none", position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", zIndex: 10 }}
+                initial={{ opacity: 0, y: "-30%", x: "-50%" }}
+                animate={{ opacity: 1, y: "-50%", x: "-50%" }}
                 exit={{ opacity: 0, scale: 0.8, x: "-50%" }}
               >
                 <ChevronLeft size={14} />
