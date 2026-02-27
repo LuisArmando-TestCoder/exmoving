@@ -294,7 +294,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 30px;
+  padding: clamp(20px, 4vw, 30px);
   background: rgba(var(--overlay-rgb), 0.02);
   will-change: transform, opacity;
   backface-visibility: hidden;
@@ -304,8 +304,14 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     gap: 16px;
+
+    @media (max-width: 480px) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
 
     .titleArea {
       display: flex;
@@ -313,7 +319,7 @@
       gap: 6px;
       
       .itemName {
-        font-size: 1.25rem;
+        font-size: clamp(1.1rem, 3vw, 1.25rem);
         font-weight: 700;
         line-height: 1.2;
       }
@@ -334,7 +340,7 @@
     }
 
     .itemCost {
-      font-size: 1.5rem;
+      font-size: clamp(1.25rem, 4vw, 1.5rem);
       font-weight: 800;
       display: flex;
       align-items: baseline;
@@ -350,10 +356,14 @@
 
   .itemDesc {
     color: var(--text-dim);
-    font-size: 0.95rem;
+    font-size: clamp(0.85rem, 2vw, 0.95rem);
     line-height: 1.5;
     margin-bottom: 24px;
     min-height: 44px;
+
+    @media (max-width: 480px) {
+      min-height: 0;
+    }
   }
 
   .detailsArea {
@@ -395,7 +405,7 @@
     border-top: 1px dashed rgba(var(--overlay-rgb), 0.1);
 
     .sliderControlWrapper {
-      padding: 24px;
+      padding: clamp(16px, 3vw, 24px);
       background: rgba(var(--overlay-rgb), 0.03);
       border: 1px solid rgba(var(--overlay-rgb), 0.05);
       border-radius: 20px;
@@ -416,6 +426,12 @@
         margin-bottom: 32px;
         position: relative;
         z-index: 1;
+
+        @media (max-width: 400px) {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+        }
 
         .label {
           @include font-heading;
@@ -544,7 +560,7 @@
         display: grid;
         grid-template-columns: 1fr auto 1fr;
         align-items: center;
-        padding: 24px;
+        padding: clamp(16px, 3vw, 24px);
         background: rgba(var(--bg-rgb), 0.4);
         backdrop-filter: blur(10px);
         border: 1px solid rgba(var(--overlay-rgb), 0.1);
@@ -552,6 +568,13 @@
         position: relative;
         overflow: hidden;
         min-height: 100px; // Lock height to prevent card jumping
+
+        @media (max-width: 500px) {
+          grid-template-columns: 1fr;
+          gap: 16px;
+          min-height: 0;
+          text-align: center;
+        }
 
         .baStep {
           display: flex;
@@ -605,6 +628,16 @@
           display: flex;
           align-items: center;
           justify-content: center;
+
+          @media (max-width: 500px) {
+            .baLine {
+              width: 100%;
+              max-width: 60px;
+            }
+            .baArrow {
+              transform: rotate(90deg);
+            }
+          }
           
           .baLine {
             width: 40px;
@@ -811,8 +844,35 @@
 
       .totalWrapper {
         display: flex;
-        align-items: baseline;
+        align-items: center;
+        gap: 20px;
         
+        .shareButton {
+          background: rgba(var(--overlay-rgb), 0.05);
+          border: 1px solid rgba(var(--overlay-rgb), 0.1);
+          color: var(--text-dim);
+          width: 44px;
+          height: 44px;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background: rgba(var(--primary-rgb), 0.1);
+            border-color: var(--primary);
+            color: var(--primary);
+          }
+
+          &.copied {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--bg);
+          }
+        }
+
         .currency {
           font-size: 2rem;
           font-weight: 800;

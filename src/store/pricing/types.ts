@@ -72,6 +72,7 @@ export interface PricingState {
 
 export interface PricingActions {
   setCustomValue: (id: string, value: number | string | boolean) => void;
+  setBulkValues: (values: Record<string, number | string | boolean>) => void;
   calculateTotal: (customValuesOverride?: Record<string, number | string | boolean>) => number;
 }
 

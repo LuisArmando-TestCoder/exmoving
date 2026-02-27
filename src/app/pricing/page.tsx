@@ -9,11 +9,13 @@ import { EmailActionButton } from "@/components/ui/EmailActionButton";
 import { InfrastructureExplorer } from "./InfrastructureExplorer";
 import { CostCalculator } from "./CostCalculator";
 import { ConversationJourney } from "./ConversationJourney";
+import { PricingSyncParams } from "./PricingSyncParams";
 
 export default function PricingPage() {
   return (
     <>
       <Header />
+      <PricingSyncParams />
       <main className={styles.pricingPage} id="pricing-page-root">
         <section className={styles.hero} id="pricing-hero">
           <div className="container">

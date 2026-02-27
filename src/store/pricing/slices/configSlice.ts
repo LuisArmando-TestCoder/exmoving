@@ -6,7 +6,10 @@ export const createConfigSlice: StateCreator<
   PricingStore,
   [],
   [],
-  PricingState & { setCustomValue: PricingStore['setCustomValue'] }
+  PricingState & { 
+    setCustomValue: PricingStore['setCustomValue'],
+    setBulkValues: PricingStore['setBulkValues']
+  }
 > = (set) => ({
   apiPrices: INITIAL_API_PRICES,
   infrastructure: INITIAL_INFRASTRUCTURE,
@@ -14,5 +17,9 @@ export const createConfigSlice: StateCreator<
   setCustomValue: (id, value) =>
     set((state) => ({
       customValues: { ...state.customValues, [id]: value },
+    })),
+  setBulkValues: (values) =>
+    set((state) => ({
+      customValues: { ...state.customValues, ...values },
     })),
 });
