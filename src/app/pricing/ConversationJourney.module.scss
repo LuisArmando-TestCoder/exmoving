@@ -1,3 +1,9 @@
+.journeyWrapper {
+  width: 100%;
+  overflow: hidden; // Parent wrapper handles the total section overflow
+  position: relative;
+}
+
 .journeyContainer {
   position: relative;
   width: 100%;
@@ -5,6 +11,10 @@
   margin: 10rem auto;
   padding: 0 2rem;
   min-height: 250vh;
+
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+  }
 }
 
 .timelineLine {
@@ -72,20 +82,23 @@
 .messageCard {
   width: 100%;
   max-width: 520px;
-  padding: 2.5rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
   background: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 32px;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
   position: relative;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
   
   &.odd {
     margin-right: auto;
     margin-left: 0;
     transform-origin: left center;
     @media (max-width: 768px) {
-      margin-left: 40px;
+      margin-left: 35px;
+      max-width: calc(100% - 35px);
     }
   }
   
@@ -94,8 +107,9 @@
     margin-right: 0;
     transform-origin: right center;
     @media (max-width: 768px) {
-      margin-left: 40px;
+      margin-left: 35px;
       margin-right: 0;
+      max-width: calc(100% - 35px);
     }
   }
 
@@ -108,7 +122,13 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 2rem;
+  margin-bottom: clamp(1rem, 3vw, 2rem);
+  gap: 1rem;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
 }
 
 .userInfo {
@@ -156,7 +176,7 @@
 }
 
 .messageText {
-  font-size: 1.15rem;
+  font-size: clamp(0.95rem, 2.5vw, 1.15rem);
   line-height: 1.7;
   color: var(--text-dim);
   margin: 0;

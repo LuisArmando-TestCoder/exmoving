@@ -95,39 +95,41 @@ export const ConversationJourney = () => {
   });
 
   return (
-    <div ref={containerRef} className={styles.journeyContainer}>
-      <div className={styles.timelineLine}>
-        <motion.div 
-          className={styles.timelineProgress} 
-          style={{ 
-            scaleY: springScroll, 
-            originY: 0,
-            willChange: "transform"
-          }}
-        />
-      </div>
+    <div className={styles.journeyWrapper}>
+      <div ref={containerRef} className={styles.journeyContainer}>
+        <div className={styles.timelineLine}>
+          <motion.div
+            className={styles.timelineProgress}
+            style={{
+              scaleY: springScroll,
+              originY: 0,
+              willChange: "transform",
+            }}
+          />
+        </div>
 
-      <div className={styles.messagesWrapper}>
-        {MESSAGES.map((msg, index) => (
-          <MessageCard key={msg.id} msg={msg} index={index} />
-        ))}
-        
-        <div className={styles.sourceLinkWrapper}>
-          <motion.a 
-            href="https://www.reddit.com/r/AI_Agents/comments/1qz6us7/how_much_are_you_guys_actually_burning_on_llms/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.sourceLink}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, margin: "-100px" }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <span className={styles.sourceLabel}>FULL CONVERSATION</span>
-            <span className={styles.sourceTitle}>View Original Thread on Reddit</span>
-            <ExternalLink size={16} />
-          </motion.a>
+        <div className={styles.messagesWrapper}>
+          {MESSAGES.map((msg, index) => (
+            <MessageCard key={msg.id} msg={msg} index={index} />
+          ))}
+
+          <div className={styles.sourceLinkWrapper}>
+            <motion.a
+              href="https://www.reddit.com/r/AI_Agents/comments/1qz6us7/how_much_are_you_guys_actually_burning_on_llms/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.sourceLink}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, margin: "-100px" }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <span className={styles.sourceLabel}>FULL CONVERSATION</span>
+              <span className={styles.sourceTitle}>View Original Thread on Reddit</span>
+              <ExternalLink size={16} />
+            </motion.a>
+          </div>
         </div>
       </div>
     </div>
