@@ -109,6 +109,8 @@ export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
           </motion.div>
         </div>
 
+        {renderBATranslation()}
+
         <div className={styles.interactiveTrack}>
           <motion.div
             className={styles.trackProgress}
@@ -148,8 +150,6 @@ export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
             Peak: {config.max.toLocaleString()}+
           </span>
         </div>
-
-        {renderBATranslation()}
       </div>
     </Reveal>
   );
