@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { useChatbotStore } from "@/store/useChatbotStore";
 import { ChatBrain } from "@/lib/ChatBrain";
 import { sendEmail } from "@/app/actions";
+import { getEmailTemplate } from "@/utils/emailTemplates";
 import styles from "./Chatbot.module.scss";
 import { ChatbotMessages } from "./ChatbotMessages";
 import { ChatbotInput } from "./ChatbotInput";
@@ -212,17 +213,6 @@ export const Chatbot = ({
   const toggleListening = () => {
     setIsListening(prev => !prev);
   };
-
-  const getEmailTemplate = (text: string, isAuto: boolean = false) => ({
-    subject: `Chatbot Consultation Summary`,
-    text,
-    html: `
-      <h3>Chatbot Consultation Summary</h3>
-      <pre style="white-space: pre-wrap; font-family: sans-serif;">${text}</pre>
-      <hr />
-      <p>This summary was ${isAuto ? 'automatically generated and sent' : 'generated'} by the AI Chatbot${isAuto ? '.' : ' and submitted by the user.'}</p>
-    `,
-  });
 
   const handleSendEmail = async () => {
     if (isSendingEmail || emailStatus === "success") return;

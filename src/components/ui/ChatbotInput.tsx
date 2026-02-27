@@ -14,7 +14,7 @@ interface ChatbotInputProps {
   toggleListening: () => void;
   handleSubmit: () => void;
   handleKeydown: (e: React.KeyboardEvent) => void;
-  textareaRef: React.RefObject<HTMLTextAreaElement>;
+  textareaRef: React.RefObject<HTMLTextAreaElement | null>;
 }
 
 export const ChatbotInput = ({
