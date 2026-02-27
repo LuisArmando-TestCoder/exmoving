@@ -8,6 +8,19 @@ This guide outlines the mandatory standards for adding or refactoring pages with
 
 ---
 
+Rules of Usability
+
+1: Visibility of System Status
+2: Match Between the System and the Real World
+3: User Control and Freedom
+4: Consistency and Standards
+5: Error Prevention
+6: Recognition Rather than Recall
+7: Flexibility and Efficiency of Use
+8: Aesthetic and Minimalist Design
+9: Documentation for Dummies
+---
+
 ## 1. Visual & Aesthetic Principles
 
 ### Typography & Colors (The "No-White" Rule)
