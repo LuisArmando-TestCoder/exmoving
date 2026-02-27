@@ -83,7 +83,7 @@ export const getNewsletterTemplate = (email: string, extractedInfo?: any) => {
   };
 };
 
-export const getEmailTemplate = (text: string, isAuto: boolean = false) => {
+export const getEmailTemplate = (text: string, isAuto: boolean = false, isAbandoned: boolean = false, historyRecords: any[] = []) => {
   // Parse out sections if they exist
   const historyMatch = text.match(/CHAT HISTORY:\n([\s\S]*?)(?=\n\nBEHAVIORAL OBSERVATIONS:|$)/);
   const behaviorMatch = text.match(/BEHAVIORAL OBSERVATIONS:\n([\s\S]*)$/);
@@ -92,6 +92,23 @@ export const getEmailTemplate = (text: string, isAuto: boolean = false) => {
   const history = historyMatch ? historyMatch[1].trim() : text;
   const behavior = behaviorMatch ? behaviorMatch[1].trim() : "";
   const isErratic = !!erraticMatch;
+
+  let statusEmoji = isErratic ? '❌' : (isAbandoned ? '⚠️' : '✅');
+  let statusText = isErratic ? 'Erratic Behavior' : (isAbandoned ? 'Abandoned Chat' : 'Success');
+  
+  const historySummary = historyRecords.length > 0 
+    ? `
+      <div style="margin-top: 24px; padding: 20px; background-color: #F8FAFC; border-radius: 12px; border: 1px solid #E2E8F0;">
+        <h3 style="margin: 0 0 12px 0; color: #0F172A; font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em;">Interaction History</h3>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          ${historyRecords.map(r => `
+            <span style="padding: 4px 10px; border-radius: 20px; font-size: 12px; background-color: ${r.status === 'success' ? '#ECFDF5' : '#FEF2F2'}; color: ${r.status === 'success' ? '#059669' : '#DC2626'}; border: 1px solid ${r.status === 'success' ? '#10B98133' : '#EF444433'};">
+              ${r.status === 'success' ? '✅' : '❌'} ${r.date}
+            </span>
+          `).join('')}
+        </div>
+      </div>
+    ` : '';
 
   // Format chat history into a cleaner readable list
   const formattedHistory = history.split('\n\n').map(message => {
@@ -116,9 +133,7 @@ export const getEmailTemplate = (text: string, isAuto: boolean = false) => {
   }).join('');
 
   return {
-    subject: isErratic 
-      ? `⚠️ Action Required: Erratic Consultation Detected` 
-      : `✨ New Consultation Summary`,
+    subject: `${statusEmoji} ${statusText}: ${isAuto ? 'Auto' : 'User'} Report`,
     text,
     html: `
 <!DOCTYPE html>
@@ -156,12 +171,15 @@ export const getEmailTemplate = (text: string, isAuto: boolean = false) => {
             
             <!-- Header -->
             <tr>
-              <td class="header" style="background-color: ${isErratic ? '#FEF2F2' : '#F8FAFC'}; padding: 32px; text-align: center; border-bottom: 1px solid ${isErratic ? '#FEE2E2' : '#E2E8F0'};">
-                <h1 style="margin: 0; color: ${isErratic ? '#DC2626' : '#0F172A'}; font-size: 24px; font-weight: 700; letter-spacing: -0.025em;">
-                  ${isErratic ? '⚠️ Erratic Behavior Flagged' : '✨ Consultation Complete'}
+              <td class="header" style="background-color: ${isErratic ? '#FEF2F2' : (isAbandoned ? '#FFFBEB' : '#F8FAFC')}; padding: 32px; text-align: center; border-bottom: 1px solid ${isErratic ? '#FEE2E2' : (isAbandoned ? '#FEF3C7' : '#E2E8F0')};">
+                <div style="margin-bottom: 12px;">
+                  <span style="font-size: 40px;">${statusEmoji}</span>
+                </div>
+                <h1 style="margin: 0; color: ${isErratic ? '#DC2626' : (isAbandoned ? '#92400E' : '#0F172A')}; font-size: 24px; font-weight: 700; letter-spacing: -0.025em;">
+                  ${statusText}
                 </h1>
-                <p style="margin: 8px 0 0 0; color: ${isErratic ? '#991B1B' : '#64748B'}; font-size: 15px;">
-                  ${isAuto ? 'Automatically generated system report' : 'User-submitted consultation report'}
+                <p style="margin: 8px 0 0 0; color: #64748B; font-size: 15px;">
+                  ${isAuto ? 'Automated System Report' : 'Manual Submission'}
                 </p>
               </td>
             </tr>
@@ -170,6 +188,8 @@ export const getEmailTemplate = (text: string, isAuto: boolean = false) => {
             <tr>
               <td class="content" style="padding: 40px 32px;">
                 
+                ${historySummary}
+
                 ${behavior ? `
                 <!-- Behavior Section -->
                 <div style="margin-bottom: 32px; padding: 20px; background-color: #F8FAFC; border-radius: 12px; border: 1px solid #E2E8F0;">

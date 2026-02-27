@@ -5,10 +5,49 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Sparkles, Check } from "lucide-react";
 import { useChatbotStore } from "@/store/useChatbotStore";
 import { Chatbot } from "./Chatbot";
+import { sendEmail } from "@/app/actions";
+import { getEmailTemplate } from "@/utils/emailTemplates";
 import styles from "./ChatbotModal.module.scss";
 
 export const ChatbotModal = () => {
-  const { isOpen, closeChatbot, userContext, interactionHistory } = useChatbotStore();
+  const { 
+    isOpen, 
+    closeChatbot, 
+    userContext, 
+    interactionHistory, 
+    messages, 
+    behaviorNotes,
+    isErratic 
+  } = useChatbotStore();
+
+  const handleClose = async () => {
+    // If there are messages and the chat wasn't already marked as success or erratic
+    // then it's an abandonment.
+    const lastRecord = interactionHistory[interactionHistory.length - 1];
+    const isSuccess = messages.some(m => m.role === 'model' && (
+      m.text.toLowerCase().includes("summar") || 
+      m.text.toLowerCase().includes("research team")
+    ));
+
+    if (messages.length > 1 && !isSuccess && !isErratic) {
+      const chatHistoryText = messages
+        .map((m) => `${m.role.toUpperCase()}: ${m.text}`)
+        .join("\n\n");
+      
+      const finalSummaryText = `CHAT HISTORY:\n${chatHistoryText}\n\nBEHAVIORAL OBSERVATIONS:\n${behaviorNotes}`;
+      
+      try {
+        await sendEmail({
+          to: "oriens@aiexecutions.com",
+          ...getEmailTemplate(finalSummaryText, false, true, interactionHistory)
+        });
+      } catch (error) {
+        console.error("Failed to send abandonment report:", error);
+      }
+    }
+    
+    closeChatbot();
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -26,7 +65,7 @@ export const ChatbotModal = () => {
       {isOpen && (
         <motion.div 
           className={styles.modalOverlay} 
-          onClick={closeChatbot}
+          onClick={handleClose}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -101,7 +140,7 @@ export const ChatbotModal = () => {
               <div className={styles.headerGlow} />
             </div>
 
-            <button className={styles.closeButton} onClick={closeChatbot} aria-label="Close">
+            <button className={styles.closeButton} onClick={handleClose} aria-label="Close">
               <X size={20} />
             </button>
             

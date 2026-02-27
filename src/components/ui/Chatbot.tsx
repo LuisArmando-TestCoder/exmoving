@@ -323,8 +323,20 @@ export const Chatbot = ({
           .join("\n\n");
         
         const currentBehaviorNotes = useChatbotStore.getState().behaviorNotes;
+        const fullReportText = `[ERRATIC BEHAVIOR DETECTED]\n\nCHAT HISTORY:\n${finalSummary}\n\nBEHAVIORAL OBSERVATIONS:\n${currentBehaviorNotes}`;
         
-        setSummaryText(`[ERRATIC BEHAVIOR DETECTED]\n\nCHAT HISTORY:\n${finalSummary}\n\nBEHAVIORAL OBSERVATIONS:\n${currentBehaviorNotes}`);
+        setSummaryText(fullReportText);
+
+        // Auto-send report on erratic detection
+        try {
+          await sendEmail({
+            to: "oriens@aiexecutions.com",
+            ...getEmailTemplate(fullReportText, true, false, useChatbotStore.getState().interactionHistory)
+          });
+        } catch (e) {
+          console.error("Failed to auto-send erratic report:", e);
+        }
+
         setShowEmailBtn(true);
         setLoading(false);
         return;
@@ -358,7 +370,7 @@ export const Chatbot = ({
           try {
             await sendEmail({
               to: "oriens@aiexecutions.com",
-              ...getEmailTemplate(finalSummaryText, true)
+              ...getEmailTemplate(finalSummaryText, true, false, useChatbotStore.getState().interactionHistory)
             });
             console.log("Email automatically sent to stakeholder.");
           } catch (error) {
