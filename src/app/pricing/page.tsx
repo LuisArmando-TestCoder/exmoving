@@ -43,6 +43,23 @@ export default function PricingPage() {
               <CostCalculator />
             </div>
 
+            <Reveal className={styles.visionSection}>
+              <div className={styles.visionContent}>
+                <blockquote className={styles.quote}>
+                  The real product is a self-supervising system that converts operational friction into measurable returns.
+                </blockquote>
+                <div className={styles.centeredWrapper}>
+                  <EmailActionButton
+                    label="Schedule Consultation Call"
+                    subject="Pricing Consultation Request"
+                  />
+                </div>
+                <p style={{ color: 'var(--text-dim)', maxWidth: '700px', margin: '3rem auto' }}>
+                  Our Goal is to Expand and Enhance People. We build systems that bring ROI without supervision, automating passive income and recording key performance indicators.
+                </p>
+              </div>
+            </Reveal>
+
             <div style={{ marginTop: '8rem', textAlign: 'center' }}>
               <Reveal>
                 <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)', fontWeight: 900, marginBottom: '1.5rem', letterSpacing: '-0.05em' }}>
@@ -57,17 +74,6 @@ export default function PricingPage() {
             </div>
 
             <ConversationJourney />
-
-            <Reveal className={styles.visionSection}>
-              <div className={styles.visionContent}>
-                <blockquote className={styles.quote}>
-                  The real product is a self-supervising system that converts operational friction into measurable returns.
-                </blockquote>
-                <p style={{ color: 'var(--text-dim)', maxWidth: '700px', margin: '0 auto' }}>
-                  Our Goal is to Expand and Enhance People. We build systems that bring ROI without supervision, automating passive income and recording key performance indicators.
-                </p>
-              </div>
-            </Reveal>
           </div>
         </section>
 
@@ -79,8 +85,8 @@ export default function PricingPage() {
                 <p style={{ color: 'var(--text-dim)', marginBottom: '2rem', maxWidth: '600px', margin: '0 auto 2rem' }}>
                   Instead of quoting, we make a demo. We use your transcripts to generate the tool. Only when it performs successfully do we move forward.
                 </p>
-                <EmailActionButton 
-                  label="Schedule Consultation Call" 
+                <EmailActionButton
+                  label="Schedule Consultation Call"
                   subject="Pricing Consultation Request"
                 />
               </div>
