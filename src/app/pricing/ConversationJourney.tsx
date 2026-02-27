@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform, useSpring, useReducedMotion, useInView } from "framer-motion";
 import { useRef, memo } from "react";
-import { MessageSquare, AlertTriangle, Zap, Terminal, Search, ShieldAlert, Cpu, Layers } from "lucide-react";
+import { MessageSquare, AlertTriangle, Zap, Terminal, Search, ShieldAlert, Cpu, Layers, ExternalLink } from "lucide-react";
 import styles from "./ConversationJourney.module.scss";
 
 interface Message {
@@ -111,6 +111,24 @@ export const ConversationJourney = () => {
         {MESSAGES.map((msg, index) => (
           <MessageCard key={msg.id} msg={msg} index={index} />
         ))}
+        
+        <div className={styles.sourceLinkWrapper}>
+          <motion.a 
+            href="https://www.reddit.com/r/AI_Agents/comments/1qz6us7/how_much_are_you_guys_actually_burning_on_llms/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.sourceLink}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, margin: "-100px" }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <span className={styles.sourceLabel}>FULL CONVERSATION</span>
+            <span className={styles.sourceTitle}>View Original Thread on Reddit</span>
+            <ExternalLink size={16} />
+          </motion.a>
+        </div>
       </div>
     </div>
   );
@@ -141,33 +159,12 @@ const MessageCard = memo(({ msg, index }: { msg: Message, index: number }) => {
   const rotateRaw = useTransform(scrollYProgress, [0.1, 0.9], [isEven ? 5 : -5, isEven ? -5 : 5]);
   const rotate = shouldReduceMotion ? rotateRaw : useSpring(rotateRaw, springConfig);
 
-  const nodeScaleRaw = useTransform(scrollYProgress, [0.2, 0.3], [0, 1.5]);
-  const nodeScale = shouldReduceMotion ? nodeScaleRaw : useSpring(nodeScaleRaw, springConfig);
-
   const isInView = useInView(cardRef, { margin: "-10% 0px -10% 0px" });
 
   const Icon = msg.icon;
 
   return (
     <div ref={cardRef} className={styles.journeyStep}>
-      <motion.div 
-        className={styles.stepNode}
-        style={{
-          scale: nodeScale,
-          backgroundColor: useTransform(
-            scrollYProgress,
-            [0.2, 0.3],
-            ["rgba(255,255,255,0.1)", "var(--color-primary, #0070f3)"]
-          ),
-          boxShadow: useTransform(
-            scrollYProgress,
-            [0.2, 0.3],
-            ["0 0 0px rgba(0,0,0,0)", "0 0 20px var(--color-primary, #0070f3)"]
-          ),
-          willChange: "transform, background-color, box-shadow"
-        }}
-      />
-
       <motion.div
         style={{ 
           opacity: isInView ? opacity : 0, 

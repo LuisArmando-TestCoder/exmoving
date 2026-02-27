@@ -13,7 +13,7 @@
   top: 0;
   bottom: 0;
   width: 2px;
-  background: rgba(255, 255, 255, 0.05);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), transparent);
   transform: translateX(-50%);
   z-index: 1;
 
@@ -25,8 +25,7 @@
 .timelineProgress {
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, var(--color-primary, #0070f3), var(--color-secondary, #7928ca));
-  box-shadow: 0 0 15px var(--color-primary, #0070f3);
+  background: linear-gradient(to bottom, var(--color-primary, #0070f3), var(--color-secondary, #7928ca), transparent);
 }
 
 .stickyHeader {
@@ -58,7 +57,7 @@
   flex-direction: column;
   gap: 25vh;
   padding-bottom: 50vh;
-  z-index: 2;
+  z-index: 5;
   position: relative;
 }
 
@@ -68,22 +67,6 @@
   justify-content: center;
   align-items: center;
   min-height: 40vh;
-}
-
-.stepNode {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 3;
-  border: 2px solid var(--color-bg, #000);
-
-  @media (max-width: 768px) {
-    left: 20px;
-  }
 }
 
 .messageCard {
@@ -180,6 +163,51 @@
   font-weight: 450;
 }
 
+.sourceLinkWrapper {
+  display: flex;
+  justify-content: center;
+  padding: 4rem 0;
+}
+
+.sourceLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 2rem 4rem;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  color: var(--text-main);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  text-align: center;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--color-primary, #0070f3);
+    color: var(--color-primary, #0070f3);
+  }
+
+  svg {
+    margin-top: 0.5rem;
+    opacity: 0.5;
+  }
+}
+
+.sourceLabel {
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  color: var(--color-primary, #0070f3);
+}
+
+.sourceTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
 @media (max-width: 768px) {
   .messageCard {
     max-width: calc(100% - 60px);
@@ -192,5 +220,10 @@
 
   .journeyContainer {
     margin: 5rem auto;
+  }
+
+  .sourceLink {
+    padding: 1.5rem 2rem;
+    width: 100%;
   }
 }
