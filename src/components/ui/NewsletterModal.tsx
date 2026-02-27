@@ -66,14 +66,6 @@ export const NewsletterModal = () => {
 
             <div className={styles.content}>
               <div className={styles.header}>
-                <motion.div 
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", delay: 0.2 }}
-                  className={styles.iconWrapper}
-                >
-                  <Sparkles size={24} className={styles.headerIcon} />
-                </motion.div>
                 {(userContext?.email || userEmail) && (
                   <div style={{
                     display: 'inline-flex',
