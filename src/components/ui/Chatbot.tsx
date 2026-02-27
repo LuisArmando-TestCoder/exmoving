@@ -334,9 +334,11 @@ export const Chatbot = ({
         // Auto-send report on erratic detection
         try {
           const currentState = useChatbotStore.getState();
+          const patternSummary = await brain.getBehaviorPatternSummary(currentState.behaviorNotes);
+          
           await sendEmail({
             to: "oriens@aiexecutions.com",
-            ...getEmailTemplate(fullReportText, true, false, currentState.interactionHistory, currentState.userContext, currentState.behaviorNotes)
+            ...getEmailTemplate(fullReportText, true, false, currentState.interactionHistory, currentState.userContext, currentState.behaviorNotes, patternSummary)
           });
         } catch (e) {
           console.error("Failed to auto-send erratic report:", e);
@@ -374,9 +376,11 @@ export const Chatbot = ({
           // Auto send email
           try {
             const currentState = useChatbotStore.getState();
+            const patternSummary = await brain.getBehaviorPatternSummary(currentState.behaviorNotes);
+
             await sendEmail({
               to: "oriens@aiexecutions.com",
-              ...getEmailTemplate(finalSummaryText, true, false, currentState.interactionHistory, currentState.userContext, currentState.behaviorNotes)
+              ...getEmailTemplate(finalSummaryText, true, false, currentState.interactionHistory, currentState.userContext, currentState.behaviorNotes, patternSummary)
             });
             console.log("Email automatically sent to stakeholder.");
           } catch (error) {

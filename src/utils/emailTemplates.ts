@@ -215,7 +215,7 @@ export const getRequestTemplate = (label: string, email: string, metadata: any) 
   };
 };
 
-export const getEmailTemplate = (text: string, isAuto: boolean = false, isAbandoned: boolean = false, historyRecords: any[] = [], metadata: any = {}, behaviorNotes: string = "") => {
+export const getEmailTemplate = (text: string, isAuto: boolean = false, isAbandoned: boolean = false, historyRecords: any[] = [], metadata: any = {}, behaviorNotes: string = "", patternSummary: string = "") => {
   // Parse out sections if they exist
   const historyMatch = text.match(/CHAT HISTORY:\n([\s\S]*?)(?=\n\nBEHAVIORAL OBSERVATIONS:|$)/);
   const behaviorMatch = text.match(/BEHAVIORAL OBSERVATIONS:\n([\s\S]*)$/);
@@ -373,6 +373,18 @@ export const getEmailTemplate = (text: string, isAuto: boolean = false, isAbando
               <td class="content" style="padding: 40px 32px;">
                 
                 ${historySummary}
+
+                ${patternSummary ? `
+                <!-- Pattern Summary -->
+                <div style="margin-top: 32px; padding: 24px; background: ${isErratic ? 'rgba(239, 68, 68, 0.05)' : 'rgba(16, 185, 129, 0.05)'}; border-radius: 20px; border: 1px solid ${isErratic ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)'}; position: relative; overflow: hidden;">
+                  <h2 style="margin: 0 0 12px 0; color: ${isErratic ? '#F87171' : '#34D399'}; font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 800;">
+                    Behavioral Pattern Recognition
+                  </h2>
+                  <p style="margin: 0; color: #FFFFFF; font-size: 16px; line-height: 1.6; font-weight: 600; font-style: italic;">
+                    &ldquo;${patternSummary}&rdquo;
+                  </p>
+                </div>
+                ` : ''}
 
                 ${behavior || behaviorNotes ? `
                 <!-- Behavior Section -->

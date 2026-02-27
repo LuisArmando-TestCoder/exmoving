@@ -93,4 +93,19 @@ export class ChatBrain {
       return false;
     }
   }
+
+  async getBehaviorPatternSummary(behaviorNotes: string) {
+    // Get a concise summary of the patterns in the behavior notes
+    const summarizerModel = this.genAI.getGenerativeModel({
+      model: "gemini-flash-latest",
+      systemInstruction: "You are a behavioral psychologist. Analyze the interaction notes and provide a ONE SENTENCE high-level summary of the user's behavioral patterns and psychological state during the session. Be direct and analytical."
+    });
+
+    try {
+      const result = await summarizerModel.generateContent(`BEHAVIOR NOTES:\n${behaviorNotes}\n\nSummary of patterns:`);
+      return (await result.response).text().trim();
+    } catch (e) {
+      return "Pattern summary unavailable";
+    }
+  }
 }
