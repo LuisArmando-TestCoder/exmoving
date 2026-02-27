@@ -167,7 +167,7 @@ export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
 
         <div className={styles.interactiveTrackCustom} style={{ position: "relative", display: "flex", alignItems: "center" }}>
           <AnimatePresence>
-            {!hasInteracted && (
+            {!hasInteracted && localValue === config.min && (
               <motion.div 
                 className={styles.sliderHint}
                 style={{ pointerEvents: "none", position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", zIndex: 10 }}
