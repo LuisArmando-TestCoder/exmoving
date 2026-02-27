@@ -1,13 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { LayoutGrid, ArrowUpRight, ChevronRight, ChevronLeft } from "lucide-react";
+import { LayoutGrid, ArrowUpRight, ChevronRight, ChevronLeft, Search } from "lucide-react";
 import { clsx } from "clsx";
 import { AnimatePresence, motion, Variants } from "framer-motion";
 import { navigationData, NavItem } from "@/constants/navigation";
 import { EmailActionButton } from "../ui/EmailActionButton";
 import styles from "./Header.module.scss";
+
+interface FlattenedNavItem extends NavItem {
+  parentName?: string;
+}
 
 interface ModalMenuProps {
   isOpen: boolean;
@@ -18,6 +22,7 @@ interface ModalMenuProps {
 
 export const ModalMenu = ({ isOpen, activeTab, setActiveTab, setMenuOpen }: ModalMenuProps) => {
   const [mounted, setMounted] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   // Global navigation stack instead of per-tab, starts empty (showing root tabs)
   const [navStack, setNavStack] = useState<NavItem[]>([]);
   const [direction, setDirection] = useState<1 | -1>(1);
@@ -26,10 +31,38 @@ export const ModalMenu = ({ isOpen, activeTab, setActiveTab, setMenuOpen }: Moda
     setMounted(true);
   }, []);
 
+  // Flattened navigation for searching
+  const flattenedNav = useMemo(() => {
+    const items: FlattenedNavItem[] = [];
+    const flatten = (navItems: NavItem[], parentName?: string) => {
+      navItems.forEach(item => {
+        items.push({ ...item, parentName });
+        if (item.children) {
+          flatten(item.children, item.name);
+        }
+      });
+    };
+    flatten(navigationData);
+    return items;
+  }, []);
+
+  // Search results
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const query = searchQuery.toLowerCase();
+    return flattenedNav.filter(item => 
+      item.name.toLowerCase().includes(query) || 
+      (item.parentName && item.parentName.toLowerCase().includes(query))
+    );
+  }, [searchQuery, flattenedNav]);
+
   // When menu closes, you might want to reset the stack
   useEffect(() => {
     if (!isOpen) {
-      setTimeout(() => setNavStack([]), 300);
+      setTimeout(() => {
+        setNavStack([]);
+        setSearchQuery("");
+      }, 300);
     }
   }, [isOpen]);
 
@@ -145,14 +178,74 @@ export const ModalMenu = ({ isOpen, activeTab, setActiveTab, setMenuOpen }: Moda
               </div>
               
               <div className={styles.searchContainer}>
-                <input type="text" placeholder="Search..." className={styles.searchInput} aria-label="Search" />
-                <div className={styles.searchIcon} aria-hidden="true"><LayoutGrid size={14} /></div>
+                <input 
+                  type="text" 
+                  placeholder="Search..." 
+                  className={styles.searchInput} 
+                  aria-label="Search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <div className={styles.searchIcon} aria-hidden="true">
+                  {searchQuery ? <Search size={14} /> : <LayoutGrid size={14} />}
+                </div>
               </div>
             </div>
 
             <div className={styles.ultramodernNav}>
               <div className={styles.navContentWrapper}>
-                <AnimatePresence initial={false} custom={direction}>
+                <AnimatePresence initial={false} custom={direction} mode="wait">
+                  {searchQuery ? (
+                    <motion.div
+                      key="search-results"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className={styles.searchResultsPanel}
+                    >
+                      <div className={styles.resultsHeader}>
+                        <p className={styles.modalLabel}>
+                          {searchResults.length} {searchResults.length === 1 ? 'RESULT' : 'RESULTS'} FOUND
+                        </p>
+                      </div>
+                      <div className={styles.resultsGrid}>
+                        {searchResults.length > 0 ? (
+                          searchResults.map((result, idx) => (
+                            <motion.div
+                              key={result.path}
+                              initial={{ opacity: 0, x: -20 }}
+                              whileInView={{ 
+                                opacity: 1, 
+                                x: 0,
+                                transition: { 
+                                  delay: idx * 0.05,
+                                  duration: 0.4,
+                                  ease: [0.16, 1, 0.3, 1]
+                                }
+                              }}
+                              viewport={{ once: true }}
+                            >
+                              <Link
+                                href={result.path}
+                                className={styles.searchResultItem}
+                                onClick={() => setMenuOpen(false)}
+                              >
+                                <div className={styles.resultInfo}>
+                                  <span className={styles.resultName}>{result.name}</span>
+                                  {result.parentName && (
+                                    <span className={styles.resultParent}>{result.parentName}</span>
+                                  )}
+                                </div>
+                                <ArrowUpRight size={18} />
+                              </Link>
+                            </motion.div>
+                          ))
+                        ) : (
+                          <p className={styles.noResults}>No matches found for "{searchQuery}"</p>
+                        )}
+                      </div>
+                    </motion.div>
+                  ) : (
                   <motion.div
                     key={navStack.length}
                     custom={direction}
@@ -206,6 +299,7 @@ export const ModalMenu = ({ isOpen, activeTab, setActiveTab, setMenuOpen }: Moda
                       ))}
                     </div>
                   </motion.div>
+                  )}
                 </AnimatePresence>
               </div>
             </div>

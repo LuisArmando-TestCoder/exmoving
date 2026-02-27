@@ -906,6 +906,108 @@
   }
 }
 
+// Search Results Panel
+.searchResultsPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+.resultsHeader {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(var(--overlay-rgb), 0.05);
+}
+
+.resultsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+
+  @media (min-width: $breakpoint-sm) {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
+
+.searchResultItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  background: rgba(var(--overlay-rgb), 0.02);
+  border: 1px solid rgba(var(--overlay-rgb), 0.05);
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(var(--primary-rgb), 0.05) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  &:hover {
+    background: rgba(var(--overlay-rgb), 0.04);
+    border-color: rgba(var(--primary-rgb), 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(var(--overlay-dark-rgb), 0.2);
+
+    &::before {
+      opacity: 1;
+    }
+
+    .resultName {
+      color: var(--primary);
+    }
+
+    svg {
+      color: var(--primary);
+      transform: translate(2px, -2px);
+    }
+  }
+
+  svg {
+    color: rgba(var(--overlay-rgb), 0.3);
+    transition: all 0.4s ease;
+  }
+}
+
+.resultInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  position: relative;
+  z-index: 1;
+}
+
+.resultName {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text);
+  transition: color 0.3s ease;
+}
+
+.resultParent {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+}
+
+.noResults {
+  font-size: 1.25rem;
+  color: rgba(var(--overlay-rgb), 0.4);
+  font-style: italic;
+  padding: 2rem 0;
+}
+
 .hoverArrow {
   opacity: 0;
   transform: translate(-10px, 10px);
