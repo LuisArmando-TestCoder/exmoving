@@ -8,7 +8,8 @@ import { SliderButton } from "./SliderButton";
 export const NewsletterModal = () => {
   const { isNewsletterOpen, closeNewsletter, userContext, messages } = useChatbotStore();
   const [status, setStatus] = useState<"idle" | "success">("idle");
-  const [email, setEmail] = useState("");
+  // Pre-fill email from userContext if it exists (e.g. from EmailActionButton)
+  const [email, setEmail] = useState(userContext?.email || "");
 
   const handleSubscribe = async () => {
     setStatus("success");
@@ -86,13 +87,34 @@ export const NewsletterModal = () => {
                 </motion.div>
               ) : (
                 <div className={styles.form}>
-                  <input
-                    type="email"
-                    placeholder="Enter your email (optional if provided in chat)"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className={styles.input}
-                  />
+                  {!userContext?.email && (
+                    <input
+                      type="email"
+                      placeholder="Enter your email (optional if provided in chat)"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className={styles.input}
+                      style={{
+                        width: "100%",
+                        padding: "12px 16px",
+                        background: "rgba(255, 255, 255, 0.05)",
+                        border: "1px solid rgba(255, 255, 255, 0.1)",
+                        borderRadius: "8px",
+                        color: "#fff",
+                        fontSize: "14px",
+                        outline: "none",
+                        transition: "border-color 0.2s, box-shadow 0.2s",
+                      }}
+                      onFocus={(e) => {
+                        e.target.style.borderColor = "rgba(255, 255, 255, 0.3)";
+                        e.target.style.boxShadow = "0 0 0 2px rgba(255, 255, 255, 0.05)";
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor = "rgba(255, 255, 255, 0.1)";
+                        e.target.style.boxShadow = "none";
+                      }}
+                    />
+                  )}
                   <div style={{ marginTop: '1rem' }}>
                     <SliderButton 
                       icon={SendIcon} 

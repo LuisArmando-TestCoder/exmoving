@@ -47,7 +47,7 @@ export async function POST(req: Request) {
     if (geminiApiKey) {
       try {
         const ai = new GoogleGenerativeAI(geminiApiKey);
-        const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = ai.getGenerativeModel({ model: "gemini-flash-latest" });
         
         const prompt = `
           Extract user information from the following chat conversation and context.
