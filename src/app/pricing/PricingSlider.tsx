@@ -52,12 +52,13 @@ export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
 
-  // Sync local state if store changes externally
+  // Sync local state if store changes externally (e.g. initial URL load)
+  // Once the user interacts, we ignore external store changes.
   useEffect(() => {
-    if (!isDragging && typeof storeValue === "number") {
+    if (!hasInteracted && typeof storeValue === "number") {
       setLocalValue(storeValue);
     }
-  }, [storeValue, isDragging]);
+  }, [storeValue, hasInteracted]);
 
   // Debounced store update
   // A slightly higher debounce (50ms) ensures the global cost calculator and other subscribers 
