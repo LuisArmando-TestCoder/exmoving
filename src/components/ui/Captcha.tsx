@@ -37,23 +37,23 @@ export const Captcha: React.FC<CaptchaProps> = ({ onResolve, id = 'default' }) =
   const progressWidth = useTransform(xSpring, (val) => val + 34);
 
   useEffect(() => {
-    const stored = localStorage.getItem(`${STORAGE_KEY}_${id}`);
+    const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       setIsResolved(true);
       onResolve();
     }
     setIsChecking(false);
-  }, [id, onResolve]);
+  }, [onResolve]);
 
   const handleResolve = useCallback(() => {
     setIsSuccess(true);
-    localStorage.setItem(`${STORAGE_KEY}_${id}`, 'true');
+    localStorage.setItem(STORAGE_KEY, 'true');
     
     setTimeout(() => {
       setIsResolved(true);
       onResolve();
     }, 1500);
-  }, [id, onResolve]);
+  }, [onResolve]);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!containerRef.current) return;

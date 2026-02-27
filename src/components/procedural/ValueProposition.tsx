@@ -60,19 +60,22 @@ export default function ValueProposition({ itemName }: ValuePropositionProps) {
             
             <div className={styles.featuresList}>
               {features.map((feature, i) => (
-                <motion.div 
+                <div 
                   key={i} 
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: shouldReduceMotion ? 0 : 0.1 * i }}
                   className={styles.featureItem}
                 >
-                  <div className={styles.featureIcon}>
-                    {feature.icon}
-                  </div>
-                  <span>{feature.text}</span>
-                </motion.div>
+                  <motion.div 
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: shouldReduceMotion ? 0 : 0.1 * i }}
+                  >
+                    <div className={styles.featureIcon}>
+                      {feature.icon}
+                    </div>
+                    <span>{feature.text}</span>
+                  </motion.div>
+                </div>
               ))}
             </div>
           </motion.div>

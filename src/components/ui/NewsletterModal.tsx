@@ -1,28 +1,21 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useChatbotStore } from "@/store/useChatbotStore";
-import { X, Send, CheckCircle2 } from "lucide-react";
+import { X, Send, CheckCircle2, Sparkles, Zap, ShieldCheck, Send as SendIcon } from "lucide-react";
 import styles from "./NewsletterModal.module.scss";
+import { SliderButton } from "./SliderButton";
 
 export const NewsletterModal = () => {
   const { isNewsletterOpen, closeNewsletter } = useChatbotStore();
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success">("idle");
+  const [status, setStatus] = useState<"idle" | "success">("idle");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) return;
-    
-    setStatus("loading");
-    // Simulate API call
+  const handleSubscribe = () => {
+    setStatus("success");
+    // Wait for the success animation to show then close
     setTimeout(() => {
-      setStatus("success");
-      setTimeout(() => {
-        closeNewsletter();
-        setStatus("idle");
-        setEmail("");
-      }, 3000);
-    }, 1500);
+      closeNewsletter();
+      setTimeout(() => setStatus("idle"), 500);
+    }, 3000);
   };
 
   return (
@@ -37,68 +30,70 @@ export const NewsletterModal = () => {
             onClick={closeNewsletter}
           />
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            initial={{ opacity: 0, scale: 0.95, y: 20, rotateX: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20, rotateX: -10 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className={styles.modal}
           >
-            <button className={styles.closeButton} onClick={closeNewsletter}>
-              <X size={20} />
+            <div className={styles.glowOrb} />
+            <div className={styles.glowOrbSecondary} />
+            
+            <button className={styles.closeButton} onClick={closeNewsletter} aria-label="Close">
+              <X size={18} />
             </button>
 
             <div className={styles.content}>
               <div className={styles.header}>
-                <h2 className={styles.title}>Consultation Complete</h2>
+                <motion.div 
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", delay: 0.2 }}
+                  className={styles.iconWrapper}
+                >
+                  <Sparkles size={24} className={styles.headerIcon} />
+                </motion.div>
+                <h2 className={styles.title}>Join the Vanguard</h2>
                 <p className={styles.subtitle}>
-                  Thank you for your time. Your details have been securely transmitted to our AI specialists.
+                  Get exclusive insights, AI implementation strategies, and execution playbooks delivered straight to your inbox.
                 </p>
               </div>
 
               {status === "success" ? (
                 <motion.div 
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
                   className={styles.successState}
                 >
-                  <CheckCircle2 size={48} className={styles.successIcon} />
-                  <h3>You're on the list!</h3>
-                  <p>Welcome to the future of execution.</p>
+                  <div className={styles.successIconWrapper}>
+                    <CheckCircle2 size={48} className={styles.successIcon} />
+                  </div>
+                  <h3>Access Granted</h3>
+                  <p>Welcome to the future of execution. Watch your inbox.</p>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className={styles.form}>
-                  <div className={styles.inputGroup}>
-                    <label htmlFor="newsletter-email">
-                      Join our newsletter for weekly AI implementation strategies.
-                    </label>
-                    <div className={styles.inputWrapper}>
-                      <input
-                        id="newsletter-email"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Enter your email address"
-                        required
-                        disabled={status === "loading"}
-                      />
-                      <button 
-                        type="submit" 
-                        disabled={status === "loading" || !email}
-                        className={styles.submitBtn}
-                      >
-                        {status === "loading" ? (
-                          <span className={styles.loader} />
-                        ) : (
-                          <Send size={18} />
-                        )}
-                      </button>
+                <div className={styles.form}>
+                  <SliderButton 
+                    icon={SendIcon} 
+                    onResolve={handleSubscribe} 
+                    text="Slide to subscribe" 
+                    successText="Subscribed!" 
+                  />
+                  <div className={styles.benefits}>
+                    <div className={styles.benefitItem}>
+                      <Zap size={14} className={styles.benefitIcon} />
+                      <span>Weekly Alpha</span>
+                    </div>
+                    <div className={styles.benefitItem}>
+                      <ShieldCheck size={14} className={styles.benefitIcon} />
+                      <span>Zero Spam</span>
                     </div>
                   </div>
-                </form>
+                </div>
               )}
             </div>
             
-            <div className={styles.decorativeGlow} />
+            <div className={styles.borderHighlight} />
           </motion.div>
         </div>
       )}
