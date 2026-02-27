@@ -9,7 +9,7 @@ import { Box, Layers, Zap } from "lucide-react";
 import { CustomPricingCard } from "./CustomPricingCard";
 
 export const InfrastructureExplorer = () => {
-  const { infrastructure } = usePricingStore();
+  const infrastructure = usePricingStore((state) => state.infrastructure);
   const [activeTab, setActiveTab] = useState(infrastructure[0].id);
 
   const activeItem = infrastructure.find((item) => item.id === activeTab);

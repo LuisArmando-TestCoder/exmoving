@@ -43,10 +43,10 @@ const RollingNumber = ({ value, unit }: { value: any, unit?: string }) => {
 };
 
 export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
-  const { customValues, setCustomValue } = usePricingStore();
+  const storeValue = usePricingStore((state) => state.customValues[itemId]);
+  const setCustomValue = usePricingStore((state) => state.setCustomValue);
   
   // Local state for immediate responsiveness
-  const storeValue = customValues[itemId];
   const initialValue = typeof storeValue === "number" ? storeValue : config.min;
   const [localValue, setLocalValue] = useState(initialValue);
   const [isDragging, setIsDragging] = useState(false);
@@ -60,10 +60,12 @@ export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
   }, [storeValue, isDragging]);
 
   // Debounced store update
+  // A slightly higher debounce (50ms) ensures the global cost calculator and other subscribers 
+  // don't bog down the main thread while the local slider stays buttery smooth at 60fps
   useEffect(() => {
     const handler = setTimeout(() => {
       setCustomValue(itemId, localValue);
-    }, 16);
+    }, 50);
 
     return () => clearTimeout(handler);
   }, [localValue, itemId, setCustomValue]);

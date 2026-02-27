@@ -12,11 +12,12 @@ interface CustomPricingCardProps {
 }
 
 export const CustomPricingCard = ({ item }: CustomPricingCardProps) => {
-  const { customValues, setCustomValue } = usePricingStore();
+  const value = usePricingStore((state) => state.customValues[item.id]);
+  const setCustomValue = usePricingStore((state) => state.setCustomValue);
   
   // Initialize default values
   useEffect(() => {
-    if (customValues[item.id] === undefined) {
+    if (value === undefined) {
       if (item.pricingType === 'slider' && item.slider) {
         setCustomValue(item.id, item.slider.min);
       } else if (item.pricingType === 'tiers' && item.tiers) {
@@ -27,9 +28,7 @@ export const CustomPricingCard = ({ item }: CustomPricingCardProps) => {
         setCustomValue(item.id, false);
       }
     }
-  }, [item, customValues, setCustomValue]);
-
-  const value = customValues[item.id];
+  }, [item, value, setCustomValue]);
 
   const calculateItemCost = () => {
     if (item.pricingType === 'slider' && item.slider && typeof value === 'number') {
