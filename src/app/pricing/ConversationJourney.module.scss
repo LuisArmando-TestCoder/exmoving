@@ -88,7 +88,7 @@
 
 .messageCard {
   width: 100%;
-  max-width: 480px;
+  max-width: 520px;
   padding: 2.5rem;
   background: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(20px);
@@ -98,17 +98,21 @@
   position: relative;
   
   &.odd {
-    margin-right: 55%;
+    margin-right: auto;
+    margin-left: 0;
+    transform-origin: left center;
     @media (max-width: 768px) {
-      margin-right: 0;
       margin-left: 40px;
     }
   }
   
   &.even {
-    margin-left: 55%;
+    margin-left: auto;
+    margin-right: 0;
+    transform-origin: right center;
     @media (max-width: 768px) {
       margin-left: 40px;
+      margin-right: 0;
     }
   }
 

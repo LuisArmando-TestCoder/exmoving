@@ -41,6 +41,19 @@ export default function PricingPage() {
               <CostCalculator />
             </div>
 
+            <div style={{ marginTop: '8rem', textAlign: 'center' }}>
+              <Reveal>
+                <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)', fontWeight: 900, marginBottom: '1.5rem', letterSpacing: '-0.05em' }}>
+                  The <span className="text-gradient">Cost of Inefficiency.</span>
+                </h2>
+              </Reveal>
+              <Reveal delay={0.1}>
+                <p style={{ color: 'var(--text-dim)', fontSize: '1.25rem', maxWidth: '600px', margin: '0 auto' }}>
+                  Real-world insights on LLM burn rates and the hidden tax of unoptimized workflows.
+                </p>
+              </Reveal>
+            </div>
+
             <ConversationJourney />
 
             <Reveal className={styles.visionSection}>

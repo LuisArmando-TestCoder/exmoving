@@ -83,7 +83,6 @@ const MESSAGES: Message[] = [
 
 export const ConversationJourney = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const shouldReduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
@@ -106,20 +105,6 @@ export const ConversationJourney = () => {
             willChange: "transform"
           }}
         />
-      </div>
-
-      <div className={styles.stickyHeader}>
-        <motion.h2 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className={styles.journeyTitle}
-        >
-          The <span className="text-gradient">Cost of Inefficiency.</span>
-        </motion.h2>
-        <p className={styles.journeySubtitle}>
-          Real-world insights on LLM burn rates and the hidden tax of unoptimized workflows.
-        </p>
       </div>
 
       <div className={styles.messagesWrapper}>
