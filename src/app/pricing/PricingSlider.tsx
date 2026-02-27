@@ -87,12 +87,13 @@ export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
           onChange={(e) => setCustomValue(itemId, Number(e.target.value))}
           className={styles.ultraRangeInput}
         />
-        <motion.div 
+        <div 
           className={styles.customThumb}
-          style={{ left: `${percentage}%` }}
-          animate={{ 
-            scale: isDragging ? 1.5 : 1,
-            boxShadow: isDragging ? "0 0 20px rgba(var(--primary-rgb), 0.5)" : "0 0 0px rgba(var(--primary-rgb), 0)"
+          style={{ 
+            left: `${percentage}%`,
+            transform: `translate(-50%, 0) ${isDragging ? 'scale(1.3)' : ''}`,
+            borderColor: isDragging ? 'var(--primary)' : 'var(--bg)',
+            boxShadow: isDragging ? '0 0 20px rgba(var(--primary-rgb), 0.4)' : '0 4px 12px rgba(0, 0, 0, 0.4)'
           }}
         />
       </div>
