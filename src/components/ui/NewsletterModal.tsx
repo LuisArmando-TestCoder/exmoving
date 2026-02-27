@@ -6,15 +6,28 @@ import styles from "./NewsletterModal.module.scss";
 import { SliderButton } from "./SliderButton";
 
 export const NewsletterModal = () => {
-  const { isNewsletterOpen, closeNewsletter } = useChatbotStore();
+  const { isNewsletterOpen, closeNewsletter, userContext, messages } = useChatbotStore();
   const [status, setStatus] = useState<"idle" | "success">("idle");
+  const [email, setEmail] = useState("");
 
-  const handleSubscribe = () => {
+  const handleSubscribe = async () => {
     setStatus("success");
-    // Wait for the success animation to show then close
+    
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, messages, userContext }),
+      });
+      if (!res.ok) console.error("Failed to subscribe");
+    } catch (e) {
+      console.error(e);
+    }
+
     setTimeout(() => {
       closeNewsletter();
       setTimeout(() => setStatus("idle"), 500);
+      setEmail("");
     }, 3000);
   };
 
@@ -73,12 +86,21 @@ export const NewsletterModal = () => {
                 </motion.div>
               ) : (
                 <div className={styles.form}>
-                  <SliderButton 
-                    icon={SendIcon} 
-                    onResolve={handleSubscribe} 
-                    text="Slide to subscribe" 
-                    successText="Subscribed!" 
+                  <input
+                    type="email"
+                    placeholder="Enter your email (optional if provided in chat)"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className={styles.input}
                   />
+                  <div style={{ marginTop: '1rem' }}>
+                    <SliderButton 
+                      icon={SendIcon} 
+                      onResolve={handleSubscribe} 
+                      text="Slide to subscribe" 
+                      successText="Subscribed!" 
+                    />
+                  </div>
                   <div className={styles.benefits}>
                     <div className={styles.benefitItem}>
                       <Zap size={14} className={styles.benefitIcon} />
