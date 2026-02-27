@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { sendEmail } from '@/app/actions';
 import { getNewsletterTemplate } from '@/utils/emailTemplates';
+import { IntelligenceUnit } from '@/lib/IntelligenceUnit';
 
 // Simple retry helper
 async function withRetry<T>(
@@ -124,6 +125,17 @@ export async function POST(req: Request) {
     const result = await response.json();
 
     if (response.ok) {
+      // Telemetry for extraction logic
+      const promptText = "Extract user information from chat..."; 
+      const metrics = {
+        inputTokens: IntelligenceUnit.estimateTokens(promptText + JSON.stringify(messages)),
+        outputTokens: IntelligenceUnit.estimateTokens(JSON.stringify(extractedData)),
+        modelId: "gemini-flash-latest",
+        operation: "newsletter_extraction"
+      };
+      const cost = IntelligenceUnit.calculateCost(metrics);
+      IntelligenceUnit.logTelemetry(metrics, cost, "Newsletter context extraction complete.");
+
       // Send beautiful notification email to stakeholder
       try {
         await sendEmail({

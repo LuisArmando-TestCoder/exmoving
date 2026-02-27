@@ -12,6 +12,8 @@ import NotFound from "./procedural/NotFound";
 import ProceduralHeader from "./procedural/ProceduralHeader";
 import InteractiveExplorer from "./procedural/InteractiveExplorer";
 import ValueProposition from "./procedural/ValueProposition";
+import { ReactNode } from "react";
+import { Reveal } from "@/components/ui/Reveal";
 
 function findNavItemByPath(items: NavItem[], path: string): NavItem | null {
   for (const item of items) {
@@ -24,7 +26,11 @@ function findNavItemByPath(items: NavItem[], path: string): NavItem | null {
   return null;
 }
 
-export default function ProceduralTemplate() {
+interface ProceduralTemplateProps {
+  children?: ReactNode;
+}
+
+export default function ProceduralTemplate({ children }: ProceduralTemplateProps) {
   const pathname = usePathname();
   const item = findNavItemByPath(navigationData, pathname);
 
@@ -38,17 +44,30 @@ export default function ProceduralTemplate() {
       <BackgroundDecor />
 
       <main className={`${styles.main} container mx-auto px-4`}>
-        <ProceduralHeader title={item.name} />
-        <Breadcrumbs />
+        <Reveal direction="down" distance={20}>
+          <ProceduralHeader title={item.name} />
+        </Reveal>
+        
+        <Reveal delay={0.2} distance={10}>
+          <Breadcrumbs />
+        </Reveal>
+
+        <section className="relative z-10">
+          {children}
+        </section>
 
         {item.children && item.children.length > 0 && (
-          <InteractiveExplorer 
-            itemName={item.name} 
-            childrenNodes={item.children} 
-          />
+          <Reveal delay={0.3}>
+            <InteractiveExplorer 
+              itemName={item.name} 
+              childrenNodes={item.children} 
+            />
+          </Reveal>
         )}
 
-        <ValueProposition itemName={item.name} />
+        <Reveal delay={0.4}>
+          <ValueProposition itemName={item.name} />
+        </Reveal>
       </main>
       
       <Footer />

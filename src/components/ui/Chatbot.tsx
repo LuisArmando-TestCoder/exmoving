@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { useChatbotStore } from "@/store/useChatbotStore";
 import { ChatBrain } from "@/lib/ChatBrain";
+import { IntelligenceUnit } from "@/lib/IntelligenceUnit";
 import { sendEmail } from "@/app/actions";
 import { getEmailTemplate } from "@/utils/emailTemplates";
 import styles from "./Chatbot.module.scss";
@@ -336,9 +337,19 @@ export const Chatbot = ({
           const currentState = useChatbotStore.getState();
           const patternSummary = await brain.getBehaviorPatternSummary(currentState.behaviorNotes);
           
+          const totals = {
+            totalInputTokens: currentState.totalTokensIn,
+            totalOutputTokens: currentState.totalTokensOut,
+            totalCost: currentState.totalCost,
+            modelsUsed: new Set(currentState.modelsUsed)
+          };
+
+          const resourceDossier = IntelligenceUnit.generateResourceDossierHTML(totals);
+          IntelligenceUnit.logSessionSummary(totals);
+          
           await sendEmail({
             to: "oriens@aiexecutions.com",
-            ...getEmailTemplate(fullReportText, true, false, currentState.interactionHistory, currentState.userContext, currentState.behaviorNotes, patternSummary)
+            ...getEmailTemplate(fullReportText, true, false, currentState.interactionHistory, currentState.userContext, currentState.behaviorNotes, patternSummary, resourceDossier)
           });
         } catch (e) {
           console.error("Failed to auto-send erratic report:", e);
@@ -377,10 +388,20 @@ export const Chatbot = ({
           try {
             const currentState = useChatbotStore.getState();
             const patternSummary = await brain.getBehaviorPatternSummary(currentState.behaviorNotes);
+            
+            const totals = {
+              totalInputTokens: currentState.totalTokensIn,
+              totalOutputTokens: currentState.totalTokensOut,
+              totalCost: currentState.totalCost,
+              modelsUsed: new Set(currentState.modelsUsed)
+            };
+
+            const resourceDossier = IntelligenceUnit.generateResourceDossierHTML(totals);
+            IntelligenceUnit.logSessionSummary(totals);
 
             await sendEmail({
               to: "oriens@aiexecutions.com",
-              ...getEmailTemplate(finalSummaryText, true, false, currentState.interactionHistory, currentState.userContext, currentState.behaviorNotes, patternSummary)
+              ...getEmailTemplate(finalSummaryText, true, false, currentState.interactionHistory, currentState.userContext, currentState.behaviorNotes, patternSummary, resourceDossier)
             });
             console.log("Email automatically sent to stakeholder.");
           } catch (error) {

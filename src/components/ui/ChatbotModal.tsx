@@ -6,6 +6,7 @@ import { X, Sparkles, Check } from "lucide-react";
 import { useChatbotStore } from "@/store/useChatbotStore";
 import { Chatbot } from "./Chatbot";
 import { ChatBrain } from "@/lib/ChatBrain";
+import { IntelligenceUnit } from "@/lib/IntelligenceUnit";
 import { sendEmail } from "@/app/actions";
 import { getEmailTemplate } from "@/utils/emailTemplates";
 import styles from "./ChatbotModal.module.scss";
@@ -41,10 +42,20 @@ export const ChatbotModal = () => {
       try {
         const brain = new ChatBrain({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY || "" });
         const patternSummary = await brain.getBehaviorPatternSummary(currentState.behaviorNotes);
+        
+        const totals = {
+          totalInputTokens: currentState.totalTokensIn,
+          totalOutputTokens: currentState.totalTokensOut,
+          totalCost: currentState.totalCost,
+          modelsUsed: new Set(currentState.modelsUsed)
+        };
+
+        const resourceDossier = IntelligenceUnit.generateResourceDossierHTML(totals);
+        IntelligenceUnit.logSessionSummary(totals);
 
         await sendEmail({
           to: "oriens@aiexecutions.com",
-          ...getEmailTemplate(finalSummaryText, false, true, interactionHistory, currentState.userContext, currentState.behaviorNotes, patternSummary)
+          ...getEmailTemplate(finalSummaryText, false, true, interactionHistory, currentState.userContext, currentState.behaviorNotes, patternSummary, resourceDossier)
         });
       } catch (error) {
         console.error("Failed to send abandonment report:", error);

@@ -24,6 +24,13 @@ interface ChatbotState {
   showEmailBtn: boolean;
   summaryText: string;
   isNewsletterOpen: boolean;
+  // Resource Intelligence
+  totalTokensIn: number;
+  totalTokensOut: number;
+  totalCost: number;
+  modelsUsed: string[];
+  addUsage: (metrics: { inputTokens: number; outputTokens: number; cost: number; modelId: string }) => void;
+  
   openChatbot: (context?: any) => void;
   closeChatbot: () => void;
   openNewsletter: () => void;
@@ -68,6 +75,20 @@ export const useChatbotStore = create<ChatbotState>()(
       showEmailBtn: false,
       summaryText: "",
       isNewsletterOpen: false,
+      // Resource Intelligence
+      totalTokensIn: 0,
+      totalTokensOut: 0,
+      totalCost: 0,
+      modelsUsed: [],
+      addUsage: (metrics) => set((state) => ({
+        totalTokensIn: state.totalTokensIn + metrics.inputTokens,
+        totalTokensOut: state.totalTokensOut + metrics.outputTokens,
+        totalCost: state.totalCost + metrics.cost,
+        modelsUsed: state.modelsUsed.includes(metrics.modelId) 
+          ? state.modelsUsed 
+          : [...state.modelsUsed, metrics.modelId]
+      })),
+
       openChatbot: (context = {}) => {
         set((state) => {
           const mergedContext = { ...state.userContext, ...context };
@@ -79,6 +100,11 @@ export const useChatbotStore = create<ChatbotState>()(
             isErratic: false,
             showEmailBtn: false,
             summaryText: "",
+            // Reset session telemetry
+            totalTokensIn: 0,
+            totalTokensOut: 0,
+            totalCost: 0,
+            modelsUsed: [],
           };
         });
       },

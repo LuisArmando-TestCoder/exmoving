@@ -20,6 +20,16 @@ export const navigationData: NavItem[] = [
               { name: "Pricing", path: "/services/consultations/moving/pricing" },
             ],
           },
+          {
+            name: "Automation",
+            path: "/services/consultations/automation",
+            children: [
+              {
+                name: "Chatbot",
+                path: "/services/consultations/automation/chatbot",
+              },
+            ],
+          },
         ],
       },
     ],

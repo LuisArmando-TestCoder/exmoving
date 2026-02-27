@@ -215,7 +215,7 @@ export const getRequestTemplate = (label: string, email: string, metadata: any) 
   };
 };
 
-export const getEmailTemplate = (text: string, isAuto: boolean = false, isAbandoned: boolean = false, historyRecords: any[] = [], metadata: any = {}, behaviorNotes: string = "", patternSummary: string = "") => {
+export const getEmailTemplate = (text: string, isAuto: boolean = false, isAbandoned: boolean = false, historyRecords: any[] = [], metadata: any = {}, behaviorNotes: string = "", patternSummary: string = "", resourceDossier: string = "") => {
   // Parse out sections if they exist
   const historyMatch = text.match(/CHAT HISTORY:\n([\s\S]*?)(?=\n\nBEHAVIORAL OBSERVATIONS:|$)/);
   const behaviorMatch = text.match(/BEHAVIORAL OBSERVATIONS:\n([\s\S]*)$/);
@@ -411,6 +411,9 @@ export const getEmailTemplate = (text: string, isAuto: boolean = false, isAbando
 
                 <!-- Metadata Section -->
                 ${metadataGrid}
+
+                <!-- Resource Dossier -->
+                ${resourceDossier}
 
                 <!-- Chat History Section -->
                 <h2 style="margin: 32px 0 20px 0; color: #FFFFFF; font-size: 18px; font-weight: 700;">

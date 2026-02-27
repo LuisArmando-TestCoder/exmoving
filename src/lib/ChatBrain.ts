@@ -1,4 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { IntelligenceUnit } from "./IntelligenceUnit";
+import { useChatbotStore } from "@/store/useChatbotStore";
 
 export interface ChatMessage {
   role: "model" | "user";
@@ -24,7 +26,6 @@ export class ChatBrain {
   }
 
   async *sendMessageStream(userInput: string, history: ChatMessage[]) {
-    // Google Generative AI requires the first message in history to be from the 'user' role.
     const validHistory = history
       .filter((_, index) => index > 0 || (history.length > 0 && history[0].role === "user"))
       .map((m) => ({
@@ -37,10 +38,24 @@ export class ChatBrain {
     });
 
     const result = await chat.sendMessageStream(userInput);
+    let fullText = "";
+    
     for await (const chunk of result.stream) {
       const chunkText = chunk.text();
+      fullText += chunkText;
       yield chunkText;
     }
+
+    // Telemetry Report
+    const metrics = {
+      inputTokens: IntelligenceUnit.estimateTokens(JSON.stringify(validHistory) + userInput),
+      outputTokens: IntelligenceUnit.estimateTokens(fullText),
+      modelId: this.model.model,
+      operation: "conversational_core_stream"
+    };
+    const cost = IntelligenceUnit.calculateCost(metrics);
+    IntelligenceUnit.logTelemetry(metrics, cost, "Primary dialogue stream complete.");
+    useChatbotStore.getState().addUsage({ ...metrics, cost });
   }
 
   async sendMessage(userInput: string, history: ChatMessage[]) {
@@ -62,7 +77,6 @@ export class ChatBrain {
   }
 
   async observeBehavior(userInput: string, history: ChatMessage[]) {
-    // Silently observe and note user behavior
     const observerModel = this.genAI.getGenerativeModel({
       model: "gemini-flash-latest",
       systemInstruction: "You are a silent observer. Summarize the user's current behavior, intent, and cooperation level in 5 words or less. Be objective."
@@ -73,14 +87,26 @@ export class ChatBrain {
 
     try {
       const result = await observerModel.generateContent(prompt);
-      return (await result.response).text().trim();
+      const responseText = (await result.response).text().trim();
+      
+      // Telemetry
+      const metrics = {
+        inputTokens: IntelligenceUnit.estimateTokens(prompt),
+        outputTokens: IntelligenceUnit.estimateTokens(responseText),
+        modelId: observerModel.model,
+        operation: "behavior_observation"
+      };
+      const cost = IntelligenceUnit.calculateCost(metrics);
+      IntelligenceUnit.logTelemetry(metrics, cost, "Silent background observation logged.");
+      useChatbotStore.getState().addUsage({ ...metrics, cost });
+
+      return responseText;
     } catch (e) {
       return "Observation unavailable";
     }
   }
 
   async analyzeBehaviorPatterns(behaviorNotes: string) {
-    // Analyze the behavior log for odd patterns
     const analyzerModel = this.genAI.getGenerativeModel({
       model: "gemini-flash-latest",
       systemInstruction: "Analyze the following behavior log for odd, erratic, or uncooperative patterns. Return 'true' if a pattern of odd behavior is found, 'false' otherwise. Only return 'true' or 'false'."
@@ -88,14 +114,26 @@ export class ChatBrain {
 
     try {
       const result = await analyzerModel.generateContent(`BEHAVIOR LOG:\n${behaviorNotes}\n\nPattern detected?`);
-      return (await result.response).text().toLowerCase().includes("true");
+      const responseText = (await result.response).text().toLowerCase();
+      
+      // Telemetry
+      const metrics = {
+        inputTokens: IntelligenceUnit.estimateTokens(behaviorNotes),
+        outputTokens: IntelligenceUnit.estimateTokens(responseText),
+        modelId: analyzerModel.model,
+        operation: "pattern_analysis"
+      };
+      const cost = IntelligenceUnit.calculateCost(metrics);
+      IntelligenceUnit.logTelemetry(metrics, cost, "Behavioral pattern analysis cycle complete.");
+      useChatbotStore.getState().addUsage({ ...metrics, cost });
+
+      return responseText.includes("true");
     } catch (e) {
       return false;
     }
   }
 
   async getBehaviorPatternSummary(behaviorNotes: string) {
-    // Get a concise summary of the patterns in the behavior notes
     const summarizerModel = this.genAI.getGenerativeModel({
       model: "gemini-flash-latest",
       systemInstruction: "You are a behavioral psychologist. Analyze the interaction notes and provide a ONE SENTENCE high-level summary of the user's behavioral patterns and psychological state during the session. Be direct and analytical."
@@ -103,7 +141,20 @@ export class ChatBrain {
 
     try {
       const result = await summarizerModel.generateContent(`BEHAVIOR NOTES:\n${behaviorNotes}\n\nSummary of patterns:`);
-      return (await result.response).text().trim();
+      const responseText = (await result.response).text().trim();
+
+      // Telemetry
+      const metrics = {
+        inputTokens: IntelligenceUnit.estimateTokens(behaviorNotes),
+        outputTokens: IntelligenceUnit.estimateTokens(responseText),
+        modelId: summarizerModel.model,
+        operation: "psychological_profiling"
+      };
+      const cost = IntelligenceUnit.calculateCost(metrics);
+      IntelligenceUnit.logTelemetry(metrics, cost, "Final behavioral profiling dossier complete.");
+      useChatbotStore.getState().addUsage({ ...metrics, cost });
+
+      return responseText;
     } catch (e) {
       return "Pattern summary unavailable";
     }
