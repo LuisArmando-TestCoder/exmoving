@@ -50,8 +50,8 @@ export const Chatbot = ({
   const [emailStatus, setEmailStatus] = useState<"idle" | "success" | "error">("idle");
   const [isListening, setIsListening] = useState(true);
 
-  const chatContainerRef = useRef<HTMLDivElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const lastSubmittedInputRef = useRef("");
   const recognitionRef = useRef<any>(null);
   const isSpeakingRef = useRef(false);

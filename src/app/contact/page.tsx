@@ -15,10 +15,12 @@ export default function ContactPage() {
           <p className="opacity-60 mb-8 max-w-sm">For partnerships, system demos, or architectural consultations.</p>
           
           <div className="space-y-6">
+            <br />
             <div>
               <span className={styles.label}>Email</span>
               <p className="text-xl">info@executions.com</p>
             </div>
+            <br />
             <div>
               <span className={styles.label}>Location</span>
               <p className="text-xl">Distributed / Global</p>
