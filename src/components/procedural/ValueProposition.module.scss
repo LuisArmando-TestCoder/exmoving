@@ -17,7 +17,7 @@
   grid-template-columns: 1.2fr 1fr;
   gap: 4rem;
   align-items: center;
-  transform-style: preserve-3d;
+  // transform-style: preserve-3d;
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;

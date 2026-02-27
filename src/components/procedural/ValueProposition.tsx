@@ -110,9 +110,6 @@ export default function ValueProposition({ itemName }: ValuePropositionProps) {
               </p>
               <div className={styles.cardGlow} />
             </div>
-
-            {/* Background elements for depth */}
-            <div className={styles.floatingShape} />
           </motion.div>
         </div>
       </motion.div>
