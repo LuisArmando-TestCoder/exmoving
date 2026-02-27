@@ -775,9 +775,7 @@
           font-weight: 900;
           line-height: 1;
           letter-spacing: -0.04em;
-          background: var(--accent-gradient);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
+          color: var(--text);
         }
 
         .period {
