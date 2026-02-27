@@ -5,7 +5,7 @@ import { ArrowRight, Sparkles, Activity } from "lucide-react";
 import { motion, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import styles from "./Pricing.module.scss";
-import Reveal from "@/components/ui/Reveal";
+import { Reveal } from "@/components/ui/Reveal";
 
 interface PricingSliderProps {
   itemId: string;
