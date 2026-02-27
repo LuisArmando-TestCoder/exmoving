@@ -39,7 +39,10 @@ export default function PricingPage() {
 
         <section className="section" id="pricing-core-section">
           <div className="container">
-            <StaggerContainer className={styles.grid} id="pricing-grid-main">
+            <InfrastructureExplorer />
+            <CostCalculator />
+
+            <StaggerContainer className={styles.grid} id="pricing-grid-main" style={{ marginTop: '4rem' }}>
               {/* Core Costs */}
               <Reveal id="pricing-card-hosting-reveal">
                 <GlassCard className={styles.card} id="pricing-card-hosting">
@@ -92,7 +95,7 @@ export default function PricingPage() {
               </Reveal>
             </StaggerContainer>
 
-            <Reveal className={styles.comparisonSection} id="pricing-token-efficiency-reveal">
+            <Reveal className={styles.comparisonSection} id="pricing-token-efficiency-reveal" style={{ marginTop: '4rem' }}>
               <div style={{ marginBottom: '2rem', textAlign: 'center' }} id="pricing-table-header">
                 <h2 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '1rem' }} id="pricing-table-title">Token <span className="text-gradient">Efficiency.</span></h2>
                 <p style={{ color: 'var(--text-dim)' }} id="pricing-table-desc">Comparative summary of what a $300 budget yields across models (500-word emails)</p>
@@ -122,9 +125,6 @@ export default function PricingPage() {
               </p>
             </Reveal>
 
-            <InfrastructureExplorer />
-            <CostCalculator />
-
             <Reveal className={styles.visionSection}>
               <div className={styles.visionContent}>
                 <blockquote className={styles.quote}>
@@ -141,7 +141,7 @@ export default function PricingPage() {
         <section className={styles.cta}>
           <div className="container">
             <Reveal>
-              <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '1.5rem' }}>Ready to <span className="text-gradient">Scale?</span></h2>
+              <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '1.5rem', display: 'grid', placeItems: 'center' }}>Ready to <span className="text-gradient">Scale?</span></h2>
               <p style={{ color: 'var(--text-dim)', marginBottom: '2rem', maxWidth: '600px', margin: '0 auto 2rem' }}>
                 Instead of quoting, we make a demo. We use your transcripts to generate the tool. Only when it performs successfully do we move forward.
               </p>
