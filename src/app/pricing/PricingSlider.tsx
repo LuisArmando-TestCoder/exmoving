@@ -1,8 +1,8 @@
 "use client";
 
 import { usePricingStore, SliderConfig } from "@/store/usePricingStore";
-import { ArrowRight, Sparkles, MoveRight } from "lucide-react";
-import { motion, useSpring, useTransform, useMotionValue, AnimatePresence } from "framer-motion";
+import { ArrowRight, Sparkles, MoveRight, ChevronRight, ChevronLeft } from "lucide-react";
+import { motion, useSpring, useTransform, useMotionValue, AnimatePresence, useVelocity } from "framer-motion";
 import { useRef, useEffect, useState, useCallback, useMemo } from "react";
 import styles from "./Pricing.module.scss";
 import { Reveal } from "@/components/ui/Reveal";
@@ -11,6 +11,35 @@ interface PricingSliderProps {
   itemId: string;
   config: SliderConfig;
 }
+
+const RollingNumber = ({ value, unit }: { value: any, unit?: string }) => {
+  const springValue = useSpring(value, {
+    stiffness: 80,
+    damping: 20,
+    mass: 1,
+  });
+
+  useEffect(() => {
+    springValue.set(value);
+  }, [value, springValue]);
+
+  const [displayValue, setDisplayValue] = useState(value);
+
+  useEffect(() => {
+    return springValue.on("change", (latest) => {
+      setDisplayValue(Math.round(latest));
+    });
+  }, [springValue]);
+
+  return (
+    <motion.div className={styles.valueBadge}>
+      <motion.span>
+        {displayValue.toLocaleString()}
+      </motion.span>
+      {unit && <span className={styles.unit}>{unit}</span>}
+    </motion.div>
+  );
+};
 
 export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
   const { customValues, setCustomValue } = usePricingStore();
@@ -29,19 +58,19 @@ export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
     }
   }, [storeValue, isDragging]);
 
-  // Debounced store update to prevent heavy re-renders during sliding
+  // Debounced store update
   useEffect(() => {
-    if (localValue === initialValue) return;
-    
     const handler = setTimeout(() => {
       setCustomValue(itemId, localValue);
-    }, 16); // ~60fps debounce for smooth but performant updates
+    }, 16);
 
     return () => clearTimeout(handler);
-  }, [localValue, itemId, setCustomValue, initialValue]);
+  }, [localValue, itemId, setCustomValue]);
 
   // Motion values for hardware-accelerated visual updates
   const motionValue = useMotionValue(initialValue);
+  const velocity = useVelocity(motionValue);
+  
   useEffect(() => {
     motionValue.set(localValue);
   }, [localValue, motionValue]);
@@ -49,14 +78,13 @@ export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
   const percentage = useTransform(
     motionValue,
     [config.min, config.max],
-    [0, 100]
+    ["0%", "100%"]
   );
 
-  // Spring animation for smooth numeric rolling
+  // Spring animation for smooth numeric rolling in BA section
   const springDisplayValue = useSpring(localValue, {
-    stiffness: 120,
-    damping: 24,
-    mass: 0.2,
+    stiffness: 100,
+    damping: 30,
   });
 
   useEffect(() => {
@@ -126,21 +154,9 @@ export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
       >
         <div className={styles.sliderHeader}>
           <div className={styles.labelGroup}>
-            <span className={styles.label}>Computational Load</span>
+            <span className={styles.label}>{itemId} Intensity</span>
           </div>
-          <motion.div
-            className={styles.valueBadge}
-            animate={{
-              backgroundColor: isDragging ? "rgba(var(--primary-rgb), 0.1)" : "rgba(var(--overlay-rgb), 0.05)",
-              borderColor: isDragging ? "var(--primary)" : "transparent",
-              y: isDragging ? -2 : 0,
-            }}
-          >
-            {localValue.toLocaleString()}{" "}
-            <span style={{ fontSize: "0.6em", opacity: 0.6 }}>
-              {config.unit}
-            </span>
-          </motion.div>
+          <RollingNumber value={localValue} unit={config.unit} />
         </div>
 
         {renderBATranslation()}
@@ -150,24 +166,28 @@ export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
             {!hasInteracted && (
               <motion.div 
                 className={styles.sliderHint}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 20 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ 
-                  opacity: { duration: 0.3 },
-                  x: { repeat: Infinity, repeatType: "reverse", duration: 1.5, ease: "easeInOut" }
-                }}
+                initial={{ opacity: 0, y: 10, x: "-50%" }}
+                animate={{ opacity: 1, y: 0, x: "-50%" }}
+                exit={{ opacity: 0, scale: 0.8, x: "-50%" }}
               >
-                <MoveRight size={16} />
+                <ChevronLeft size={14} />
                 <span>Swipe</span>
+                <ChevronRight size={14} />
               </motion.div>
             )}
           </AnimatePresence>
+
+          <div className={styles.tickMarks}>
+            {[...Array(10)].map((_, i) => (
+              <div key={i} className={styles.tick} />
+            ))}
+          </div>
 
           <motion.div
             className={styles.trackProgress}
             style={{ width: percentage }}
           />
+          
           <input
             type="range"
             min={config.min}
@@ -185,28 +205,28 @@ export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
             }}
             className={styles.ultraRangeInput}
           />
+
           <motion.div
             className={styles.customThumb}
-            style={{
-              left: percentage,
-            }}
+            style={{ left: percentage }}
             animate={{
-              scale: isDragging ? 1.3 : 1,
-              rotate: isDragging ? 225 : 45,
+              scale: isDragging ? 1.2 : 1,
               boxShadow: isDragging 
-                ? "0 0 25px rgba(var(--primary-rgb), 0.6)" 
-                : "0 4px 15px rgba(0, 0, 0, 0.5)"
+                ? "0 0 30px rgba(var(--primary-rgb), 0.5)" 
+                : "0 8px 20px rgba(0, 0, 0, 0.3)"
             }}
-            transition={{ type: "spring", stiffness: 400, damping: 25 }}
-          />
+            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+          >
+            <div className={styles.thumbGlow} />
+          </motion.div>
         </div>
 
         <div className={styles.sliderScale}>
-          <span className={styles.scalePoint}>
-            Baseline: {config.min.toLocaleString()}
+          <span className={`${styles.scalePoint} ${localValue === config.min ? styles.active : ""}`}>
+            Min: {config.min.toLocaleString()}
           </span>
-          <span className={styles.scalePoint}>
-            Peak: {config.max.toLocaleString()}+
+          <span className={`${styles.scalePoint} ${localValue === config.max ? styles.active : ""}`}>
+            Max: {config.max.toLocaleString()}
           </span>
         </div>
       </div>
