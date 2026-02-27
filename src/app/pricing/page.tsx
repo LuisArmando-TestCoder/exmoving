@@ -74,14 +74,16 @@ export default function PricingPage() {
         <section className={styles.cta}>
           <div className="container">
             <Reveal>
-              <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '1.5rem', display: 'grid', placeItems: 'center' }}>Ready to <span className="text-gradient">Scale?</span></h2>
-              <p style={{ color: 'var(--text-dim)', marginBottom: '2rem', maxWidth: '600px', margin: '0 auto 2rem' }}>
-                Instead of quoting, we make a demo. We use your transcripts to generate the tool. Only when it performs successfully do we move forward.
-              </p>
-              <EmailActionButton 
-                label="Schedule Consultation Call" 
-                subject="Pricing Consultation Request"
-              />
+              <div className={styles.centeredWrapper}>
+                <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '1.5rem', display: 'grid', placeItems: 'center' }}>Ready to <span className="text-gradient">Scale?</span></h2>
+                <p style={{ color: 'var(--text-dim)', marginBottom: '2rem', maxWidth: '600px', margin: '0 auto 2rem' }}>
+                  Instead of quoting, we make a demo. We use your transcripts to generate the tool. Only when it performs successfully do we move forward.
+                </p>
+                <EmailActionButton 
+                  label="Schedule Consultation Call" 
+                  subject="Pricing Consultation Request"
+                />
+              </div>
             </Reveal>
           </div>
         </section>

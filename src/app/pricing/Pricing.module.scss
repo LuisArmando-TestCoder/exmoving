@@ -7,6 +7,11 @@
   background: var(--bg);
 }
 
+.centeredWrapper {
+  display: grid;
+  place-items: center;
+}
+
 .hero {
   padding: 100px 0;
   text-align: center;
