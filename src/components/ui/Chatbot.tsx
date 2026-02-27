@@ -97,7 +97,7 @@ export const Chatbot = ({
       modelId,
       systemInstruction: `Act as a concise automation consultant. 
         CONSULTATION FLOW:
-        1. GATHER initial info: Company, Industry, Email.
+        1. GATHER initial info: Company, Industry.
         2. DEFINE OBJECTIVE: Ask what the primary business goal is.
         3. IDENTIFY PROBLEM: Once the objective is set, ask for the main roadblock/problem.
         4. ROOT CAUSE ANALYSIS: Use the "5 Whys" technique to drill down into the stated problem to find its source.

@@ -31,7 +31,7 @@ export const EmailActionButton = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-  const { openChatbot } = useChatbotStore();
+  const { openChatbot, setUserEmail } = useChatbotStore();
 
   useEffect(() => {
     if (isExpanded && inputRef.current) {
@@ -141,6 +141,7 @@ export const EmailActionButton = ({
       setTimeout(() => {
         setStatus("idle");
         setIsExpanded(false);
+        setUserEmail(email);
         setEmail("");
         if (!onSuccess) {
           openChatbot({ email, ...metadata });

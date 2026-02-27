@@ -43,6 +43,31 @@ export const ChatbotModal = () => {
                 <Sparkles size={12} className={styles.sparkleIcon} />
                 <span>Proprietary Engine</span>
               </div>
+              {(userContext?.email || useChatbotStore.getState().userEmail) && (
+                <div className={styles.emailBadge} style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '16px',
+                  padding: '4px 10px',
+                  fontSize: '0.7rem',
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  marginTop: '8px',
+                  letterSpacing: '0.02em',
+                  backdropFilter: 'blur(4px)'
+                }}>
+                  <div style={{
+                    width: '4px',
+                    height: '4px',
+                    borderRadius: '50%',
+                    background: '#10b981',
+                    marginRight: '6px',
+                    boxShadow: '0 0 8px rgba(16, 185, 129, 0.5)'
+                  }} />
+                  {userContext?.email || useChatbotStore.getState().userEmail}
+                </div>
+              )}
               <div className={styles.titleWrapper}>
                 <h2>Consultation</h2>
                 <div className={styles.statusDot} />

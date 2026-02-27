@@ -14,6 +14,8 @@ interface InteractionRecord {
 
 interface ChatbotState {
   isOpen: boolean;
+  userEmail: string | null;
+  setUserEmail: (email: string) => void;
   userContext: any;
   messages: Message[];
   isErratic: boolean;
@@ -35,20 +37,31 @@ interface ChatbotState {
   resetChat: () => void;
 }
 
-const initialMessages: Message[] = [
-  {
-    role: "model",
-    text: "Hello! I'm here to help you explore how automation can transform your business. To get started, could you tell me your company name and what industry you're in?",
-    timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-  },
-];
+const getInitialMessages = (context: any): Message[] => {
+  const emailMsg = context?.email ? ` I see your email is ${context.email}.` : "";
+  return [
+    {
+      role: "model",
+      text: `Hello!${emailMsg} I'm here to help you explore how automation can transform your business. To get started, could you tell me your company name and what industry you're in?`,
+      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    },
+  ];
+};
 
 export const useChatbotStore = create<ChatbotState>()(
   persist(
     (set) => ({
       isOpen: false,
+      userEmail: null,
+      setUserEmail: (email) => set((state) => {
+        const newContext = { ...state.userContext, email };
+        return { 
+          userEmail: email,
+          userContext: newContext
+        };
+      }),
       userContext: {},
-      messages: initialMessages,
+      messages: getInitialMessages({}),
       isErratic: false,
       behaviorNotes: "",
       interactionHistory: [],
@@ -57,11 +70,12 @@ export const useChatbotStore = create<ChatbotState>()(
       isNewsletterOpen: false,
       openChatbot: (context = {}) => {
         set((state) => {
+          const mergedContext = { ...state.userContext, ...context };
           // Reset chat when opening if it was closed previously
           return {
             isOpen: true,
-            userContext: context,
-            messages: initialMessages,
+            userContext: mergedContext,
+            messages: getInitialMessages(mergedContext),
             isErratic: false,
             showEmailBtn: false,
             summaryText: "",
@@ -80,18 +94,20 @@ export const useChatbotStore = create<ChatbotState>()(
       addInteractionRecord: (record) => set((state) => ({ interactionHistory: [...state.interactionHistory, record] })),
       setShowEmailBtn: (showEmailBtn) => set({ showEmailBtn }),
       setSummaryText: (summaryText) => set({ summaryText }),
-      resetChat: () => set({
-        messages: initialMessages,
+      resetChat: () => set((state) => ({
+        messages: getInitialMessages(state.userContext),
         isErratic: false,
         showEmailBtn: false,
         summaryText: "",
-      }),
+      })),
     }),
     {
       name: "chatbot-storage",
       partialize: (state) => ({ 
         behaviorNotes: state.behaviorNotes, 
-        interactionHistory: state.interactionHistory 
+        interactionHistory: state.interactionHistory,
+        userEmail: state.userEmail,
+        userContext: state.userContext
       }),
     }
   )

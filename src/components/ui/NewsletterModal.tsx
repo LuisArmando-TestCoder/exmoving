@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useChatbotStore } from "@/store/useChatbotStore";
 import { X, Send, CheckCircle2, Sparkles, Zap, ShieldCheck, Send as SendIcon } from "lucide-react";
@@ -6,10 +6,17 @@ import styles from "./NewsletterModal.module.scss";
 import { SliderButton } from "./SliderButton";
 
 export const NewsletterModal = () => {
-  const { isNewsletterOpen, closeNewsletter, userContext, messages } = useChatbotStore();
+  const { isNewsletterOpen, closeNewsletter, userContext, messages, userEmail } = useChatbotStore();
   const [status, setStatus] = useState<"idle" | "success">("idle");
   // Pre-fill email from userContext if it exists (e.g. from EmailActionButton)
-  const [email, setEmail] = useState(userContext?.email || "");
+  const [email, setEmail] = useState(userContext?.email || userEmail || "");
+
+  // Update email if userContext changes (e.g. after component mount)
+  useEffect(() => {
+    if ((userContext?.email || userEmail) && !email) {
+      setEmail(userContext?.email || userEmail);
+    }
+  }, [userContext, userEmail, email]);
 
   const handleSubscribe = async () => {
     setStatus("success");
@@ -67,6 +74,31 @@ export const NewsletterModal = () => {
                 >
                   <Sparkles size={24} className={styles.headerIcon} />
                 </motion.div>
+                {(userContext?.email || userEmail) && (
+                  <div style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '16px',
+                    padding: '4px 10px',
+                    fontSize: '0.7rem',
+                    color: 'rgba(255, 255, 255, 0.7)',
+                    marginBottom: '12px',
+                    letterSpacing: '0.02em',
+                    backdropFilter: 'blur(4px)'
+                  }}>
+                    <div style={{
+                      width: '4px',
+                      height: '4px',
+                      borderRadius: '50%',
+                      background: '#10b981',
+                      marginRight: '6px',
+                      boxShadow: '0 0 8px rgba(16, 185, 129, 0.5)'
+                    }} />
+                    {userContext?.email || userEmail}
+                  </div>
+                )}
                 <h2 className={styles.title}>Join the Vanguard</h2>
                 <p className={styles.subtitle}>
                   Get exclusive insights, AI implementation strategies, and execution playbooks delivered straight to your inbox.
@@ -87,7 +119,7 @@ export const NewsletterModal = () => {
                 </motion.div>
               ) : (
                 <div className={styles.form}>
-                  {!userContext?.email && (
+                  {!(userContext?.email || userEmail) && (
                     <input
                       type="email"
                       placeholder="Enter your email (optional if provided in chat)"
