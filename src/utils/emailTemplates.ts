@@ -215,7 +215,7 @@ export const getRequestTemplate = (label: string, email: string, metadata: any) 
   };
 };
 
-export const getEmailTemplate = (text: string, isAuto: boolean = false, isAbandoned: boolean = false, historyRecords: any[] = []) => {
+export const getEmailTemplate = (text: string, isAuto: boolean = false, isAbandoned: boolean = false, historyRecords: any[] = [], metadata: any = {}, behaviorNotes: string = "") => {
   // Parse out sections if they exist
   const historyMatch = text.match(/CHAT HISTORY:\n([\s\S]*?)(?=\n\nBEHAVIORAL OBSERVATIONS:|$)/);
   const behaviorMatch = text.match(/BEHAVIORAL OBSERVATIONS:\n([\s\S]*)$/);
@@ -227,6 +227,58 @@ export const getEmailTemplate = (text: string, isAuto: boolean = false, isAbando
 
   let statusEmoji = isErratic ? '❌' : (isAbandoned ? '⚠️' : '✅');
   let statusText = isErratic ? 'Erratic Behavior' : (isAbandoned ? 'Abandoned Chat' : 'Success');
+
+  const metadataGrid = metadata && Object.keys(metadata).length > 0 ? `
+    <div style="margin-top: 32px; background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%); border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.08); padding: 28px; position: relative; overflow: hidden;">
+      <div style="position: absolute; top: 0; right: 0; width: 100px; height: 100px; background: radial-gradient(circle at center, rgba(59, 130, 246, 0.05) 0%, transparent 70%);"></div>
+      
+      <div style="display: flex; align-items: center; margin-bottom: 24px; gap: 8px;">
+        <div style="width: 4px; height: 16px; background: #3B82F6; border-radius: 2px;"></div>
+        <h3 style="margin: 0; color: #FFFFFF; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em;">Forensic System Data</h3>
+      </div>
+
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td style="padding-bottom: 20px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="50%" style="padding-right: 12px;">
+                  <p style="margin: 0 0 6px 0; color: #475569; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Entry Path</p>
+                  <p style="margin: 0; color: #E2E8F0; font-size: 14px; font-weight: 600; font-family: 'JetBrains Mono', monospace;">${metadata.path || '—'}</p>
+                </td>
+                <td width="50%">
+                  <p style="margin: 0 0 6px 0; color: #475569; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Platform</p>
+                  <p style="margin: 0; color: #E2E8F0; font-size: 14px; font-weight: 600;">${metadata.platform || '—'}</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-bottom: 20px; border-top: 1px solid rgba(255,255,255,0.04); padding-top: 20px;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="50%" style="padding-right: 12px;">
+                  <p style="margin: 0 0 6px 0; color: #475569; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Display Architecture</p>
+                  <p style="margin: 0; color: #E2E8F0; font-size: 14px; font-weight: 600;">${metadata.screenResolution || '—'}</p>
+                </td>
+                <td width="50%">
+                  <p style="margin: 0 0 6px 0; color: #475569; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Hardware Tier</p>
+                  <p style="margin: 0; color: #E2E8F0; font-size: 14px; font-weight: 600;">${metadata.hardwareConcurrency || '?'} Core / ${metadata.deviceMemory || '?'}GB RAM</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="border-top: 1px solid rgba(255,255,255,0.04); padding-top: 20px;">
+            <p style="margin: 0 0 6px 0; color: #475569; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Geolocation / Timezone</p>
+            <p style="margin: 0; color: #E2E8F0; font-size: 14px; font-weight: 600;">${metadata.timezone || '—'}</p>
+          </td>
+        </tr>
+      </table>
+    </div>
+  ` : '';
   
   const historySummary = historyRecords.length > 0 
     ? `
@@ -250,18 +302,18 @@ export const getEmailTemplate = (text: string, isAuto: boolean = false, isAbando
     if (isModel || isUser) {
       const content = message.replace(/^(MODEL|USER):\s/, '');
       return `
-        <div style="margin-bottom: 16px; padding: 16px; border-radius: 12px; background-color: ${isModel ? '#F8FAFC' : '#EFF6FF'}; border-left: 4px solid ${isModel ? '#94A3B8' : '#3B82F6'};">
-          <p style="margin: 0; font-size: 12px; font-weight: 600; color: ${isModel ? '#475569' : '#1D4ED8'}; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
+        <div style="margin-bottom: 16px; padding: 16px; border-radius: 12px; background-color: ${isModel ? 'rgba(255,255,255,0.03)' : 'rgba(59,130,246,0.1)'}; border-left: 4px solid ${isModel ? '#475569' : '#3B82F6'};">
+          <p style="margin: 0; font-size: 11px; font-weight: 700; color: ${isModel ? '#94A3B8' : '#60A5FA'}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">
             ${isModel ? 'AI Assistant' : 'User'}
           </p>
-          <p style="margin: 0; color: #1E293B; line-height: 1.6; font-size: 15px;">
+          <p style="margin: 0; color: #E2E8F0; line-height: 1.6; font-size: 15px;">
             ${content}
           </p>
         </div>
       `;
     }
     // Fallback for unparsed lines
-    return `<p style="margin: 0 0 12px 0; color: #334155; line-height: 1.6;">${message}</p>`;
+    return `<p style="margin: 0 0 12px 0; color: #94A3B8; line-height: 1.6; font-size: 14px;">${message}</p>`;
   }).join('');
 
   return {
@@ -291,27 +343,27 @@ export const getEmailTemplate = (text: string, isAuto: boolean = false, isAbando
     }
   </style>
 </head>
-<body style="margin: 0; padding: 0; background-color: #F1F5F9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; -webkit-font-smoothing: antialiased;">
+<body style="margin: 0; padding: 0; background-color: #0F172A; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; -webkit-font-smoothing: antialiased;">
   
   <div role="article" aria-roledescription="email" aria-label="Consultation Summary" lang="en">
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #F1F5F9; padding: 40px 0;">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #0F172A; padding: 40px 0;">
       <tr>
         <td align="center">
           
           <!-- Main Container -->
-          <table class="container" width="600" border="0" cellspacing="0" cellpadding="0" style="background-color: #FFFFFF; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+          <table class="container" width="600" border="0" cellspacing="0" cellpadding="0" style="background-color: #1E293B; border-radius: 24px; overflow: hidden; border: 1px solid #334155; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);">
             
             <!-- Header -->
             <tr>
-              <td class="header" style="background-color: ${isErratic ? '#FEF2F2' : (isAbandoned ? '#FFFBEB' : '#F8FAFC')}; padding: 32px; text-align: center; border-bottom: 1px solid ${isErratic ? '#FEE2E2' : (isAbandoned ? '#FEF3C7' : '#E2E8F0')};">
-                <div style="margin-bottom: 12px;">
+              <td class="header" style="background: linear-gradient(135deg, ${isErratic ? '#450a0a' : (isAbandoned ? '#422006' : '#1E293B')} 0%, #0F172A 100%); padding: 48px 32px; text-align: center; border-bottom: 1px solid #334155;">
+                <div style="display: inline-block; padding: 12px; background: rgba(255, 255, 255, 0.05); border-radius: 16px; margin-bottom: 20px;">
                   <span style="font-size: 40px;">${statusEmoji}</span>
                 </div>
-                <h1 style="margin: 0; color: ${isErratic ? '#DC2626' : (isAbandoned ? '#92400E' : '#0F172A')}; font-size: 24px; font-weight: 700; letter-spacing: -0.025em;">
+                <h1 style="margin: 0; color: #FFFFFF; font-size: 28px; font-weight: 800; letter-spacing: -0.025em; text-transform: uppercase;">
                   ${statusText}
                 </h1>
-                <p style="margin: 8px 0 0 0; color: #64748B; font-size: 15px;">
-                  ${isAuto ? 'Automated System Report' : 'Manual Submission'}
+                <p style="margin: 8px 0 0 0; color: #94A3B8; font-size: 15px; font-weight: 500;">
+                  ${isAuto ? 'SYSTEM INTELLIGENCE REPORT' : 'MANUAL SUBMISSION'}
                 </p>
               </td>
             </tr>
@@ -322,20 +374,34 @@ export const getEmailTemplate = (text: string, isAuto: boolean = false, isAbando
                 
                 ${historySummary}
 
-                ${behavior ? `
+                ${behavior || behaviorNotes ? `
                 <!-- Behavior Section -->
-                <div style="margin-bottom: 32px; padding: 20px; background-color: #F8FAFC; border-radius: 12px; border: 1px solid #E2E8F0;">
-                  <h2 style="margin: 0 0 12px 0; color: #0F172A; font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">
-                    AI Behavioral Analysis
+                <div style="margin-top: 32px; padding: 24px; background: rgba(255, 255, 255, 0.03); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                  <h2 style="margin: 0 0 12px 0; color: #FFFFFF; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;">
+                    Behavioral Intelligence & Notes
                   </h2>
-                  <p style="margin: 0; color: #334155; font-size: 15px; line-height: 1.6;">
-                    ${behavior.replace(/\n/g, '<br />')}
-                  </p>
+                  ${behavior ? `
+                    <p style="margin: 0 0 16px 0; color: #94A3B8; font-size: 15px; line-height: 1.6;">
+                      <strong>Current Analysis:</strong><br/>
+                      ${behavior.replace(/\n/g, '<br />')}
+                    </p>
+                  ` : ''}
+                  ${behaviorNotes ? `
+                    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.05);">
+                      <p style="margin: 0 0 8px 0; color: #64748B; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;">Interaction Log / Behavior Notes</p>
+                      <p style="margin: 0; color: #64748B; font-size: 13px; line-height: 1.5; font-family: monospace;">
+                        ${behaviorNotes.replace(/\n/g, '<br />')}
+                      </p>
+                    </div>
+                  ` : ''}
                 </div>
                 ` : ''}
 
+                <!-- Metadata Section -->
+                ${metadataGrid}
+
                 <!-- Chat History Section -->
-                <h2 style="margin: 0 0 20px 0; color: #0F172A; font-size: 18px; font-weight: 600;">
+                <h2 style="margin: 32px 0 20px 0; color: #FFFFFF; font-size: 18px; font-weight: 700;">
                   Conversation Transcript
                 </h2>
                 
@@ -348,10 +414,9 @@ export const getEmailTemplate = (text: string, isAuto: boolean = false, isAbando
 
             <!-- Footer -->
             <tr>
-              <td style="background-color: #F8FAFC; padding: 24px 32px; text-align: center; border-top: 1px solid #E2E8F0;">
-                <p style="margin: 0; color: #64748B; font-size: 13px; line-height: 1.5;">
-                  <strong>AI Executions Engine</strong><br/>
-                  This is an automated communication.<br/>
+              <td style="background: #0F172A; padding: 32px; text-align: center; border-top: 1px solid #334155;">
+                <p style="margin: 0; color: #475569; font-size: 12px; font-weight: 600; letter-spacing: 0.05em;">
+                  <strong>ΣXECUTIONS INTELLIGENCE UNIT</strong><br/>
                   ${new Date().toUTCString()}
                 </p>
               </td>

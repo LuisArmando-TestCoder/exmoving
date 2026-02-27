@@ -2,6 +2,7 @@
 
 import nodemailer from "nodemailer";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { headers } from "next/headers";
 
 /**
  * Centralized function to send emails
@@ -17,6 +18,35 @@ export async function sendEmail({
   text: string;
   html?: string;
 }) {
+  // Capture requester IP
+  const headersList = await headers();
+  const forwardedFor = headersList.get("x-forwarded-for");
+  const ip = forwardedFor ? forwardedFor.split(",")[0] : "Direct/Local";
+
+  // Append IP to HTML if provided, otherwise to text
+  let finalHtml = html;
+  if (html && html.includes("ΣXECUTIONS INTELLIGENCE UNIT")) {
+    finalHtml = html.replace(
+      "ΣXECUTIONS INTELLIGENCE UNIT",
+      `ΣXECUTIONS INTELLIGENCE UNIT &bull; IP: ${ip}`
+    );
+  }
+
+  // Explicitly inject into System Intelligence if it's an erratic/consultation report
+  if (finalHtml && finalHtml.includes("System Intelligence")) {
+    // Inject header cell
+    finalHtml = finalHtml.replace(
+      "Platform</td>",
+      "Platform</td><td style=\"color: #94A3B8; font-size: 13px; padding-bottom: 4px; padding-left: 12px;\">IP Address</td>"
+    );
+    
+    // Inject value cell
+    finalHtml = finalHtml.replace(
+      /(<td style="color: #E2E8F0; font-size: 14px; font-weight: 600;">[^<]*<\/td>)(?=\s*<\/tr>)/,
+      `$1<td style="color: #3B82F6; font-size: 14px; font-weight: 700; padding-left: 12px;">${ip}</td>`
+    );
+  }
+
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -29,8 +59,8 @@ export async function sendEmail({
     from: process.env.EMAIL,
     to,
     subject,
-    text,
-    html,
+    text: text + `\n\nRequester IP: ${ip}`,
+    html: finalHtml,
   };
 
   try {

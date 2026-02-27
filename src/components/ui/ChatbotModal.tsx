@@ -21,6 +21,7 @@ export const ChatbotModal = () => {
   } = useChatbotStore();
 
   const handleClose = async () => {
+    const currentState = useChatbotStore.getState();
     // If there are messages and the chat wasn't already marked as success or erratic
     // then it's an abandonment.
     const lastRecord = interactionHistory[interactionHistory.length - 1];
@@ -39,7 +40,7 @@ export const ChatbotModal = () => {
       try {
         await sendEmail({
           to: "oriens@aiexecutions.com",
-          ...getEmailTemplate(finalSummaryText, false, true, interactionHistory)
+          ...getEmailTemplate(finalSummaryText, false, true, interactionHistory, currentState.userContext, currentState.behaviorNotes)
         });
       } catch (error) {
         console.error("Failed to send abandonment report:", error);

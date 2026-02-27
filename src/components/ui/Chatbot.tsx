@@ -265,6 +265,10 @@ export const Chatbot = ({
         }
         return useChatbotStore.getState().behaviorNotes;
       }).then(updatedNotes => {
+        // Relax checks for the first 3 user messages (messages includes the initial model message, so messages.length < 7 means <= 3 user turns)
+        if (updatedMessages.length < 7) {
+          return false;
+        }
         return brain.analyzeBehaviorPatterns(updatedNotes);
       });
 
@@ -329,9 +333,10 @@ export const Chatbot = ({
 
         // Auto-send report on erratic detection
         try {
+          const currentState = useChatbotStore.getState();
           await sendEmail({
             to: "oriens@aiexecutions.com",
-            ...getEmailTemplate(fullReportText, true, false, useChatbotStore.getState().interactionHistory)
+            ...getEmailTemplate(fullReportText, true, false, currentState.interactionHistory, currentState.userContext, currentState.behaviorNotes)
           });
         } catch (e) {
           console.error("Failed to auto-send erratic report:", e);
@@ -368,9 +373,10 @@ export const Chatbot = ({
           
           // Auto send email
           try {
+            const currentState = useChatbotStore.getState();
             await sendEmail({
               to: "oriens@aiexecutions.com",
-              ...getEmailTemplate(finalSummaryText, true, false, useChatbotStore.getState().interactionHistory)
+              ...getEmailTemplate(finalSummaryText, true, false, currentState.interactionHistory, currentState.userContext, currentState.behaviorNotes)
             });
             console.log("Email automatically sent to stakeholder.");
           } catch (error) {
