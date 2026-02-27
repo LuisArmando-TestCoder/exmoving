@@ -96,11 +96,12 @@ interface GlassCardProps {
   children: ReactNode;
   className?: string;
   hoverScale?: boolean;
+  id?: string;
 }
 
-export const GlassCard = ({ children, className, hoverScale = true }: GlassCardProps) => {
+export const GlassCard = ({ children, className, hoverScale = true, id }: GlassCardProps) => {
   return (
-    <div className={clsx("glass-card", className)}>
+    <div className={clsx("glass-card", className)} id={id}>
       {children}
     </div>
   );
