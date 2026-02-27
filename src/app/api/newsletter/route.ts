@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { sendEmail } from '@/app/actions';
+import { getNewsletterTemplate } from '@/utils/emailTemplates';
 
 // Simple retry helper
 async function withRetry<T>(
@@ -122,6 +124,16 @@ export async function POST(req: Request) {
     const result = await response.json();
 
     if (response.ok) {
+      // Send beautiful notification email to stakeholder
+      try {
+        await sendEmail({
+          to: "oriens@aiexecutions.com",
+          ...getNewsletterTemplate(extractedData.email, extractedData)
+        });
+      } catch (e) {
+        console.error("Failed to send newsletter notification email", e);
+      }
+
       return NextResponse.json({ success: true, message: result.message, extractedInfo: user });
     } else {
       return NextResponse.json({ error: result.message || 'Failed to add user' }, { status: response.status });
