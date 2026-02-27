@@ -21,7 +21,7 @@ Rules of Usability
 9: Documentation for Dummies
 ---
 
-## 1. Visual & Aesthetic Principles
+## Visual & Aesthetic Principles
 
 ### Typography & Colors (The "No-White" Rule)
 *   **DO NOT** use `white`, `#fff`, or hardcoded `rgba(255,255,255,...)`.
@@ -37,7 +37,7 @@ Rules of Usability
 
 ---
 
-## 2. Technical Context (The "Brain" & Data Layer)
+## Technical Context (The "Brain" & Data Layer)
 
 ### The Intelligence Unit (Core Logic)
 Platform logic is abstracted into two main units: `ChatBrain` and `IntelligenceUnit`.
@@ -50,7 +50,7 @@ Platform logic is abstracted into two main units: `ChatBrain` and `IntelligenceU
 
 ---
 
-## 3. Infrastructure & Structural Nature
+## Infrastructure & Structural Nature
 
 ### Service Tree Architecture
 The platform is built as a recursive, tree-based service discovery engine. Every page is a node in a hierarchy defined in `src/constants/navigation.ts`.
@@ -97,7 +97,7 @@ We use a **Post-Tailwind SCSS Module** strategy. Pages must be styled with isola
 
 ---
 
-## 3. Business Owner Focus (Content Guidelines)
+## Business Owner Focus (Content Guidelines)
 
 ### Value-First Elements
 Every page must focus on **Economics** and **ROI**, not just features.
@@ -118,7 +118,7 @@ Every page must focus on **Economics** and **ROI**, not just features.
 
 ---
 
-## 4. Animation & Interactivity
+## Animation & Interactivity
 
 ### Scroll Reactions
 *   **YES PLEASE**: Implement a `useScroll` based progress indicator at the top of long-form pages.
@@ -131,7 +131,7 @@ Every page must focus on **Economics** and **ROI**, not just features.
 
 ---
 
-## 6. Deployment Workflow: Adding a New Service Page
+## Deployment Workflow: Adding a New Service Page
 
 1.  **Define Location**: Create the directory structure in `src/app/services/consultations/[category]/[service]`.
 2.  **Register in Navigation**: Add the new entry to `navigationData` in `src/constants/navigation.ts`.
@@ -144,7 +144,7 @@ Every page must focus on **Economics** and **ROI**, not just features.
 
 ---
 
-## 7. Development Hygiene & Reactivity
+## Development Hygiene & Reactivity
 
 ### Clean Component Philosophy
 *   **"Thin" Components**: The `page.tsx` should primarily be a **declarative configuration** of data and layout. Complex logic belongs in hooks or the Store.
@@ -158,18 +158,7 @@ Every page must focus on **Economics** and **ROI**, not just features.
 ### Error Handling & JSX
 *   **JSX Escaping**: When using mathematical operators like `<` or `>` in text (e.g., `<2s`), always use curly braces and strings `{"<2s"}` or HTML entities `<` to prevent JSX parsing errors.
 
----
-
-## 8. Operational "Non-Gos" (Common Pitfalls)
-
-*   **Avoid Inline Framer Motion**: Do not clutter the `page.tsx` with complex `animate` props. Prefer using the `Reveal` component or SCSS `@keyframes` for performance.
-*   **The "Context" Rule**: Never add a CTA that doesn't capture email. We are a lead-generation machine; every click must lead to a data entry point or an interaction with the Unit.
-*   **Hardcoded Numbers**: Never use hardcoded ROI percentages in the middle of a text block. Use stats grids to make them scannable.
-*   **No Tailwind**: Using Tailwind classes in new service pages is a non-go. It breaks the brutalist-modern SCSS customization established for the consultancies.
-
----
-
-## 10. Core Concept Definitions
+## Core Concept Definitions
 
 *   **Intelligence Unit**: The abstraction layer representing the AI agent's "mind."
 *   **Observer Logic**: The real-time behavioral analysis engine that summarizes user intent.
@@ -178,7 +167,7 @@ Every page must focus on **Economics** and **ROI**, not just features.
 
 ---
 
-## 11. Success Criteria for New Pages
+## Success Criteria for New Pages
 1.  Correctly registered in the `navigation.ts` tree.
 2.  Zero Tailwind classes in the `.tsx` file.
 2.  No hardcoded white hex/rgba colors.

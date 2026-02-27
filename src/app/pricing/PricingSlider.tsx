@@ -6,6 +6,7 @@ import { motion, useSpring, useTransform, useMotionValue, AnimatePresence, useVe
 import { useRef, useEffect, useState, useCallback, useMemo } from "react";
 import styles from "./Pricing.module.scss";
 import { Reveal } from "@/components/ui/Reveal";
+import { UltraSlider } from "@/components/ui/UltraSlider";
 
 interface PricingSliderProps {
   itemId: string;
@@ -161,7 +162,7 @@ export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
 
         {renderBATranslation()}
 
-        <div className={styles.interactiveTrack}>
+        <div className={styles.interactiveTrackCustom}>
           <AnimatePresence>
             {!hasInteracted && (
               <motion.div 
@@ -177,48 +178,18 @@ export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
             )}
           </AnimatePresence>
 
-          <div className={styles.tickMarks}>
-            {[...Array(10)].map((_, i) => (
-              <div key={i} className={styles.tick} />
-            ))}
-          </div>
-
-          <motion.div
-            className={styles.trackProgress}
-            style={{ width: percentage }}
-          />
-          
-          <input
-            type="range"
+          <UltraSlider 
             min={config.min}
             max={config.max}
             step={config.step}
             value={localValue}
-            onMouseDown={handleInteraction}
-            onMouseUp={() => setIsDragging(false)}
-            onTouchStart={handleInteraction}
-            onTouchEnd={() => setIsDragging(false)}
-            onChange={(e) => {
-              const val = Number(e.target.value);
+            onChange={(val) => {
               setLocalValue(val);
               if (!hasInteracted) setHasInteracted(true);
             }}
-            className={styles.ultraRangeInput}
+            onInteractionStart={handleInteraction}
+            onInteractionEnd={() => setIsDragging(false)}
           />
-
-          <motion.div
-            className={styles.customThumb}
-            style={{ left: percentage }}
-            animate={{
-              scale: isDragging ? 1.2 : 1,
-              boxShadow: isDragging 
-                ? "0 0 30px rgba(var(--primary-rgb), 0.5)" 
-                : "0 8px 20px rgba(0, 0, 0, 0.3)"
-            }}
-            transition={{ type: "spring", stiffness: 500, damping: 30 }}
-          >
-            <div className={styles.thumbGlow} />
-          </motion.div>
         </div>
 
         <div className={styles.sliderScale}>
