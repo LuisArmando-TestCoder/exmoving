@@ -1,9 +1,9 @@
 "use client";
 
 import { usePricingStore, SliderConfig } from "@/store/usePricingStore";
-import { ArrowRight, Sparkles, Activity } from "lucide-react";
-import { motion, useSpring, useTransform, AnimatePresence } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { ArrowRight, Sparkles, MoveRight } from "lucide-react";
+import { motion, useSpring, useTransform, useMotionValue, AnimatePresence } from "framer-motion";
+import { useRef, useEffect, useState, useCallback, useMemo } from "react";
 import styles from "./Pricing.module.scss";
 import { Reveal } from "@/components/ui/Reveal";
 
@@ -14,47 +14,75 @@ interface PricingSliderProps {
 
 export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
   const { customValues, setCustomValue } = usePricingStore();
-  const value = customValues[itemId];
-  const currentValue = typeof value === "number" ? value : config.min;
-
+  
+  // Local state for immediate responsiveness
+  const storeValue = customValues[itemId];
+  const initialValue = typeof storeValue === "number" ? storeValue : config.min;
+  const [localValue, setLocalValue] = useState(initialValue);
   const [isDragging, setIsDragging] = useState(false);
-  const percentage =
-    ((currentValue - config.min) / (config.max - config.min)) * 100;
+  const [hasInteracted, setHasInteracted] = useState(false);
 
-  // Spring animation for smooth UI feedback
-  const springValue = useSpring(currentValue, {
-    stiffness: 100,
-    damping: 30,
-    mass: 0.5,
+  // Sync local state if store changes externally
+  useEffect(() => {
+    if (!isDragging && typeof storeValue === "number") {
+      setLocalValue(storeValue);
+    }
+  }, [storeValue, isDragging]);
+
+  // Debounced store update to prevent heavy re-renders during sliding
+  useEffect(() => {
+    if (localValue === initialValue) return;
+    
+    const handler = setTimeout(() => {
+      setCustomValue(itemId, localValue);
+    }, 16); // ~60fps debounce for smooth but performant updates
+
+    return () => clearTimeout(handler);
+  }, [localValue, itemId, setCustomValue, initialValue]);
+
+  // Motion values for hardware-accelerated visual updates
+  const motionValue = useMotionValue(initialValue);
+  useEffect(() => {
+    motionValue.set(localValue);
+  }, [localValue, motionValue]);
+
+  const percentage = useTransform(
+    motionValue,
+    [config.min, config.max],
+    [0, 100]
+  );
+
+  // Spring animation for smooth numeric rolling
+  const springDisplayValue = useSpring(localValue, {
+    stiffness: 120,
+    damping: 24,
+    mass: 0.2,
   });
 
   useEffect(() => {
-    springValue.set(currentValue);
-  }, [currentValue, springValue]);
+    springDisplayValue.set(localValue);
+  }, [localValue, springDisplayValue]);
 
   const renderBATranslation = () => {
     if (!config.baTranslation) return null;
 
     const ba = config.baTranslation;
-    const humanValue = (currentValue * ba.multiplier).toLocaleString(
-      undefined,
-      { maximumFractionDigits: 1 }
-    );
-    const roiValue = (currentValue * ba.roiMultiplier).toLocaleString(
-      undefined,
-      { maximumFractionDigits: 0 }
-    );
+    const humanValue = (localValue * ba.multiplier).toLocaleString(undefined, {
+      maximumFractionDigits: 1,
+    });
+    const roiValue = (localValue * ba.roiMultiplier).toLocaleString(undefined, {
+      maximumFractionDigits: 0,
+    });
 
     return (
       <motion.div
         className={styles.baTranslationContainer}
-        layout
-        initial={{ opacity: 0, filter: "blur(10px)" }}
-        animate={{ opacity: 1, filter: "blur(0px)" }}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
         <div className={styles.baStep}>
-          <motion.div className={styles.baValue} layout="position">
+          <motion.div className={styles.baValue}>
             {humanValue}
           </motion.div>
           <div className={styles.baLabel}>{ba.humanUnit}</div>
@@ -65,7 +93,7 @@ export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
           <motion.div
             animate={{
               x: isDragging ? [0, 5, 0] : 0,
-              opacity: isDragging ? 1 : 0.5,
+              opacity: isDragging ? 1 : 0.4,
             }}
             transition={{ repeat: Infinity, duration: 1.5 }}
           >
@@ -77,12 +105,17 @@ export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
         <div className={styles.baStep}>
           <div className={styles.baValueHighlight}>
             <Sparkles size={14} className={styles.sparkle} />
-            <motion.span layout="position">{roiValue}</motion.span>
+            <motion.span>{roiValue}</motion.span>
           </div>
           <div className={styles.baLabel}>{ba.roiUnit}</div>
         </div>
       </motion.div>
     );
+  };
+
+  const handleInteraction = () => {
+    if (!hasInteracted) setHasInteracted(true);
+    setIsDragging(true);
   };
 
   return (
@@ -98,11 +131,12 @@ export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
           <motion.div
             className={styles.valueBadge}
             animate={{
+              backgroundColor: isDragging ? "rgba(var(--primary-rgb), 0.1)" : "rgba(var(--overlay-rgb), 0.05)",
               borderColor: isDragging ? "var(--primary)" : "transparent",
               y: isDragging ? -2 : 0,
             }}
           >
-            {currentValue.toLocaleString()}{" "}
+            {localValue.toLocaleString()}{" "}
             <span style={{ fontSize: "0.6em", opacity: 0.6 }}>
               {config.unit}
             </span>
@@ -112,33 +146,58 @@ export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
         {renderBATranslation()}
 
         <div className={styles.interactiveTrack}>
+          <AnimatePresence>
+            {!hasInteracted && (
+              <motion.div 
+                className={styles.sliderHint}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 20 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ 
+                  opacity: { duration: 0.3 },
+                  x: { repeat: Infinity, repeatType: "reverse", duration: 1.5, ease: "easeInOut" }
+                }}
+              >
+                <MoveRight size={16} />
+                <span>Swipe</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           <motion.div
             className={styles.trackProgress}
-            style={{ width: `${percentage}%` }}
+            style={{ width: percentage }}
           />
           <input
             type="range"
             min={config.min}
             max={config.max}
             step={config.step}
-            value={currentValue}
-            onMouseDown={() => setIsDragging(true)}
+            value={localValue}
+            onMouseDown={handleInteraction}
             onMouseUp={() => setIsDragging(false)}
-            onTouchStart={() => setIsDragging(true)}
+            onTouchStart={handleInteraction}
             onTouchEnd={() => setIsDragging(false)}
-            onChange={(e) => setCustomValue(itemId, Number(e.target.value))}
+            onChange={(e) => {
+              const val = Number(e.target.value);
+              setLocalValue(val);
+              if (!hasInteracted) setHasInteracted(true);
+            }}
             className={styles.ultraRangeInput}
           />
           <motion.div
             className={styles.customThumb}
             style={{
-              left: `${percentage}%`,
+              left: percentage,
             }}
             animate={{
-              scale: isDragging ? 1.5 : 1,
+              scale: isDragging ? 1.3 : 1,
               rotate: isDragging ? 225 : 45,
+              boxShadow: isDragging 
+                ? "0 0 25px rgba(var(--primary-rgb), 0.6)" 
+                : "0 4px 15px rgba(0, 0, 0, 0.5)"
             }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
           />
         </div>
 
