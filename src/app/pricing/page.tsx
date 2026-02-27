@@ -38,9 +38,11 @@ export default function PricingPage() {
         </section>
 
         <section className="section" id="pricing-core-section">
-          <div className="container">
-            <InfrastructureExplorer />
-            <CostCalculator />
+          <div className="container" style={{ position: 'relative' }}>
+            <div className={styles.stickyCalculatorWrapper}>
+              <InfrastructureExplorer />
+              <CostCalculator />
+            </div>
 
             <StaggerContainer className={styles.grid} id="pricing-grid-main" style={{ marginTop: '4rem' }}>
               {/* Core Costs */}
