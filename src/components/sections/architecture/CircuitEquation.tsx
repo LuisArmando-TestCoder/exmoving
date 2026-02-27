@@ -8,59 +8,6 @@ interface CircuitEquationProps {
   scrollYProgress: MotionValue<number>;
 }
 
-// Particle system for data flow effect
-const DataParticles = ({ progress, reverse = false, delay = 0 }: { progress: MotionValue<number>, reverse?: boolean, delay?: number }) => {
-  const [particles, setParticles] = useState<{ id: number; delay: number; duration: number }[]>([]);
-
-  useEffect(() => {
-    // Generate random particles
-    const newParticles = Array.from({ length: 5 }).map((_, i) => ({
-      id: i,
-      delay: Math.random() * 2,
-      duration: 1 + Math.random() * 1.5,
-    }));
-    setParticles(newParticles);
-  }, []);
-
-  const pathLength = useTransform(progress, [0.3 + delay, 0.6 + delay], [0, 1]);
-  const opacity = useTransform(pathLength, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
-
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: false, margin: "200px" });
-
-  return (
-    <motion.div ref={ref} style={{ position: "absolute", inset: 0, opacity, pointerEvents: "none" }}>
-      {particles.map((p) => (
-        <motion.div
-          key={p.id}
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: reverse ? "100%" : "0%",
-            width: "4px",
-            height: "4px",
-            borderRadius: "50%",
-            background: "var(--color-primary)",
-            boxShadow: "0 0 8px 2px var(--color-primary)",
-            marginTop: "-2px",
-            marginLeft: "-2px",
-          }}
-          animate={isInView ? {
-            left: reverse ? ["100%", "0%"] : ["0%", "100%"],
-            scale: [0, 1, 1, 0],
-          } : { left: reverse ? "100%" : "0%", scale: 0 }}
-          transition={{
-            duration: p.duration,
-            repeat: Infinity,
-            delay: p.delay,
-            ease: "linear",
-          }}
-        />
-      ))}
-    </motion.div>
-  );
-};
-
 const CircuitPath = ({ progress, delay = 0, reverse = false }: { progress: MotionValue<number>, delay?: number, reverse?: boolean }) => {
   const rawPathLength = useTransform(progress, [0.3 + delay, 0.6 + delay], [0, 1]);
   const pathLength = useSpring(rawPathLength, { stiffness: 60, damping: 20 });
@@ -133,7 +80,6 @@ const CircuitPath = ({ progress, delay = 0, reverse = false }: { progress: Motio
           style={{ scale: useTransform(pathLength, [0.9, 1], [0, 1]) }}
         />
       </motion.svg>
-      <DataParticles progress={progress} reverse={reverse} delay={delay} />
     </div>
   );
 };
