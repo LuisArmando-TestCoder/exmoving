@@ -8,6 +8,8 @@ import styles from "./Pricing.module.scss";
 import { EmailActionButton } from "@/components/ui/EmailActionButton";
 import { IntelligenceAPI } from "./IntelligenceAPI";
 import { usePricingStore } from "@/store/usePricingStore";
+import { InfrastructureExplorer } from "./InfrastructureExplorer";
+import { CostCalculator } from "./CostCalculator";
 
 export default function PricingPage() {
   const { apiPrices } = usePricingStore();
@@ -62,7 +64,7 @@ export default function PricingPage() {
               </Reveal>
 
               {/* Generative APIs - Modularized */}
-              {apiPrices.filter(api => api.isGenerative).map((api, index) => (
+              {apiPrices.filter(api => api.isGenerative).map((api) => (
                 <IntelligenceAPI key={api.id} id={api.id} />
               ))}
 
@@ -119,6 +121,9 @@ export default function PricingPage() {
                 <Info size={14} /> 1 Million Tokens represent ~1.5k emails (500 words each)
               </p>
             </Reveal>
+
+            <InfrastructureExplorer />
+            <CostCalculator />
 
             <Reveal className={styles.visionSection}>
               <div className={styles.visionContent}>
