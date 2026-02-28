@@ -1,0 +1,97 @@
+@use "@/styles/variables.scss" as *;
+@use "@/styles/mixins.scss" as *;
+
+.apiSection {
+  margin-top: clamp(6rem, 15vw, 12rem);
+  padding: 0 1.5rem;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+
+  .sectionTitle {
+    @include font-heading;
+    font-size: clamp(3rem, 8vw, 5rem);
+    text-align: center;
+    margin-bottom: 4rem;
+    letter-spacing: -0.05em;
+  }
+
+  .apiList {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+
+    .apiItem {
+      background: rgba(var(--text-rgb), 0.02);
+      border: 1px solid rgba(var(--text-rgb), 0.05);
+      padding: 2.5rem;
+      border-radius: 2rem;
+
+      .apiHeader {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+
+        .method {
+          padding: 0.4rem 1rem;
+          border-radius: 6px;
+          font-family: var(--font-mono);
+          font-weight: 900;
+          font-size: 0.85rem;
+          color: #fff;
+
+          &.get { background: #61affe; }
+          &.post { background: #49cc90; }
+          &.patch { background: #fca130; }
+          &.delete { background: #f93e3e; }
+        }
+
+        .path {
+          font-family: var(--font-mono);
+          font-size: 1.1rem;
+          color: var(--text);
+        }
+      }
+
+      .apiDesc {
+        font-size: 1.1rem;
+        color: var(--text-dim);
+        margin-bottom: 2rem;
+      }
+
+      .paramsTable {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1.5rem;
+
+        th {
+          text-align: left;
+          padding: 1rem;
+          font-size: 0.75rem;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          color: var(--text-dim);
+          border-bottom: 1px solid rgba(var(--text-rgb), 0.05);
+        }
+
+        td {
+          padding: 1.25rem 1rem;
+          border-bottom: 1px solid rgba(var(--text-rgb), 0.03);
+
+          code {
+            font-family: var(--font-mono);
+            color: var(--primary);
+            font-weight: 700;
+          }
+
+          .paramType {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--secondary);
+          }
+        }
+      }
+    }
+  }
+}

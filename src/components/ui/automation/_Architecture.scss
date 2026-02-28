@@ -1,0 +1,76 @@
+@use "@/styles/variables.scss" as *;
+@use "@/styles/mixins.scss" as *;
+
+.architectureSection {
+  margin-top: clamp(6rem, 15vw, 12rem);
+  padding: 0 1.5rem;
+
+  .sectionTitle {
+    @include font-heading;
+    font-size: clamp(3rem, 8vw, 5rem);
+    text-align: center;
+    margin-bottom: 1rem;
+    letter-spacing: -0.05em;
+  }
+
+  .sectionOverview {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 4rem;
+    font-size: 1.25rem;
+    color: var(--text-dim);
+  }
+
+  .archGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+
+    .archCard {
+      background: rgba(var(--bg-rgb), 0.4);
+      border: 1px solid rgba(var(--text-rgb), 0.05);
+      padding: 2.5rem;
+      border-radius: 2rem;
+      backdrop-filter: blur(10px);
+
+      .archBadge {
+        display: inline-block;
+        font-size: 10px;
+        font-family: var(--font-mono);
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        padding: 0.3rem 0.8rem;
+        background: rgba(var(--primary-rgb), 0.1);
+        color: var(--primary);
+        border-radius: 4px;
+        margin-bottom: 1.5rem;
+      }
+
+      h3 {
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+
+        li {
+          padding-left: 1.5rem;
+          position: relative;
+          margin-bottom: 0.75rem;
+          color: var(--text-dim);
+          font-size: 1rem;
+
+          &::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+          }
+        }
+      }
+    }
+  }
+}

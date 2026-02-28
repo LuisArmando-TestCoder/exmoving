@@ -1,0 +1,82 @@
+@use "@/styles/variables.scss" as *;
+@use "@/styles/mixins.scss" as *;
+
+.personasSection {
+  margin-top: clamp(6rem, 15vw, 12rem);
+  padding: 0 1.5rem;
+
+  .sectionTitle {
+    @include font-heading;
+    font-size: clamp(3rem, 8vw, 5rem);
+    text-align: center;
+    margin-bottom: 4rem;
+    letter-spacing: -0.05em;
+  }
+
+  .personaGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .personaCard {
+    background: rgba(var(--bg-rgb), 0.3);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(var(--text-rgb), 0.1);
+    padding: clamp(2rem, 5vw, 3rem);
+    border-radius: 2.5rem;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.05), transparent);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    &:hover {
+      border-color: rgba(var(--primary-rgb), 0.3);
+      transform: translateY(-8px);
+      &::before { opacity: 1; }
+    }
+
+    h3 {
+      @include font-heading;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      margin-bottom: 2rem;
+      color: var(--primary);
+      position: relative;
+      z-index: 1;
+    }
+
+    .personaContent {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      .pBox {
+        .pLabel {
+          display: block;
+          font-size: 0.7rem;
+          font-family: var(--font-mono);
+          text-transform: uppercase;
+          letter-spacing: 0.15em;
+          color: var(--text-dim);
+          margin-bottom: 0.5rem;
+        }
+
+        p {
+          font-size: 1.05rem;
+          line-height: 1.5;
+          color: var(--text);
+        }
+      }
+    }
+  }
+}

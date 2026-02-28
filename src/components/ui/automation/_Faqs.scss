@@ -1,0 +1,45 @@
+@use "@/styles/variables.scss" as *;
+@use "@/styles/mixins.scss" as *;
+
+.faqsSection {
+  margin-top: clamp(6rem, 15vw, 12rem);
+  padding: 0 1.5rem;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+
+  .sectionTitle {
+    @include font-heading;
+    font-size: clamp(3rem, 8vw, 5rem);
+    text-align: center;
+    margin-bottom: 6rem;
+    letter-spacing: -0.05em;
+  }
+
+  .faqList {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+
+    .faqItem {
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(var(--text-rgb), 0.1);
+
+      h4 {
+        font-size: clamp(1.25rem, 3vw, 1.6rem);
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        color: var(--text);
+        letter-spacing: -0.02em;
+      }
+
+      .faqAnswer {
+        p {
+          font-size: clamp(1rem, 2vw, 1.15rem);
+          line-height: 1.6;
+          color: var(--text-dim);
+        }
+      }
+    }
+  }
+}
