@@ -703,4 +703,370 @@
       }
     }
   }
+
+  // Personas Section
+  .personasSection {
+    margin-top: clamp(6rem, 15vw, 12rem);
+    padding: 0 1.5rem;
+
+    .sectionTitle {
+      @include font-heading;
+      font-size: clamp(3rem, 8vw, 5rem);
+      text-align: center;
+      margin-bottom: 4rem;
+      letter-spacing: -0.05em;
+    }
+
+    .personaGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+
+      .personaCard {
+        background: rgba(var(--bg-rgb), 0.3);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(var(--text-rgb), 0.05);
+        padding: 3rem;
+        border-radius: 2.5rem;
+        transition: all 0.4s ease;
+
+        &:hover {
+          border-color: rgba(var(--primary-rgb), 0.2);
+          transform: translateY(-5px);
+        }
+
+        h3 {
+          font-size: 1.75rem;
+          font-weight: 800;
+          margin-bottom: 1.5rem;
+          color: var(--primary);
+        }
+
+        .personaContent {
+          p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+
+            strong {
+              color: var(--text);
+              text-transform: uppercase;
+              font-size: 0.75rem;
+              letter-spacing: 0.1em;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Testimonials Section
+  .testimonialsSection {
+    margin-top: clamp(6rem, 15vw, 12rem);
+    padding: 0 1.5rem;
+
+    .sectionTitle {
+      @include font-heading;
+      font-size: clamp(3rem, 8vw, 5rem);
+      text-align: center;
+      margin-bottom: 4rem;
+      letter-spacing: -0.05em;
+    }
+
+    .testimonialGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+
+      .testimonialCard {
+        background: rgba(var(--primary-rgb), 0.02);
+        border: 1px solid rgba(var(--text-rgb), 0.05);
+        padding: 3rem;
+        border-radius: 2.5rem;
+        position: relative;
+
+        .quoteIcon {
+          color: var(--primary);
+          opacity: 0.2;
+          margin-bottom: 1.5rem;
+        }
+
+        .quote {
+          font-size: 1.25rem;
+          font-style: italic;
+          line-height: 1.6;
+          margin-bottom: 2rem;
+          color: var(--text);
+        }
+
+        .author {
+          display: flex;
+          flex-direction: column;
+
+          strong {
+            font-size: 1.1rem;
+            color: var(--text);
+          }
+
+          span {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+          }
+        }
+      }
+    }
+  }
+
+  // FAQs Section
+  .faqsSection {
+    margin-top: clamp(6rem, 15vw, 12rem);
+    padding: 0 1.5rem;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+
+    .sectionTitle {
+      @include font-heading;
+      font-size: clamp(3rem, 8vw, 5rem);
+      text-align: center;
+      margin-bottom: 4rem;
+      letter-spacing: -0.05em;
+    }
+
+    .faqList {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+
+      .faqItem {
+        padding-bottom: 2rem;
+        border-bottom: 1px solid rgba(var(--text-rgb), 0.05);
+
+        h4 {
+          font-size: 1.4rem;
+          font-weight: 800;
+          margin-bottom: 1rem;
+          color: var(--text);
+        }
+
+        p {
+          font-size: 1.1rem;
+          line-height: 1.6;
+          color: var(--text-dim);
+        }
+      }
+    }
+  }
+
+  // Architecture Section
+  .architectureSection {
+    margin-top: clamp(6rem, 15vw, 12rem);
+    padding: 0 1.5rem;
+
+    .sectionTitle {
+      @include font-heading;
+      font-size: clamp(3rem, 8vw, 5rem);
+      text-align: center;
+      margin-bottom: 1rem;
+      letter-spacing: -0.05em;
+    }
+
+    .sectionOverview {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 4rem;
+      font-size: 1.25rem;
+      color: var(--text-dim);
+    }
+
+    .archGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+
+      .archCard {
+        background: rgba(var(--bg-rgb), 0.4);
+        border: 1px solid rgba(var(--text-rgb), 0.05);
+        padding: 2.5rem;
+        border-radius: 2rem;
+        backdrop-filter: blur(10px);
+
+        .archBadge {
+          display: inline-block;
+          font-size: 10px;
+          font-family: var(--font-mono);
+          text-transform: uppercase;
+          letter-spacing: 0.15em;
+          padding: 0.3rem 0.8rem;
+          background: rgba(var(--primary-rgb), 0.1);
+          color: var(--primary);
+          border-radius: 4px;
+          margin-bottom: 1.5rem;
+        }
+
+        h3 {
+          font-size: 1.5rem;
+          font-weight: 800;
+          margin-bottom: 1.5rem;
+        }
+
+        ul {
+          list-style: none;
+          padding: 0;
+
+          li {
+            padding-left: 1.5rem;
+            position: relative;
+            margin-bottom: 0.75rem;
+            color: var(--text-dim);
+            font-size: 1rem;
+
+            &::before {
+              content: "→";
+              position: absolute;
+              left: 0;
+              color: var(--primary);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // API Section
+  .apiSection {
+    margin-top: clamp(6rem, 15vw, 12rem);
+    padding: 0 1.5rem;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+
+    .sectionTitle {
+      @include font-heading;
+      font-size: clamp(3rem, 8vw, 5rem);
+      text-align: center;
+      margin-bottom: 4rem;
+      letter-spacing: -0.05em;
+    }
+
+    .apiList {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+
+      .apiItem {
+        background: rgba(var(--text-rgb), 0.02);
+        border: 1px solid rgba(var(--text-rgb), 0.05);
+        padding: 2.5rem;
+        border-radius: 2rem;
+
+        .apiHeader {
+          display: flex;
+          align-items: center;
+          gap: 1.5rem;
+          margin-bottom: 1.5rem;
+
+          .method {
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-weight: 900;
+            font-size: 0.85rem;
+            color: #fff;
+
+            &.get { background: #61affe; }
+            &.post { background: #49cc90; }
+            &.patch { background: #fca130; }
+            &.delete { background: #f93e3e; }
+          }
+
+          .path {
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            color: var(--text);
+          }
+        }
+
+        .apiDesc {
+          font-size: 1.1rem;
+          color: var(--text-dim);
+          margin-bottom: 2rem;
+        }
+
+        .paramsTable {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 1.5rem;
+
+          th {
+            text-align: left;
+            padding: 1rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+            border-bottom: 1px solid rgba(var(--text-rgb), 0.05);
+          }
+
+          td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid rgba(var(--text-rgb), 0.03);
+
+            code {
+              font-family: var(--font-mono);
+              color: var(--primary);
+              font-weight: 700;
+            }
+
+            .paramType {
+              font-family: var(--font-mono);
+              font-size: 0.85rem;
+              color: var(--secondary);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Custom Blocks
+  .customBlocks {
+    margin-top: clamp(6rem, 15vw, 12rem);
+    padding: 0 1.5rem;
+
+    .customBlock {
+      max-width: 1000px;
+      margin: 0 auto clamp(4rem, 10vw, 8rem);
+
+      h2 {
+        @include font-heading;
+        font-size: clamp(2.5rem, 6vw, 4rem);
+        margin-bottom: 1.5rem;
+      }
+
+      .customContent {
+        font-size: 1.15rem;
+        line-height: 1.7;
+        color: var(--text-dim);
+
+        p { margin-bottom: 1.5rem; }
+        
+        pre {
+          background: #000;
+          padding: 2rem;
+          border-radius: 1.5rem;
+          overflow-x: auto;
+          margin: 2rem 0;
+          border: 1px solid rgba(var(--primary-rgb), 0.2);
+        }
+
+        code {
+          font-family: var(--font-mono);
+          color: var(--primary);
+        }
+      }
+    }
+  }
 }

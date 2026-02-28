@@ -1,3 +1,398 @@
+@use "@/styles/variables.scss" as *;
+@use "@/styles/mixins.scss" as *;
+
 .page {
-  // Add styles here
+  position: relative;
+  z-index: 1;
+}
+
+// Documentation Sections
+.docSection {
+  margin-top: 2rem;
+
+  .docGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+
+    .docCard {
+      background: rgba(var(--bg-rgb), 0.4);
+      border: 1px solid rgba(var(--text-rgb), 0.05);
+      padding: 2rem;
+      border-radius: 1.5rem;
+      backdrop-filter: blur(10px);
+
+      .docBadge {
+        display: inline-block;
+        font-size: 10px;
+        font-family: var(--font-mono);
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        padding: 0.3rem 0.8rem;
+        background: rgba(var(--primary-rgb), 0.1);
+        color: var(--primary);
+        border-radius: 4px;
+        margin-bottom: 1rem;
+      }
+
+      h3 {
+        font-size: 1.25rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+
+        li {
+          padding-left: 1.25rem;
+          position: relative;
+          margin-bottom: 0.5rem;
+          color: var(--text-dim);
+          font-size: 0.9rem;
+
+          &::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+          }
+
+          code {
+            font-family: var(--font-mono);
+            color: var(--primary);
+            background: rgba(var(--primary-rgb), 0.05);
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// API Documentation
+.apiDoc {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+
+  .apiEndpoint {
+    background: rgba(var(--text-rgb), 0.02);
+    border: 1px solid rgba(var(--text-rgb), 0.05);
+    padding: 2rem;
+    border-radius: 1.5rem;
+
+    .apiHead {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+
+      span {
+        padding: 0.3rem 0.8rem;
+        border-radius: 4px;
+        font-family: var(--font-mono);
+        font-weight: 900;
+        font-size: 0.75rem;
+        color: #fff;
+      }
+
+      .get { background: #61affe; }
+      .post { background: #49cc90; }
+
+      code {
+        font-family: var(--font-mono);
+        font-size: 1rem;
+        color: var(--text);
+      }
+    }
+
+    p {
+      font-size: 1rem;
+      color: var(--text-dim);
+      margin-bottom: 1.5rem;
+    }
+
+    .apiTable {
+      width: 100%;
+      border-collapse: collapse;
+
+      th {
+        text-align: left;
+        padding: 0.75rem;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--text-dim);
+        border-bottom: 1px solid rgba(var(--text-rgb), 0.05);
+      }
+
+      td {
+        padding: 1rem 0.75rem;
+        border-bottom: 1px solid rgba(var(--text-rgb), 0.03);
+        font-size: 0.9rem;
+
+        code {
+          font-family: var(--font-mono);
+          color: var(--primary);
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}
+
+// Schema Documentation
+.schemaDoc {
+  h4 {
+    @include font-heading;
+    font-size: 1.5rem;
+    margin: 2rem 0 1rem;
+    color: var(--text);
+  }
+
+  p {
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    color: var(--text-dim);
+  }
+
+  .propertyGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+
+    .propItem {
+      background: rgba(var(--primary-rgb), 0.03);
+      padding: 1rem;
+      border-radius: 1rem;
+      font-size: 0.9rem;
+      border: 1px solid rgba(var(--primary-rgb), 0.05);
+      line-height: 1.4;
+
+      strong {
+        color: var(--primary);
+        font-family: var(--font-mono);
+        display: block;
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+      }
+
+      code {
+        font-family: var(--font-mono);
+        background: rgba(var(--text-rgb), 0.05);
+        padding: 0.1rem 0.3rem;
+        border-radius: 3px;
+        color: var(--secondary);
+      }
+    }
+  }
+
+  .dataTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+    background: rgba(var(--bg-rgb), 0.3);
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 1px solid rgba(var(--text-rgb), 0.05);
+
+    th {
+      text-align: left;
+      padding: 1rem;
+      background: rgba(var(--primary-rgb), 0.05);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid rgba(var(--text-rgb), 0.05);
+      color: var(--text-dim);
+      font-size: 0.95rem;
+
+      code {
+        font-family: var(--font-mono);
+        color: var(--primary);
+        background: rgba(var(--primary-rgb), 0.05);
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+      }
+    }
+  }
+}
+
+// Flowchart (Mermaid-like)
+.flowchart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 3rem 0 5rem;
+  padding: 3rem;
+  background: rgba(var(--bg-rgb), 0.3);
+  border-radius: 2rem;
+  border: 1px solid rgba(var(--primary-rgb), 0.1);
+  overflow-x: auto;
+  
+  @media (max-width: 900px) {
+    flex-direction: column;
+  }
+
+  .flowNode {
+    padding: 1rem 1.5rem;
+    background: rgba(var(--primary-rgb), 0.1);
+    border: 1px solid var(--primary);
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--text);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .flowDiamond {
+    padding: 1.5rem;
+    background: rgba(var(--secondary-rgb), 0.1);
+    border: 1px solid var(--secondary);
+    transform: rotate(45deg);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &::after {
+      content: "UIDBM Router";
+      transform: rotate(-45deg);
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    font-size: 0; // Hide original text
+  }
+
+  .flowDatabase {
+    padding: 1.5rem 1rem;
+    background: rgba(16, 185, 129, 0.1); // Emerald
+    border: 1px solid #10b981;
+    border-radius: 50% 50% 50% 50% / 10% 10% 10% 10%;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--text);
+    text-align: center;
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 20%;
+      border-bottom: 1px solid #10b981;
+      border-radius: 50%;
+    }
+  }
+
+  .flowArrow {
+    color: var(--text-dim);
+    font-size: 1.5rem;
+    font-weight: 900;
+  }
+
+  .flowBranches {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .flowBranch {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    @media (max-width: 900px) {
+      flex-direction: column;
+    }
+
+    .flowLabel {
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      color: var(--text-dim);
+      background: rgba(var(--bg-rgb), 0.8);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      border: 1px dashed rgba(var(--text-rgb), 0.2);
+    }
+  }
+}
+
+// Feature Grid (For Integrity/Security)
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 3rem;
+  margin-top: 2rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+
+  .featureBlock {
+    background: rgba(var(--bg-rgb), 0.2);
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    border: 1px solid rgba(var(--text-rgb), 0.05);
+
+    h4 {
+      @include font-heading;
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(var(--primary-rgb), 0.2);
+      padding-bottom: 0.5rem;
+    }
+
+    p {
+      color: var(--text-dim);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    ul, ol {
+      color: var(--text-dim);
+      padding-left: 1.5rem;
+      margin-bottom: 1.5rem;
+      
+      li {
+        margin-bottom: 0.75rem;
+        line-height: 1.5;
+
+        strong {
+          color: var(--text);
+        }
+      }
+    }
+  }
+}
+
+// Global Code Block helper
+.codeBlock {
+  background: #0d1117;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  overflow-x: auto;
+  border: 1px solid rgba(var(--text-rgb), 0.1);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: #e5c07b;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
 }

@@ -19,8 +19,10 @@ export const iconMap: Record<string, React.ElementType> = {
   MessageSquare, Brain, Sparkles, ShieldCheck, 
   Activity, Eye, Search, UserCheck,
   BarChart3, TrendingDown, Layers, Zap,
-  Cpu, Rocket, Target, PieChart, Clock, Globe
+  Cpu, Rocket, Target, PieChart, Clock, Globe, Languages, Link, Mic, Send
 };
+
+import { Languages, Link, Mic, Send } from "lucide-react";
 
 export interface Feature {
   iconName: string;
@@ -48,6 +50,29 @@ export interface PricingMetric {
   label: string;
   value: string;
   detail: string;
+}
+
+export interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+export interface PersonaItem {
+  title: string;
+  problem: string;
+  outcome: string;
+}
+
+export interface CustomInfoBlock {
+  title: string;
+  subtitle?: string;
+  content: React.ReactNode | string;
+}
+
+export interface ArchitectureComponent {
+  name: string;
+  role: string;
+  details: string[];
 }
 
 export interface AutomationServicePageProps {
@@ -101,6 +126,49 @@ export interface AutomationServicePageProps {
       buttonText: string;
     };
   };
+
+  /**
+   * New modular sections
+   */
+  personas?: {
+    title: string;
+    items: PersonaItem[];
+  };
+
+  faqs?: {
+    title: string;
+    items: FAQItem[];
+  };
+
+  testimonials?: {
+    title: string;
+    items: {
+      quote: string;
+      author: string;
+      role: string;
+    }[];
+  };
+
+  /**
+   * Advanced Generative Sections
+   */
+  architecture?: {
+    title: string;
+    overview: string;
+    components: ArchitectureComponent[];
+  };
+
+  apiReference?: {
+    title: string;
+    endpoints: {
+      method: "GET" | "POST" | "PATCH" | "DELETE";
+      path: string;
+      description: string;
+      params?: { name: string; type: string; desc: string }[];
+    }[];
+  };
+
+  customBlocks?: CustomInfoBlock[];
 }
 
 /**
@@ -121,6 +189,12 @@ export default function AutomationServicePage({
   features,
   intelSection,
   economicsSection,
+  personas,
+  faqs,
+  testimonials,
+  architecture,
+  apiReference,
+  customBlocks
 }: AutomationServicePageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -356,6 +430,156 @@ export default function AutomationServicePage({
                 </Reveal>
               )}
             </div>
+          </div>
+        )}
+
+        {/* Personas Section */}
+        {personas && (
+          <div className={styles.personasSection} id={`${baseId}-personas`}>
+            <Reveal id={`${baseId}-personas-header`}>
+              <h2 className={styles.sectionTitle}>{personas.title}</h2>
+            </Reveal>
+            <StaggerContainer className={styles.personaGrid}>
+              {personas.items.map((persona, index) => (
+                <Reveal key={index} direction="up" id={`${baseId}-persona-${index}`}>
+                  <div className={styles.personaCard}>
+                    <h3>{persona.title}</h3>
+                    <div className={styles.personaContent}>
+                      <p><strong>Problem:</strong> {persona.problem}</p>
+                      <p><strong>Outcome:</strong> {persona.outcome}</p>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </StaggerContainer>
+          </div>
+        )}
+
+        {/* Testimonials Section */}
+        {testimonials && (
+          <div className={styles.testimonialsSection} id={`${baseId}-testimonials`}>
+            <Reveal id={`${baseId}-testimonials-header`}>
+              <h2 className={styles.sectionTitle}>{testimonials.title}</h2>
+            </Reveal>
+            <StaggerContainer className={styles.testimonialGrid}>
+              {testimonials.items.map((testimonial, index) => (
+                <Reveal key={index} direction="up" id={`${baseId}-testimonial-${index}`}>
+                  <div className={styles.testimonialCard}>
+                    <MessageSquare className={styles.quoteIcon} />
+                    <p className={styles.quote}>"{testimonial.quote}"</p>
+                    <div className={styles.author}>
+                      <strong>{testimonial.author}</strong>
+                      <span>{testimonial.role}</span>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </StaggerContainer>
+          </div>
+        )}
+
+        {/* FAQs Section */}
+        {faqs && (
+          <div className={styles.faqsSection} id={`${baseId}-faqs`}>
+            <Reveal id={`${baseId}-faqs-header`}>
+              <h2 className={styles.sectionTitle}>{faqs.title}</h2>
+            </Reveal>
+            <div className={styles.faqList}>
+              {faqs.items.map((faq, index) => (
+                <Reveal key={index} direction="up" id={`${baseId}-faq-${index}`}>
+                  <div className={styles.faqItem}>
+                    <h4>{faq.question}</h4>
+                    <p>{faq.answer}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Architecture Section */}
+        {architecture && (
+          <div className={styles.architectureSection} id={`${baseId}-architecture`}>
+            <Reveal id={`${baseId}-arch-header`}>
+              <h2 className={styles.sectionTitle}>{architecture.title}</h2>
+              <p className={styles.sectionOverview}>{architecture.overview}</p>
+            </Reveal>
+            <div className={styles.archGrid}>
+              {architecture.components.map((comp, index) => (
+                <Reveal key={index} direction="up" id={`${baseId}-arch-comp-${index}`}>
+                  <div className={styles.archCard}>
+                    <div className={styles.archBadge}>{comp.role}</div>
+                    <h3>{comp.name}</h3>
+                    <ul>
+                      {comp.details.map((detail, dIndex) => (
+                        <li key={dIndex}>{detail}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* API Reference Section */}
+        {apiReference && (
+          <div className={styles.apiSection} id={`${baseId}-api`}>
+            <Reveal id={`${baseId}-api-header`}>
+              <h2 className={styles.sectionTitle}>{apiReference.title}</h2>
+            </Reveal>
+            <div className={styles.apiList}>
+              {apiReference.endpoints.map((endpoint, index) => (
+                <Reveal key={index} direction="up" id={`${baseId}-api-endpoint-${index}`}>
+                  <div className={styles.apiItem}>
+                    <div className={styles.apiHeader}>
+                      <span className={`${styles.method} ${styles[endpoint.method.toLowerCase()]}`}>
+                        {endpoint.method}
+                      </span>
+                      <code className={styles.path}>{endpoint.path}</code>
+                    </div>
+                    <p className={styles.apiDesc}>{endpoint.description}</p>
+                    {endpoint.params && endpoint.params.length > 0 && (
+                      <table className={styles.paramsTable}>
+                        <thead>
+                          <tr>
+                            <th>Param</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {endpoint.params.map((param, pIndex) => (
+                            <tr key={pIndex}>
+                              <td><code>{param.name}</code></td>
+                              <td><span className={styles.paramType}>{param.type}</span></td>
+                              <td>{param.desc}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Custom Info Blocks */}
+        {customBlocks && customBlocks.length > 0 && (
+          <div className={styles.customBlocks} id={`${baseId}-custom`}>
+            {customBlocks.map((block, index) => (
+              <Reveal key={index} direction="up" id={`${baseId}-custom-block-${index}`}>
+                <div className={styles.customBlock}>
+                  <h2>{block.title}</h2>
+                  {block.subtitle && <p className={styles.mono}>{block.subtitle}</p>}
+                  <div className={styles.customContent}>
+                    {block.content}
+                  </div>
+                </div>
+              </Reveal>
+            ))}
           </div>
         )}
       </div>
