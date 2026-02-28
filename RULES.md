@@ -14,10 +14,10 @@ ALWAYS ASK YOURSELF WHAT AM I TRYING TO ACHIEVE AND WHY. IS THERE A BETTER WAY?
 
 ULTRA MODERN, ULTRA RESPONSIVE (specially for mobile overflow scenarios), ULTRA ACCESIBLE, ULTRA SCROLL REACTIVE (normal lucide lenis and framer motion only when in view stuff), ULTRA PERFORMANT, MODULAR, NO TAILWIND, ONLY SCSS MODULES, ALL ELEMENTS HAVE CLASSES, ALL CLASSES HAVE COHESIVE STYLES, ALL ELEMENTS HAVE UNIQUE ID BASED ON THEIR COMPONENT PATH AND THEIR INDIVIDUAL NAME. SRR Friendly. Recursively explorer  pertinent imports in referenced files. Check home page components for patterns style(visual or functionally)guide wise. 
 
+If you import something, check what is available in that file, and add what you propose to add, without changing what is there already.
+
 Never reference undefined variables in *.module.scss. Imported `src/styles/variables.scss`.
-
-I will read `src/styles/variables.scss` to verify the correct variable names and then fix the SCSS module.
-
+If you import something like `src/styles/mixins.scss` find the correct mixin names.
 
 DISPOSE OF EACH RULE AS IT COMES MOST CONVENIENT, NOT EVERYTHING AT ONCE IS NECCESARY, REGARDLESS OF EVERYTHING COMING AT YOU, THINK WHY TO FOCUS ON WHAT, CHOOSE, ASK YOURSELF HOW (WHAT DRIVES THE MOST ROI IN THE CURRENT STAGE OF THE GREATER SCHEME).
 

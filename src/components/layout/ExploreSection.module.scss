@@ -39,7 +39,7 @@
   position: relative;
   
   // Mobile overflow handling
-  @include m.mobile {
+  @media (max-width: v.$breakpoint-md) {
     overflow-x: auto;
     padding-bottom: 1rem;
     cursor: grab;
@@ -63,11 +63,11 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
 
-  @include m.tablet {
+  @media (min-width: v.$breakpoint-lg) {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  @include m.mobile {
+  @media (max-width: v.$breakpoint-md) {
     display: flex;
     flex-wrap: nowrap;
     width: max-content;
@@ -76,7 +76,7 @@
 }
 
 .cardWrapper {
-  @include m.mobile {
+  @media (max-width: v.$breakpoint-md) {
     width: 200px;
     flex-shrink: 0;
   }
