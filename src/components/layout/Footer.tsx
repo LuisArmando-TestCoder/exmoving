@@ -77,13 +77,13 @@ export default function Footer() {
             <p>© {new Date().getFullYear()} ΣXECUTIONS. ALL RIGHTS RESERVED.</p>
           </div>
           <div className={styles.socials}>
-            <Link href="#" className={styles.socialLink} aria-label="Twitter">
+            <Link href="https://x.com/LuisArmand82485" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Twitter">
               <Twitter size={18} />
             </Link>
-            <Link href="#" className={styles.socialLink} aria-label="LinkedIn">
+            <Link href="https://www.linkedin.com/in/luis-armando-murillo-4434a3173/" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="LinkedIn">
               <Linkedin size={18} />
             </Link>
-            <Link href="#" className={styles.socialLink} aria-label="GitHub">
+            <Link href="https://github.com/LuisArmando-TestCoder" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="GitHub">
               <Github size={18} />
             </Link>
           </div>
