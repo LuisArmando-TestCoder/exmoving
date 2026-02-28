@@ -262,7 +262,8 @@ export const Chatbot = ({
       // Start background observation asynchronously
       const observationPromise = brain.observeBehavior(userText, messages).then(note => {
         if (note && note !== "Observation unavailable") {
-          setBehaviorNotes(`[${formatTimestamp()}] ${note}`);
+          const lastModelMsg = messages.length > 0 ? messages[messages.length - 1].text : "";
+          setBehaviorNotes(`[${formatTimestamp()}] User said: "${userText}" | Chatbot previously said: "${lastModelMsg}" | Observation: ${note}`);
         }
         return useChatbotStore.getState().behaviorNotes;
       }).then(updatedNotes => {

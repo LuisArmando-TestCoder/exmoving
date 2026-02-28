@@ -109,11 +109,17 @@ export class ChatBrain {
   async analyzeBehaviorPatterns(behaviorNotes: string) {
     const analyzerModel = this.genAI.getGenerativeModel({
       model: "gemini-flash-latest",
-      systemInstruction: "Analyze the following behavior log for odd, erratic, or uncooperative patterns. Return 'true' if a pattern of odd behavior is found, 'false' otherwise. Only return 'true' or 'false'."
+      systemInstruction: `Analyze the following behavior log. 
+      The user is ALLOWED to be uncooperative, skeptical, or frustrated if the chatbot is acting erratic, repetitive, or unhelpful.
+      
+      You must ONLY return 'true' if the user's behavior is TRULY ABSURD, malicious, or completely nonsensical regardless of the chatbot's performance.
+      If the user is just being difficult but within reason for a frustrated customer, return 'false'.
+      
+      Return 'true' if a pattern of truly absurd behavior is found, 'false' otherwise. Only return 'true' or 'false'.`
     });
 
     try {
-      const result = await analyzerModel.generateContent(`BEHAVIOR LOG:\n${behaviorNotes}\n\nPattern detected?`);
+      const result = await analyzerModel.generateContent(`BEHAVIOR LOG (Interaction history and notes):\n${behaviorNotes}\n\nTruly absurd pattern detected?`);
       const responseText = (await result.response).text().toLowerCase();
       
       // Telemetry
