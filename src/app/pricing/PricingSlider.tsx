@@ -13,7 +13,7 @@ interface PricingSliderProps {
   config: SliderConfig;
 }
 
-const RollingNumber = ({ value, unit }: { value: any, unit?: string }) => {
+const RollingNumber = ({ value, unit }: { value: number, unit?: string }) => {
   const springValue = useSpring(value, {
     stiffness: 80,
     damping: 20,
