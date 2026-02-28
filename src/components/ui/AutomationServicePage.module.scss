@@ -2,10 +2,11 @@
 @use "@/styles/mixins.scss" as *;
 
 .pageContainer {
-  padding-bottom: clamp(4rem, 10vw, 10rem);
+  padding: clamp(4rem, 10vw, 10rem) 0;
   position: relative;
   overflow: hidden;
   color: var(--text);
+  border-radius: 5rem;
 
   &::before {
     content: "";

@@ -4,12 +4,6 @@ import styles from "./NewsletterSeoBlogger.module.scss";
 export default function NewsletterSeoBloggerPage() {
   return (
     <AutomationServicePage
-      header={{
-        badgeText: "New Automation Service",
-        titleLine1: "AGENTIC NEWSLETTER WRITER AND SEO BLOGGER",
-        titleGradient: "SOLUTIONS",
-        subtitle: "A flexible and powerful solution tailored for your specific needs."
-      }}
       features={[
         {
           iconName: "Brain",
