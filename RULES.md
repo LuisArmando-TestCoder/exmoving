@@ -151,7 +151,7 @@ We now have a dedicated Deno CLI script that recursively scaffolds the entire ro
 **How to use:**
 Simply run the npm script with your desired page name and the full path where it should live:
 ```bash
-npm run add-page -- --name="Agentic Newsletter Writer" --path="/services/consultations/automation/newsletter-seo-blogger"
+npm run add-page -- --name="KRONOS / Agentic CRM Customizer" --path="/services/consultations/automation/kronos-agentic-crm-customizer"
 ```
 *   **What it does**:
     1.  Recursively checks the path (e.g., `/services/consultations/automation/...`).

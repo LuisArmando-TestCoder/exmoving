@@ -79,7 +79,7 @@ export const NavDropdown = ({ item }: { item: NavItem }) => {
         )}
       </div>
       
-      {item.children && (
+      {item.children ? (
         <div className={clsx(styles.dropdownMenu, isOpen && styles.dropdownMenuVisible)}>
           {/* Breadcrumbs */}
           <div className={styles.breadcrumbContainer}>
@@ -136,6 +136,12 @@ export const NavDropdown = ({ item }: { item: NavItem }) => {
               )}
             </div>
           </div>
+        </div>
+      ) : (
+        <div className={clsx(styles.dropdownMenu, isOpen && styles.dropdownMenuVisible, styles.dropdownMenuSimple)}>
+          <Link href={item.path} className={styles.dropdownItem}>
+            {item.name}
+          </Link>
         </div>
       )}
     </div>

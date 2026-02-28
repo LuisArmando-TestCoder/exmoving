@@ -6,6 +6,14 @@ export interface NavItem {
 
 export const navigationData: NavItem[] = [
   {
+    name: "About",
+    path: "/about",
+  },
+  {
+    name: "Case Studies",
+    path: "/case-studies",
+  },
+  {
     name: "Services",
     path: "/services",
     children: [
@@ -34,11 +42,27 @@ export const navigationData: NavItem[] = [
               {
                 name: "Agentic Newsletter Writer and SEO Blogger",
                 path: "/services/consultations/automation/newsletter-seo-blogger"
+              },
+              {
+                name: "KRONOS / Agentic CRM Customizer",
+                path: "/services/consultations/automation/kronos-agentic-crm-customizer"
               }
             ]
           }
         ]
       }
     ]
+  },
+  {
+    name: "Contact",
+    path: "/contact",
+  },
+  {
+    name: "Privacy",
+    path: "/privacy",
+  },
+  {
+    name: "Terms",
+    path: "/terms",
   }
 ];
