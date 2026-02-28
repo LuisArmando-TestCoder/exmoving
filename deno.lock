@@ -1,0 +1,63 @@
+{
+  "version": "5",
+  "specifiers": {
+    "jsr:@std/cli@*": "1.0.28",
+    "jsr:@std/fs@*": "1.0.23",
+    "jsr:@std/internal@^1.0.12": "1.0.12",
+    "jsr:@std/path@*": "1.1.4",
+    "jsr:@std/path@^1.1.4": "1.1.4"
+  },
+  "jsr": {
+    "@std/cli@1.0.28": {
+      "integrity": "74ef9b976db59ca6b23a5283469c9072be6276853807a83ec6c7ce412135c70a"
+    },
+    "@std/fs@1.0.23": {
+      "integrity": "3ecbae4ce4fee03b180fa710caff36bb5adb66631c46a6460aaad49515565a37",
+      "dependencies": [
+        "jsr:@std/internal",
+        "jsr:@std/path@^1.1.4"
+      ]
+    },
+    "@std/internal@1.0.12": {
+      "integrity": "972a634fd5bc34b242024402972cd5143eac68d8dffaca5eaa4dba30ce17b027"
+    },
+    "@std/path@1.1.2": {
+      "integrity": "c0b13b97dfe06546d5e16bf3966b1cadf92e1cc83e56ba5476ad8b498d9e3038"
+    },
+    "@std/path@1.1.4": {
+      "integrity": "1d2d43f39efb1b42f0b1882a25486647cb851481862dc7313390b2bb044314b5",
+      "dependencies": [
+        "jsr:@std/internal"
+      ]
+    }
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:@google/generative-ai@~0.24.1",
+        "npm:@types/node@20",
+        "npm:@types/nodemailer@^7.0.11",
+        "npm:@types/react-dom@19",
+        "npm:@types/react@19",
+        "npm:babel-plugin-react-compiler@1.0.0",
+        "npm:clsx@^2.1.1",
+        "npm:eslint-config-next@16.1.6",
+        "npm:eslint@9",
+        "npm:framer-motion@^12.34.3",
+        "npm:gsap@^3.14.2",
+        "npm:lenis@^1.3.17",
+        "npm:lucide-react@0.575",
+        "npm:marked@^17.0.3",
+        "npm:next@16.1.6",
+        "npm:nodemailer@^8.0.1",
+        "npm:react-dom@19.2.3",
+        "npm:react@19.2.3",
+        "npm:sass@^1.97.3",
+        "npm:tailwind-merge@^3.5.0",
+        "npm:typescript@5",
+        "npm:zod@^4.3.6",
+        "npm:zustand@^5.0.11"
+      ]
+    }
+  }
+}

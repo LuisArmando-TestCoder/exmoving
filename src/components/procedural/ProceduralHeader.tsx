@@ -34,19 +34,20 @@ export default function ProceduralHeader({ title }: ProceduralHeaderProps) {
         </motion.div>
 
         <motion.h1 className={styles.title}>
-          {title.split("").map((char, i) => (
+          {title.split(" ").map((word, i) => (
             <motion.span
               key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
               transition={{
-                delay: i * 0.02,
+                delay: i * 0.05,
                 type: "spring",
                 stiffness: 100,
               }}
+              style={{ display: "inline-block", marginRight: "0.25em" }}
             >
-              {char}
+              {word}
             </motion.span>
           ))}
         </motion.h1>

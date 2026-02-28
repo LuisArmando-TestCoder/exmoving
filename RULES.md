@@ -145,12 +145,24 @@ Every page must focus on **Economics** and **ROI**, not just features.
 
 ## Deployment Workflow: Adding a New Service Page
 
+**NEW AUTOMATED WORKFLOW (FOR DUMMIES & CODING MONKEYS):**
+We now have a dedicated Deno CLI script that recursively scaffolds the entire routing tree, generates the `page.tsx` with a highly robust, prop-driven `AutomationServicePage` component, creates the SCSS modules, and perfectly registers the entire hierarchy into `navigation.ts`.
+
+**How to use:**
+Simply run the npm script with your desired page name and the full path where it should live:
+```bash
+npm run add-page -- --name="Agentic Newsletter Writer" --path="/services/consultations/automation/newsletter-seo-blogger"
+```
+*   **What it does**:
+    1.  Recursively checks the path (e.g., `/services/consultations/automation/...`).
+    2.  If any parent directory does not exist, it creates a `SimplePage` for it and adds it to `navigation.ts` with empty `children`.
+    3.  At the target leaf path, it scaffolds a `page.tsx` using the `AutomationServicePage` component (a highly flexible, config-driven procedural template) and an accompanying `.module.scss` file.
+    4.  Updates `src/constants/navigation.ts` intelligently, injecting the new nodes precisely where they belong in the deeply nested object.
+
+**Manual Legacy Workflow (If needed):**
 1.  **Define Location**: Create the directory structure in `src/app/services/consultations/[category]/[service]`.
 2.  **Register in Navigation**: Add the new entry to `navigationData` in `src/constants/navigation.ts`.
-    ```typescript
-    { name: "My New Service", path: "/services/consultations/category/service", children: [...] }
-    ```
-3.  **Scaffold Component**: Create `page.tsx` using `ProceduralTemplate`.
+3.  **Scaffold Component**: Create `page.tsx` using `ProceduralTemplate` or `AutomationServicePage`.
 4.  **Scaffold Styles**: Create `[Name].module.scss` next to your page.
 5.  **Inject Metrics**: Populate the page with ROI and Technical Audit data.
 

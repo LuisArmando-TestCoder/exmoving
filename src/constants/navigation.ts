@@ -17,8 +17,11 @@ export const navigationData: NavItem[] = [
             name: "Moving",
             path: "/services/consultations/moving",
             children: [
-              { name: "Pricing", path: "/services/consultations/moving/pricing" },
-            ],
+              {
+                name: "Pricing",
+                path: "/services/consultations/moving/pricing"
+              }
+            ]
           },
           {
             name: "Automation",
@@ -26,12 +29,16 @@ export const navigationData: NavItem[] = [
             children: [
               {
                 name: "Chatbot",
-                path: "/services/consultations/automation/chatbot",
+                path: "/services/consultations/automation/chatbot"
               },
-            ],
-          },
-        ],
-      },
-    ],
-  },
+              {
+                name: "Agentic Newsletter Writer and SEO Blogger",
+                path: "/services/consultations/automation/newsletter-seo-blogger"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 ];
