@@ -8,10 +8,11 @@ import {
   Cpu, Rocket, Target, PieChart, Clock, Globe, ArrowRight
 } from "lucide-react";
 import ProceduralTemplate from "@/components/ProceduralTemplate";
-import { Reveal } from "@/components/ui/Reveal";
+import { Reveal, StaggerContainer } from "@/components/ui/Common";
 import { motion, useScroll, useSpring } from "framer-motion";
 import styles from "./AutomationServicePage.module.scss";
 import { EmailActionButton } from "@/components/ui/EmailActionButton";
+import { usePathname } from "next/navigation";
 
 // Mapping of string icons to lucide-react icons for JSON-based config
 export const iconMap: Record<string, React.ElementType> = {
@@ -122,9 +123,12 @@ export default function AutomationServicePage({
   economicsSection,
 }: AutomationServicePageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const baseId = pathname.replace(/\//g, "-").replace(/^-/, "") || "automation-service";
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end start"]
+    offset: ["start start", "end end"]
   });
 
   const scaleX = useSpring(scrollYProgress, {
@@ -135,36 +139,46 @@ export default function AutomationServicePage({
 
   return (
     <ProceduralTemplate>
-      <div ref={containerRef} className={styles.pageContainer}>
+      <div ref={containerRef} className={styles.pageContainer} id={baseId}>
         {/* Scroll Progress Indicator */}
-        <motion.div className={styles.scrollProgress} style={{ scaleX }} />
+        <motion.div 
+          className={styles.scrollProgress} 
+          style={{ scaleX }} 
+          id={`${baseId}-scroll-progress`}
+        />
 
         {/* Hero Section */}
         {header && (
-          <div className={styles.hero}>
+          <div className={styles.hero} id={`${baseId}-hero`}>
             <Reveal>
               {header.badgeText && (
-                <div className={styles.badge}>
+                <div className={styles.badge} id={`${baseId}-hero-badge`}>
                   <Cpu size={14} />
                   <span>{header.badgeText}</span>
                 </div>
               )}
-              <h1 className={styles.title}>
+              <h1 className={styles.title} id={`${baseId}-hero-title`}>
                 {header.titleLine1} <br />
                 <span className={styles.gradient}>{header.titleGradient}</span>
               </h1>
-              <p className={styles.subtitle}>{header.subtitle}</p>
+              <p className={styles.subtitle} id={`${baseId}-hero-subtitle`}>
+                {header.subtitle}
+              </p>
             </Reveal>
           </div>
         )}
 
         {/* Pricing/ROI Cards */}
         {roiStats && roiStats.length > 0 && (
-          <div className={styles.pricingGrid}>
+          <StaggerContainer 
+            className={styles.pricingGrid} 
+            id={`${baseId}-roi-grid`}
+          >
             {roiStats.map((stat, index) => {
               const IconComponent = iconMap[stat.iconName] || Target;
+              const cardId = `${baseId}-roi-card-${index}`;
               return (
-                <Reveal key={index} delay={index * 0.1} direction="up">
+                <Reveal key={index} direction="up" id={cardId}>
                   <div className={styles.pricingCard}>
                     <div className={styles.cardHeader}>
                       <div className={styles.iconWrapper}>
@@ -178,16 +192,21 @@ export default function AutomationServicePage({
                 </Reveal>
               );
             })}
-          </div>
+          </StaggerContainer>
         )}
 
         {/* Features Grid */}
         {features && features.length > 0 && (
-          <div className={styles.mainFeatures}>
+          <div className={styles.mainFeatures} id={`${baseId}-features`}>
             {features.map((feature, index) => {
               const IconComponent = iconMap[feature.iconName] || Brain;
+              const cardId = `${baseId}-feature-${index}`;
               return (
-                <Reveal key={index} delay={index * 0.1} direction={index % 2 === 0 ? "left" : "right"}>
+                <Reveal 
+                  key={index} 
+                  direction={index % 2 === 0 ? "left" : "right"}
+                  id={cardId}
+                >
                   <div className={styles.featureCard}>
                     <div className={styles.bgIcon}>
                       <IconComponent size={120} />
@@ -212,8 +231,8 @@ export default function AutomationServicePage({
 
         {/* Deep Intel Section */}
         {intelSection && (
-          <div className={styles.intelSection}>
-            <Reveal>
+          <div className={styles.intelSection} id={`${baseId}-intel`}>
+            <Reveal id={`${baseId}-intel-header`}>
               <div className={styles.sectionHeader}>
                 <h2>{intelSection.title}</h2>
                 <p className={styles.mono}>{intelSection.subtitle}</p>
@@ -221,11 +240,15 @@ export default function AutomationServicePage({
             </Reveal>
             
             {intelSection.details && intelSection.details.length > 0 && (
-              <div className={styles.intelGrid}>
+              <StaggerContainer 
+                className={styles.intelGrid}
+                id={`${baseId}-intel-grid`}
+              >
                 {intelSection.details.map((detail, index) => {
                   const IconComponent = iconMap[detail.iconName] || Activity;
+                  const cardId = `${baseId}-intel-card-${index}`;
                   return (
-                    <Reveal key={index} delay={index * 0.1} distance={20}>
+                    <Reveal key={index} distance={20} id={cardId}>
                       <div className={styles.intelCard}>
                         <IconComponent className={styles.icon} size={28} />
                         <h4>{detail.label}</h4>
@@ -234,15 +257,15 @@ export default function AutomationServicePage({
                     </Reveal>
                   );
                 })}
-              </div>
+              </StaggerContainer>
             )}
           </div>
         )}
 
         {/* Intelligence Economics Section */}
         {economicsSection && (
-          <div className={styles.economics}>
-            <Reveal>
+          <div className={styles.economics} id={`${baseId}-economics`}>
+            <Reveal id={`${baseId}-economics-header`}>
               <div className={styles.ecoHeader}>
                 <div className={styles.ecoTitle}>
                   <h2>{economicsSection.title}</h2>
@@ -259,7 +282,7 @@ export default function AutomationServicePage({
             </Reveal>
 
             {economicsSection.metrics && economicsSection.metrics.length > 0 && (
-              <Reveal>
+              <Reveal id={`${baseId}-economics-report`}>
                 <div className={styles.reportCard}>
                   <div className={styles.reportHeader}>
                     <h2>
@@ -273,7 +296,11 @@ export default function AutomationServicePage({
                     {economicsSection.metrics.map((metric, index) => {
                       const IconComponent = iconMap[metric.iconName] || BarChart3;
                       return (
-                        <div key={index} className={styles.reportMetric}>
+                        <div 
+                          key={index} 
+                          className={styles.reportMetric}
+                          id={`${baseId}-metric-${index}`}
+                        >
                           <IconComponent className={styles.mIcon} size={20} />
                           <span className={styles.mLabel}>{metric.label}</span>
                           <span className={styles.mValue}>{metric.value}</span>
@@ -296,9 +323,9 @@ export default function AutomationServicePage({
               </Reveal>
             )}
 
-            <div className={styles.bottomCards}>
+            <div className={styles.bottomCards} id={`${baseId}-economics-footer`}>
               {economicsSection.bottomLeftCard && (
-                <Reveal direction="left">
+                <Reveal direction="left" id={`${baseId}-bottom-left-card`}>
                   <div className={styles.infoCard}>
                     <h3>{economicsSection.bottomLeftCard.title}</h3>
                     <p>{economicsSection.bottomLeftCard.description}</p>
@@ -311,7 +338,7 @@ export default function AutomationServicePage({
               )}
 
               {economicsSection.bottomRightCard && (
-                <Reveal direction="right">
+                <Reveal direction="right" id={`${baseId}-bottom-right-card`}>
                   <div className={styles.ctaCard}>
                     <div className={styles.ctaBg}>
                       <Rocket size={100} />
@@ -322,6 +349,7 @@ export default function AutomationServicePage({
                       <EmailActionButton 
                         label={economicsSection.bottomRightCard.buttonText} 
                         className={styles.auditButton}
+                        id={`${baseId}-cta-button`}
                       />
                     </div>
                   </div>
