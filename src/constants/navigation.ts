@@ -34,7 +34,7 @@ export const navigationData: NavItem[] = [
             path: "/services/consultations/automation",
             children: [
               {
-                name: "Chatbot",
+                name: "Chatbot / Lead Qualifer",
                 path: "/services/consultations/automation/chatbot"
               },
               {
