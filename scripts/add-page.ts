@@ -95,6 +95,63 @@ export default function ${componentName}Page() {
         bottomLeftCard: { title: "Cost-Effective", description: "Maximize your ROI with intelligent automation.", roi: "20x" },
         bottomRightCard: { title: "Ready to Scale?", description: "Let's build your custom solution.", buttonText: "GET STARTED" }
       }}
+      personas={{
+        title: "PERFECT FOR YOUR BUSINESS",
+        items: [
+          {
+            title: "Example Persona",
+            problem: "Description of the challenge being faced.",
+            outcome: "How our solution transforms the workflow."
+          }
+        ]
+      }}
+      faqs={{
+        title: "FREQUENTLY ASKED QUESTIONS",
+        items: [
+          {
+            question: "Is there a free trial?",
+            answer: "We offer tailored pilot programs for enterprise partners."
+          }
+        ]
+      }}
+      testimonials={{
+        title: "WHAT OUR CUSTOMERS SAY",
+        items: [
+          {
+            quote: "This automation has completely transformed how we handle our domain-specific tasks.",
+            author: "Jane Doe",
+            role: "CTO, Tech Solutions"
+          }
+        ]
+      }}
+      architecture={{
+        title: "SYSTEM ARCHITECTURE",
+        overview: "A highly modularized engine designed for performance and scalability.",
+        components: [
+          {
+            name: "Core Processor",
+            role: "ENGINE",
+            details: [
+              "Standardized data processing pipeline",
+              "Real-time integrity checks",
+              "Secure vault integration"
+            ]
+          }
+        ]
+      }}
+      apiReference={{
+        title: "API REFERENCE",
+        endpoints: [
+          {
+            method: "GET",
+            path: "/api/v1/resource",
+            description: "Retrieve resource details.",
+            params: [
+              { name: "id", type: "string", desc: "Resource identifier" }
+            ]
+          }
+        ]
+      }}
     />
   );
 }

@@ -435,7 +435,7 @@ export default function AutomationServicePage({
 
         {/* Personas Section */}
         {personas && (
-          <div className={styles.personasSection} id={`${baseId}-personas`}>
+          <section className={styles.personasSection} id={`${baseId}-personas`}>
             <Reveal id={`${baseId}-personas-header`}>
               <h2 className={styles.sectionTitle}>{personas.title}</h2>
             </Reveal>
@@ -445,19 +445,25 @@ export default function AutomationServicePage({
                   <div className={styles.personaCard}>
                     <h3>{persona.title}</h3>
                     <div className={styles.personaContent}>
-                      <p><strong>Problem:</strong> {persona.problem}</p>
-                      <p><strong>Outcome:</strong> {persona.outcome}</p>
+                      <div className={styles.pBox}>
+                        <span className={styles.pLabel}>Problem:</span>
+                        <p>{persona.problem}</p>
+                      </div>
+                      <div className={styles.pBox}>
+                        <span className={styles.pLabel}>Outcome:</span>
+                        <p>{persona.outcome}</p>
+                      </div>
                     </div>
                   </div>
                 </Reveal>
               ))}
             </StaggerContainer>
-          </div>
+          </section>
         )}
 
         {/* Testimonials Section */}
         {testimonials && (
-          <div className={styles.testimonialsSection} id={`${baseId}-testimonials`}>
+          <section className={styles.testimonialsSection} id={`${baseId}-testimonials`}>
             <Reveal id={`${baseId}-testimonials-header`}>
               <h2 className={styles.sectionTitle}>{testimonials.title}</h2>
             </Reveal>
@@ -465,8 +471,8 @@ export default function AutomationServicePage({
               {testimonials.items.map((testimonial, index) => (
                 <Reveal key={index} direction="up" id={`${baseId}-testimonial-${index}`}>
                   <div className={styles.testimonialCard}>
-                    <MessageSquare className={styles.quoteIcon} />
-                    <p className={styles.quote}>"{testimonial.quote}"</p>
+                    <MessageSquare className={styles.quoteIcon} size={32} />
+                    <blockquote className={styles.quote}>"{testimonial.quote}"</blockquote>
                     <div className={styles.author}>
                       <strong>{testimonial.author}</strong>
                       <span>{testimonial.role}</span>
@@ -475,12 +481,12 @@ export default function AutomationServicePage({
                 </Reveal>
               ))}
             </StaggerContainer>
-          </div>
+          </section>
         )}
 
         {/* FAQs Section */}
         {faqs && (
-          <div className={styles.faqsSection} id={`${baseId}-faqs`}>
+          <section className={styles.faqsSection} id={`${baseId}-faqs`}>
             <Reveal id={`${baseId}-faqs-header`}>
               <h2 className={styles.sectionTitle}>{faqs.title}</h2>
             </Reveal>
@@ -489,12 +495,14 @@ export default function AutomationServicePage({
                 <Reveal key={index} direction="up" id={`${baseId}-faq-${index}`}>
                   <div className={styles.faqItem}>
                     <h4>{faq.question}</h4>
-                    <p>{faq.answer}</p>
+                    <div className={styles.faqAnswer}>
+                      <p>{faq.answer}</p>
+                    </div>
                   </div>
                 </Reveal>
               ))}
             </div>
-          </div>
+          </section>
         )}
 
         {/* Architecture Section */}
