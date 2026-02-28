@@ -1,0 +1,195 @@
+@use "../../styles/variables" as *;
+
+.dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dropdownToggle {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 100px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(var(--overlay-rgb), 0.05);
+  }
+}
+
+.dropdownMainLink {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: rgba(var(--overlay-rgb), 0.6);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+
+  .dropdownToggle:hover & {
+    color: var(--text);
+  }
+}
+
+.chevron {
+  transition: transform 0.3s ease;
+  color: rgba(var(--overlay-rgb), 0.3);
+}
+
+.chevronRotate {
+  transform: rotate(180deg);
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 280px;
+  background: var(--surface);
+  border: 1px solid rgba(var(--overlay-rgb), 0.1);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-top: 0.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 20px 40px rgba(var(--overlay-dark-rgb), 0.4);
+  z-index: 100;
+
+  &Visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
+
+.breadcrumbContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(var(--overlay-rgb), 0.05);
+}
+
+.breadcrumbWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.breadcrumbLink {
+  background: transparent;
+  border: none;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(var(--overlay-rgb), 0.4);
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--text);
+    background: rgba(var(--overlay-rgb), 0.05);
+  }
+}
+
+.breadcrumbActive {
+  color: var(--primary);
+  cursor: default;
+  &:hover {
+    background: transparent;
+  }
+}
+
+.breadcrumbSeparator {
+  color: rgba(var(--overlay-rgb), 0.1);
+}
+
+.dropdownContentRelative {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: none;
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin-bottom: 0.25rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(var(--primary-rgb), 0.1);
+  }
+}
+
+.navItemsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.dropdownItemWrapper {
+  width: 100%;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  color: rgba(var(--overlay-rgb), 0.7);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(var(--overlay-rgb), 0.05);
+    color: var(--text);
+    transform: translateX(4px);
+  }
+
+  svg {
+    opacity: 0.4;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover svg {
+    opacity: 1;
+    transform: translateX(2px);
+  }
+}
+
+.viewAllLink {
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(var(--overlay-rgb), 0.05);
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  &:hover {
+    background: transparent;
+    color: var(--primary);
+    filter: brightness(1.1);
+  }
+}

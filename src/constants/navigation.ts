@@ -4,15 +4,13 @@ export interface NavItem {
   children?: NavItem[];
 }
 
+export interface ExploreItem {
+  name: string;
+  path: string;
+  id: string;
+}
+
 export const navigationData: NavItem[] = [
-  {
-    name: "About",
-    path: "/about",
-  },
-  {
-    name: "Case Studies",
-    path: "/case-studies",
-  },
   {
     name: "Services",
     path: "/services",
@@ -52,17 +50,14 @@ export const navigationData: NavItem[] = [
         ]
       }
     ]
-  },
-  {
-    name: "Contact",
-    path: "/contact",
-  },
-  {
-    name: "Privacy",
-    path: "/privacy",
-  },
-  {
-    name: "Terms",
-    path: "/terms",
   }
+];
+
+export const exploreData: ExploreItem[] = [
+  { name: "About", path: "/about", id: "about" },
+  { name: "Pricing", path: "/pricing", id: "pricing" },
+  { name: "Case Studies", path: "/case-studies", id: "case-studies" },
+  { name: "Contact", path: "/contact", id: "contact" },
+  { name: "Privacy", path: "/privacy", id: "privacy" },
+  { name: "Terms", path: "/terms", id: "terms" },
 ];

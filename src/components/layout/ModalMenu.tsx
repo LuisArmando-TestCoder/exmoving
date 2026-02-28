@@ -2,12 +2,19 @@
 
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { LayoutGrid, ArrowUpRight, ChevronRight, ChevronLeft, Search } from "lucide-react";
+import { 
+  LayoutGrid, 
+  ArrowUpRight, 
+  ChevronRight, 
+  ChevronLeft, 
+  Search 
+} from "lucide-react";
 import { clsx } from "clsx";
 import { AnimatePresence, motion, Variants } from "framer-motion";
 import { navigationData, NavItem } from "@/constants/navigation";
 import { EmailActionButton } from "../ui/EmailActionButton";
-import styles from "./Header.module.scss";
+import { ExploreSection } from "./ExploreSection";
+import styles from "./ModalMenu.module.scss";
 
 interface FlattenedNavItem extends NavItem {
   parentName?: string;
@@ -306,14 +313,7 @@ export const ModalMenu = ({ isOpen, activeTab, setActiveTab, setMenuOpen }: Moda
           </div>
 
           <div className={styles.modalInfoSection}>
-            <div className={styles.modalInfoBlock}>
-              <p className={styles.modalLabel}>EXPLORE</p>
-              <nav className={styles.modalSecondaryNav}>
-                <Link href="/about" className={styles.modalInfoLink} onClick={() => setMenuOpen(false)}>About</Link>
-                <Link href="/pricing" className={styles.modalInfoLink} onClick={() => setMenuOpen(false)}>Pricing</Link>
-                <Link href="/contact" className={styles.modalInfoLink} onClick={() => setMenuOpen(false)}>Contact</Link>
-              </nav>
-            </div>
+            <ExploreSection onItemClick={() => setMenuOpen(false)} />
 
             <div className={styles.modalInfoBlock}>
               <p className={styles.modalLabel}>GET IN TOUCH</p>

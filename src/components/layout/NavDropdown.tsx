@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ChevronRight, ChevronDown, ChevronLeft } from "lucide-react";
 import { clsx } from "clsx";
 import { NavItem } from "@/constants/navigation";
-import styles from "./Header.module.scss";
+import styles from "./NavDropdown.module.scss";
 
 export const NavDropdown = ({ item }: { item: NavItem }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -79,7 +79,7 @@ export const NavDropdown = ({ item }: { item: NavItem }) => {
         )}
       </div>
       
-      {item.children ? (
+      {item.children && (
         <div className={clsx(styles.dropdownMenu, isOpen && styles.dropdownMenuVisible)}>
           {/* Breadcrumbs */}
           <div className={styles.breadcrumbContainer}>
@@ -136,12 +136,6 @@ export const NavDropdown = ({ item }: { item: NavItem }) => {
               )}
             </div>
           </div>
-        </div>
-      ) : (
-        <div className={clsx(styles.dropdownMenu, isOpen && styles.dropdownMenuVisible, styles.dropdownMenuSimple)}>
-          <Link href={item.path} className={styles.dropdownItem}>
-            {item.name}
-          </Link>
         </div>
       )}
     </div>
