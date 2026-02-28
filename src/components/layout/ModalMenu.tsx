@@ -332,9 +332,9 @@ export const ModalMenu = ({ isOpen, activeTab, setActiveTab, setMenuOpen }: Moda
 
         <div className={styles.modalFooter}>
           <div className={styles.modalSocials}>
-            <a href="#" className={styles.modalSocialLink}>TWITTER</a>
-            <a href="#" className={styles.modalSocialLink}>LINKEDIN</a>
-            <a href="#" className={styles.modalSocialLink}>INSTAGRAM</a>
+            <a href="https://x.com/LuisArmand82485" className={styles.modalSocialLink}>TWITTER</a>
+            <a href="https://www.linkedin.com/in/luis-armando-murillo-4434a3173/" className={styles.modalSocialLink}>LINKEDIN</a>
+            <a href="https://www.instagram.com/aiexecutions" className={styles.modalSocialLink}>INSTAGRAM</a>
           </div>
           <p className={styles.modalCopyright}>© 2026 Σxecutions. ALL RIGHTS RESERVED.</p>
         </div>
