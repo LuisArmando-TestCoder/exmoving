@@ -4,6 +4,12 @@ import styles from "./KronosAgenticCrmCustomizer.module.scss";
 export default function KronosAgenticCrmCustomizerPage() {
   return (
     <AutomationServicePage
+      header={{
+        badgeText: "New Automation Service",
+        titleLine1: "KRONOS / AGENTIC CRM CUSTOMIZER",
+        titleGradient: "SOLUTIONS",
+        subtitle: "A flexible and powerful solution tailored for your specific needs."
+      }}
       features={[
         {
           iconName: "Brain",

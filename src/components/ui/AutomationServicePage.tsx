@@ -52,6 +52,16 @@ export interface PricingMetric {
 
 export interface AutomationServicePageProps {
   /**
+   * Header section configuration
+   */
+  header?: {
+    badgeText?: string;
+    titleLine1: string;
+    titleGradient: string;
+    subtitle: string;
+  };
+  
+  /**
    * ROI Stats shown near the top (optional)
    */
   roiStats?: RoiStat[];
@@ -106,6 +116,7 @@ export interface AutomationServicePageProps {
  * names (e.g., "Brain", "Cpu").
  */
 export default function AutomationServicePage({
+  header,
   roiStats,
   features,
   intelSection,
@@ -135,6 +146,27 @@ export default function AutomationServicePage({
           style={{ scaleX }} 
           id={`${baseId}-scroll-progress`}
         />
+
+        {/* Hero Section */}
+        {header && (
+          <div className={styles.hero} id={`${baseId}-hero`}>
+            <Reveal>
+              {header.badgeText && (
+                <div className={styles.badge} id={`${baseId}-hero-badge`}>
+                  <Cpu size={14} />
+                  <span>{header.badgeText}</span>
+                </div>
+              )}
+              <h1 className={styles.title} id={`${baseId}-hero-title`}>
+                {header.titleLine1} <br />
+                <span className={styles.gradient}>{header.titleGradient}</span>
+              </h1>
+              <p className={styles.subtitle} id={`${baseId}-hero-subtitle`}>
+                {header.subtitle}
+              </p>
+            </Reveal>
+          </div>
+        )}
 
         {/* Pricing/ROI Cards */}
         {roiStats && roiStats.length > 0 && (
