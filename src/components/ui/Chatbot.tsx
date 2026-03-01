@@ -396,8 +396,6 @@ export const Chatbot = ({
       
       const errorText = "Thank you for sharing those details. I've encountered a slight technical hiccup, but don't worry—I've already transmitted your full consultation context to our engineering team. We'll review your automation requirements and get back to you shortly.";
       setMessages((prev) => {
->>>>+++ REPLACE
-
         const newMessages = [...prev];
         // If the last message was the one we just added (empty), replace it
         if (newMessages.length > 0 && newMessages[newMessages.length - 1].role === "model" && !newMessages[newMessages.length - 1].text) {
@@ -452,8 +450,6 @@ export const Chatbot = ({
       triggerErrorEmail();
 
     } finally {
->>>>+++ REPLACE
-
       setLoading(false);
     }
   };
