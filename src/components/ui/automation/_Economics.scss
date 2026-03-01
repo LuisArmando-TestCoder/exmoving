@@ -28,7 +28,7 @@
       font-size: min(10vw, 6rem); 
       
       @media (max-width: 600px) {
-        font-size: min(14vw, 3.5rem);
+        font-size: min(6vw, 3.5rem);
       }
 
       margin-bottom: 2rem;
@@ -168,17 +168,27 @@
       align-items: center;
       gap: 1rem;
       width: 100%;
-      min-width: 0; // Fixes flex child overflow
-      flex-wrap: wrap; // Allows detail to wrap on extremely narrow screens if necessary
+      min-width: 0; 
+
+      @media (max-width: 480px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
 
       .track {
         height: 6px;
         flex-grow: 1;
-        min-width: 30px; // Ensures visibility on small screens
-        max-width: 4rem;
+        min-width: 60px;
+        max-width: 8rem;
         background: rgba(var(--text-rgb), 0.05);
         border-radius: 9999px;
         overflow: hidden;
+
+        @media (max-width: 480px) {
+          width: 100%;
+          max-width: 100%;
+        }
 
         .fill {
           height: 100%;
@@ -195,7 +205,11 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 100%;
+        
+        @media (max-width: 480px) {
+          white-space: normal;
+          line-height: 1.2;
+        }
       }
     }
   }

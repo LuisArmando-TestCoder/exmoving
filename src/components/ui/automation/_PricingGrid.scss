@@ -8,6 +8,12 @@
   margin-bottom: clamp(6rem, 15vw, 12rem);
   padding: 0 1.5rem;
 
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+    gap: 1rem;
+  }
+
   .pricingCard {
     background: rgba(var(--bg-rgb), 0.5);
     backdrop-filter: blur(20px);
@@ -50,6 +56,13 @@
       margin-bottom: 2rem;
       position: relative;
       z-index: 1;
+      gap: 1rem;
+
+      @media (max-width: 480px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+      }
 
       .iconWrapper {
         width: 54px;
@@ -61,12 +74,15 @@
         justify-content: center;
         color: var(--primary);
         transition: all 0.3s ease;
+        flex-shrink: 0;
       }
 
       .value {
         font-size: min(8vw, 2.5rem);
         @media (max-width: 480px) {
-          font-size: min(10vw, 2.5rem);
+          font-size: clamp(2rem, 12vw, 3rem);
+          white-space: normal;
+          line-height: 1;
         }
         font-weight: 900;
         font-family: var(--font-mono);

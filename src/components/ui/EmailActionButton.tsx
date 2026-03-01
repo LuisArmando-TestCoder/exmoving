@@ -12,6 +12,7 @@ import { getRequestTemplate } from "@/utils/emailTemplates";
 
 interface EmailActionButtonProps {
   label: string;
+  id: string;
   subject?: string;
   className?: string;
   onSuccess?: () => void;
@@ -19,6 +20,7 @@ interface EmailActionButtonProps {
 
 export const EmailActionButton = ({
   label,
+  id = "",
   subject = "Contact Request",
   className,
   onSuccess,
@@ -147,147 +149,149 @@ export const EmailActionButton = ({
   };
 
   return (
-    <motion.div 
-      ref={containerRef}
-      layout
-      className={clsx(
-        styles.demoContainer, 
-        isExpanded && styles.expanded,
-        status === "success" && styles.success,
-        hasSent && styles.hasSent,
-        className
-      )}
-      onClick={() => {
-        if (hasSent && !isExpanded) {
-          handleOpenInteraction();
-        } else if (!isExpanded) {
-          setIsExpanded(true);
-        }
-      }}
-      transition={{
-        type: "spring",
-        stiffness: 500,
-        damping: 35,
-        mass: 1
-      }}
-    >
-      <AnimatePresence mode="popLayout" initial={false}>
-        {!isExpanded ? (
-          <motion.div
-            key="label"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className={styles.label}
-          >
-            {hasSent ? "Open Consultation" : label}
-          </motion.div>
-        ) : (
-          <form 
-            key="form"
-            className={clsx(styles.inputWrapper, status === "success" && styles.fadeOut)}
-            onSubmit={handleSubmitInternal}
-          >
-            <input
-              ref={inputRef}
-              type="email"
-              placeholder="Enter your email"
-              className={styles.input}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={status === "loading" || status === "success"}
-            />
-          </form>
-        )}
-      </AnimatePresence>
-
-      <motion.button 
+    <div id={id} style={{ display: "inline-block" }}>
+      <motion.div 
+        ref={containerRef}
         layout
-        className={styles.submitButton}
-        onClick={(e) => {
-          if (isExpanded) {
-            e.stopPropagation();
-            handleSubmitInternal();
-          } else if (hasSent) {
-            e.stopPropagation();
+        className={clsx(
+          styles.demoContainer, 
+          isExpanded && styles.expanded,
+          status === "success" && styles.success,
+          hasSent && styles.hasSent,
+          className
+        )}
+        onClick={() => {
+          if (hasSent && !isExpanded) {
             handleOpenInteraction();
+          } else if (!isExpanded) {
+            setIsExpanded(true);
           }
         }}
-        disabled={status === "loading" || (isExpanded && !email)}
         transition={{
           type: "spring",
           stiffness: 500,
-          damping: 35
+          damping: 35,
+          mass: 1
         }}
       >
-        <AnimatePresence mode="wait">
-          {status === "loading" ? (
+        <AnimatePresence mode="popLayout" initial={false}>
+          {!isExpanded ? (
             <motion.div
-              key="loader"
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.5 }}
+              key="label"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className={styles.label}
             >
-              <Loader2 className={styles.loader} />
-            </motion.div>
-          ) : status === "success" ? (
-            <motion.div
-              key="check"
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.5 }}
-            >
-              <Check size={18} />
-            </motion.div>
-          ) : hasSent ? (
-            <motion.div
-              key="chat-icon"
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.5 }}
-            >
-              <MessageSquare size={18} />
+              {hasSent ? "Open Consultation" : label}
             </motion.div>
           ) : (
-            <motion.div
-              key="arrow"
-              initial={{ opacity: 0, x: -5 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 5 }}
+            <form 
+              key="form"
+              className={clsx(styles.inputWrapper, status === "success" && styles.fadeOut)}
+              onSubmit={handleSubmitInternal}
             >
-              <ArrowRight size={18} />
+              <input
+                ref={inputRef}
+                type="email"
+                placeholder="Enter your email"
+                className={styles.input}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={status === "loading" || status === "success"}
+              />
+            </form>
+          )}
+        </AnimatePresence>
+
+        <motion.button 
+          layout
+          className={styles.submitButton}
+          onClick={(e) => {
+            if (isExpanded) {
+              e.stopPropagation();
+              handleSubmitInternal();
+            } else if (hasSent) {
+              e.stopPropagation();
+              handleOpenInteraction();
+            }
+          }}
+          disabled={status === "loading" || (isExpanded && !email)}
+          transition={{
+            type: "spring",
+            stiffness: 500,
+            damping: 35
+          }}
+        >
+          <AnimatePresence mode="wait">
+            {status === "loading" ? (
+              <motion.div
+                key="loader"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+              >
+                <Loader2 className={styles.loader} />
+              </motion.div>
+            ) : status === "success" ? (
+              <motion.div
+                key="check"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+              >
+                <Check size={18} />
+              </motion.div>
+            ) : hasSent ? (
+              <motion.div
+                key="chat-icon"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+              >
+                <MessageSquare size={18} />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="arrow"
+                initial={{ opacity: 0, x: -5 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 5 }}
+              >
+                <ArrowRight size={18} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.button>
+
+        <AnimatePresence>
+          {status === "success" && (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className={styles.successOverlay}
+            >
+              <Check size={18} />
+              <span>Request Sent</span>
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.button>
-
-      <AnimatePresence>
-        {status === "success" && (
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            className={styles.successOverlay}
-          >
-            <Check size={18} />
-            <span>Request Sent</span>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      <AnimatePresence>
-        {status === "error" && errorMsg && (
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            className={styles.errorBanner}
-          >
-            <AlertCircle size={14} />
-            <span>{errorMsg}</span>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
+        <AnimatePresence>
+          {status === "error" && errorMsg && (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              className={styles.errorBanner}
+            >
+              <AlertCircle size={14} />
+              <span>{errorMsg}</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </div>
   );
 };

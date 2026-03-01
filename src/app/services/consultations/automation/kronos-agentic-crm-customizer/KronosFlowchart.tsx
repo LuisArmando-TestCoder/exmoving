@@ -30,7 +30,7 @@ const RenderNode = ({ node, index }: { node: FlowNode; index: number }) => {
     case 'arrow':
       return (
         <div key={index} className={styles.flowArrow}>
-          <span className={styles.arrowContent}>{node.text || '→'}</span>
+          <span className={styles.arrowContent}></span>
         </div>
       );
     case 'label':

@@ -184,6 +184,10 @@
   filter: drop-shadow(0 0 8px rgba(var(--primary-rgb), 0.8)) drop-shadow(0 0 15px rgba(var(--secondary-rgb), 0.4));
   border-radius: 100px;
 
+  @media (max-width: $breakpoint-md) {
+    display: none; // Hides with its track on mobile as per .progressTrack media query
+  }
+
   &::after {
     content: '';
     position: absolute;

@@ -97,6 +97,14 @@
         font-weight: 700;
         text-transform: uppercase;
       }
+
+      @media screen and (max-width: 480px) {
+        display: grid;
+
+        h3, .tag {
+          padding: 0.25rem 0;
+        }
+      }
     }
 
     .description {
