@@ -15,12 +15,19 @@
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
 
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
     .docCard {
       background: rgba(var(--bg-rgb), 0.4);
       border: 1px solid rgba(var(--text-rgb), 0.05);
-      padding: 2rem;
+      padding: clamp(1.5rem, 5vw, 2rem);
       border-radius: 1.5rem;
       backdrop-filter: blur(10px);
+      width: 100%;
+      min-width: 0;
 
       .docBadge {
         display: inline-block;
