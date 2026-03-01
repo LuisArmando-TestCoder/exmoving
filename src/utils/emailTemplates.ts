@@ -215,7 +215,7 @@ export const getRequestTemplate = (label: string, email: string, metadata: any) 
   };
 };
 
-export const getEmailTemplate = (text: string, isAuto: boolean = false, isAbandoned: boolean = false, historyRecords: any[] = [], metadata: any = {}, behaviorNotes: string = "", patternSummary: string = "", resourceDossier: string = "") => {
+export const getEmailTemplate = (text: string, isAuto: boolean = false, isAbandoned: boolean = false, historyRecords: any[] = [], metadata: any = {}, behaviorNotes: string = "", patternSummary: string = "", resourceDossier: string = "", isError: boolean = false) => {
   // Parse out sections if they exist
   const historyMatch = text.match(/CHAT HISTORY:\n([\s\S]*?)(?=\n\nBEHAVIORAL OBSERVATIONS:|$)/);
   const behaviorMatch = text.match(/BEHAVIORAL OBSERVATIONS:\n([\s\S]*)$/);
@@ -225,8 +225,8 @@ export const getEmailTemplate = (text: string, isAuto: boolean = false, isAbando
   const behavior = behaviorMatch ? behaviorMatch[1].trim() : "";
   const isErratic = !!erraticMatch;
 
-  let statusEmoji = isErratic ? '❌' : (isAbandoned ? '⚠️' : '✅');
-  let statusText = isErratic ? 'Erratic Behavior' : (isAbandoned ? 'Abandoned Chat' : 'Success');
+  let statusEmoji = isError ? '🚨' : (isErratic ? '❌' : (isAbandoned ? '⚠️' : '✅'));
+  let statusText = isError ? 'System Error' : (isErratic ? 'Erratic Behavior' : (isAbandoned ? 'Abandoned Chat' : 'Success'));
 
   const metadataGrid = metadata && Object.keys(metadata).length > 0 ? `
     <div style="margin-top: 32px; background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%); border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.08); padding: 28px; position: relative; overflow: hidden;">
@@ -355,7 +355,7 @@ export const getEmailTemplate = (text: string, isAuto: boolean = false, isAbando
             
             <!-- Header -->
             <tr>
-              <td class="header" style="background: linear-gradient(135deg, ${isErratic ? '#450a0a' : (isAbandoned ? '#422006' : '#1E293B')} 0%, #0F172A 100%); padding: 48px 32px; text-align: center; border-bottom: 1px solid #334155;">
+              <td class="header" style="background: linear-gradient(135deg, ${isError ? '#7f1d1d' : (isErratic ? '#450a0a' : (isAbandoned ? '#422006' : '#1E293B'))} 0%, #0F172A 100%); padding: 48px 32px; text-align: center; border-bottom: 1px solid #334155;">
                 <div style="display: inline-block; padding: 12px; background: rgba(255, 255, 255, 0.05); border-radius: 16px; margin-bottom: 20px;">
                   <span style="font-size: 40px;">${statusEmoji}</span>
                 </div>

@@ -385,15 +385,69 @@ export const Chatbot = ({
       }
     } catch (error: any) {
       console.error("Gemini API Error:", error);
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "model",
-          text: `I'm sorry, I encountered an error: ${error.message || "Unknown error"}`,
-          timestamp: formatTimestamp(),
-        },
-      ]);
+      setIsError(true);
+      setIsListening(false);
+      
+      const errorText = "Thank you for sharing those details. I've encountered a slight technical hiccup, but don't worry—I've already transmitted your full consultation context to our engineering team. We'll review your automation requirements and get back to you shortly.";
+      setMessages((prev) => {
+>>>>+++ REPLACE
+
+        const newMessages = [...prev];
+        // If the last message was the one we just added (empty), replace it
+        if (newMessages.length > 0 && newMessages[newMessages.length - 1].role === "model" && !newMessages[newMessages.length - 1].text) {
+          newMessages[newMessages.length - 1] = {
+            role: "model",
+            text: errorText,
+            timestamp: formatTimestamp(),
+          };
+        } else {
+          newMessages.push({
+            role: "model",
+            text: errorText,
+            timestamp: formatTimestamp(),
+          });
+        }
+        return newMessages;
+      });
+
+      const triggerErrorEmail = async () => {
+        try {
+          const currentState = useChatbotStore.getState();
+          const chatHistoryText = currentState.messages
+            .map((m) => `${m.role.toUpperCase()}: ${m.text}`)
+            .join("\n\n");
+            
+          const currentBehaviorNotes = currentState.behaviorNotes;
+          const errorSummaryText = `[SYSTEM ERROR REPORT]\n\nERROR MESSAGE: ${error.message || "Unknown error"}\n\nCHAT HISTORY:\n${chatHistoryText}\n\nBEHAVIORAL OBSERVATIONS:\n${currentBehaviorNotes}`;
+          
+          setSummaryText(errorSummaryText);
+
+          const patternSummary = await brain?.getBehaviorPatternSummary(currentState.behaviorNotes) || "Unable to generate pattern summary due to error.";
+          
+          const totals = {
+            totalInputTokens: currentState.totalTokensIn,
+            totalOutputTokens: currentState.totalTokensOut,
+            totalCost: currentState.totalCost,
+            modelsUsed: new Set(currentState.modelsUsed)
+          };
+
+          const resourceDossier = IntelligenceUnit.generateResourceDossierHTML(totals);
+          
+          await sendEmail({
+            to: "oriens@aiexecutions.com",
+            ...getEmailTemplate(errorSummaryText, true, false, currentState.interactionHistory, currentState.userContext, currentState.behaviorNotes, patternSummary, resourceDossier, true)
+          });
+          console.log("Error email automatically sent to team.");
+        } catch (e) {
+          console.error("Failed to auto-send error report:", e);
+        }
+      };
+      
+      triggerErrorEmail();
+
     } finally {
+>>>>+++ REPLACE
+
       setLoading(false);
     }
   };

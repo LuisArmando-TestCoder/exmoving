@@ -10,6 +10,7 @@ interface ChatbotInputProps {
   loading: boolean;
   isErratic: boolean;
   isSuccess?: boolean;
+  isError?: boolean;
   isEmailInvalid?: boolean;
   showEmailBtn: boolean;
   isListening: boolean;
@@ -25,6 +26,7 @@ export const ChatbotInput = ({
   loading,
   isErratic,
   isSuccess,
+  isError,
   isEmailInvalid,
   showEmailBtn,
   isListening,
@@ -108,9 +110,9 @@ export const ChatbotInput = ({
           <MailWarning size={20} />
           <span>Please fix your email address to continue</span>
         </div>
-      ) : isSuccess ? (
+      ) : isSuccess || isError ? (
         <div
-          className={styles["success-notice"]}
+          className={clsx(styles["success-notice"], isError && styles["error-fallback"])}
           style={{
             display: "flex",
             alignItems: "center",
@@ -118,12 +120,12 @@ export const ChatbotInput = ({
             width: "100%",
             gap: "8px",
             padding: "1rem",
-            color: "#10b981",
+            color: isError ? "#facc15" : "#10b981",
             fontWeight: 600,
           }}
         >
           <CheckCircle2 size={20} />
-          <span>Consultation Complete</span>
+          <span>{isError ? "Details sent to team" : "Consultation Complete"}</span>
         </div>
       ) : isErratic ? (
         <div

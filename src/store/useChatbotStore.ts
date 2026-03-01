@@ -24,6 +24,8 @@ interface ChatbotState {
   showEmailBtn: boolean;
   isSuccess: boolean;
   setIsSuccess: (isSuccess: boolean) => void;
+  isError: boolean;
+  setIsError: (isError: boolean) => void;
   summaryText: string;
   isNewsletterOpen: boolean;
   // Resource Intelligence
@@ -80,6 +82,8 @@ export const useChatbotStore = create<ChatbotState>()(
       showEmailBtn: false,
       isSuccess: false,
       setIsSuccess: (isSuccess) => set({ isSuccess }),
+      isError: false,
+      setIsError: (isError) => set({ isError }),
       summaryText: "",
       isNewsletterOpen: false,
       // Resource Intelligence
@@ -106,6 +110,7 @@ export const useChatbotStore = create<ChatbotState>()(
             messages: getInitialMessages(mergedContext),
             isErratic: false,
             isSuccess: false,
+            isError: false,
             showEmailBtn: false,
             summaryText: "",
             // Reset session telemetry
@@ -132,6 +137,7 @@ export const useChatbotStore = create<ChatbotState>()(
         messages: getInitialMessages(state.userContext),
         isErratic: false,
         isSuccess: false,
+        isError: false,
         showEmailBtn: false,
         summaryText: "",
       })),
@@ -146,6 +152,7 @@ export const useChatbotStore = create<ChatbotState>()(
         messages: state.messages,
         isErratic: state.isErratic,
         isSuccess: state.isSuccess,
+        isError: state.isError,
         summaryText: state.summaryText,
         showEmailBtn: state.showEmailBtn,
         totalTokensIn: state.totalTokensIn,
