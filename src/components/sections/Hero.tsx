@@ -6,6 +6,7 @@ import styles from "./Hero.module.scss";
 import { HeroBackground } from "./hero/HeroBackground";
 import { HeroTitle } from "./hero/HeroTitle";
 import { ScrollIndicator } from "./hero/ScrollIndicator";
+import { EmailActionButton } from "@/components/ui/EmailActionButton";
 
 export default function Hero() {
   const containerRef = useRef<HTMLElement>(null);
@@ -38,7 +39,7 @@ export default function Hero() {
   return (
     <section 
       ref={containerRef} 
-      className={`${styles.heroWrapper} dark-theme`}
+      className={`${styles.heroWrapper}`}
       aria-labelledby="hero-title"
     >
       <div className={styles.soft}>
@@ -57,6 +58,10 @@ export default function Hero() {
           blurContent={blurContent}
           scrollYProgress={scrollYProgress}
         />
+
+        <div className={styles.centeredWrapper}>
+          <EmailActionButton label={"REQUEST DEMO"} id={"home-email-action-button"} />
+        </div>
 
         {isInView && <ScrollIndicator opacityContent={opacityContent} />}
       </div>
