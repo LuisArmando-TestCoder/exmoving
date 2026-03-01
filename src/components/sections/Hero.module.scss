@@ -110,15 +110,11 @@
 
 .mainTitle {
   margin: 0;
-  font-size: calc(15vw);
+  font-size: 15vw;
   line-height: 0.9;
   display: inline-block;
   white-space: nowrap;
   letter-spacing: -0.05em;
-  
-  @media (max-width: #{$breakpoint-md}) {
-    font-size: 18vw;
-  }
 }
 
 .subtitle {
