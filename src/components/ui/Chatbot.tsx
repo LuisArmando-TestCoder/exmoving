@@ -93,7 +93,7 @@ export const Chatbot = ({
   }, [apiKey, modelId, userContext]);
 
   useEffect(() => {
-    if (chatContainerRef.current && loading) {
+    if (chatContainerRef.current) {
       chatContainerRef.current.scrollTo({
         top: chatContainerRef.current.scrollHeight,
         behavior: "smooth",
