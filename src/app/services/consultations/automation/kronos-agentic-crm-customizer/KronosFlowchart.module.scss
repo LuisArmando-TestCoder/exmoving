@@ -4,9 +4,9 @@
 .flowchart {
   display: flex;
   flex-direction: row; // Standard desktop horizontal flow
-  flex-wrap: wrap; // Allow wrapping
+  flex-wrap: nowrap; // Prevent wrapping on desktop to preserve flowchart logic
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; // Align to start to allow scrolling if too many items
   gap: clamp(1rem, 2vw, 2.5rem);
   margin: 4rem auto;
   padding: clamp(2rem, 5vw, 4rem);
@@ -20,6 +20,8 @@
   overflow-x: auto; // Horizontal scroll for extra wide charts on desktop/tablet
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
   box-shadow: 
     0 20px 50px -20px rgba(var(--primary-rgb), 0.2),
     inset 0 1px 1px rgba(255, 255, 255, 0.05);
@@ -51,6 +53,8 @@
     overflow-x: hidden;
     overflow-y: visible;
     gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
   }
 
   .flowNode {
@@ -85,8 +89,6 @@
   }
 
   .flowDiamond {
-    flex-basis: 100%; // Force own row
-    order: 2; // Position after the first set of nodes
     display: flex;
     justify-content: center;
     align-items: center;
@@ -98,9 +100,6 @@
     border-radius: 16px;
     position: relative;
     z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     transition: all 0.4s ease;
     flex-shrink: 0;
     margin: 1.5rem;
@@ -203,14 +202,15 @@
   .flowBranches {
     display: flex;
     flex-direction: column;
-    order: 3; // Position after the diamond
     gap: 2.5rem;
     position: relative;
     flex-shrink: 0;
+    min-width: min-content; // Ensure content doesn't get squeezed
 
     @media (max-width: 768px) {
       width: 100%;
       gap: 3rem;
+      min-width: unset;
     }
   }
 
@@ -224,11 +224,13 @@
     background: rgba(var(--primary-rgb), 0.02);
     border: 1px dashed var(--glass-border);
     flex-shrink: 0;
+    min-width: min-content;
 
     @media (max-width: 768px) {
       flex-direction: column;
       width: 100%;
       padding: 2rem 1rem;
+      min-width: unset;
     }
 
     .flowLabel {
