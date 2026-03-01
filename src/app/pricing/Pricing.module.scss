@@ -926,8 +926,9 @@
         display: flex;
         align-items: center;
         gap: clamp(12px, 3vw, 20px);
-        flex-wrap: wrap;
-        
+        flex-wrap: nowrap; // Keep aligned
+
+        .resetButton,
         .shareButton {
           background: rgba(var(--overlay-rgb), 0.05);
           border: 1px solid rgba(var(--overlay-rgb), 0.1);
@@ -946,7 +947,15 @@
             border-color: var(--primary);
             color: var(--primary);
           }
+        }
 
+        .resetButton {
+          &:active {
+            transform: rotate(-30deg);
+          }
+        }
+
+        .shareButton {
           &.copied {
             background: var(--primary);
             border-color: var(--primary);
@@ -955,18 +964,24 @@
         }
 
         .currency {
-          font-size: clamp(1.5rem, 5vw, 2rem);
+          font-size: clamp(1.2rem, 4vw, 2rem);
           font-weight: 800;
           color: var(--primary);
           margin-right: 2px;
+          flex-shrink: 0;
         }
 
         .amount {
-          font-size: clamp(2.5rem, 8vw, 4rem);
+          font-size: clamp(2rem, 8vw, 4rem);
           font-weight: 900;
           line-height: 1;
           letter-spacing: -0.04em;
           color: var(--text);
+          font-variant-numeric: tabular-nums; // Prevent jitter
+          white-space: nowrap;
+          min-width: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         .period {

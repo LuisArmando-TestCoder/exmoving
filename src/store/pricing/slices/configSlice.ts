@@ -24,7 +24,8 @@ export const createConfigSlice: StateCreator<
   [],
   PricingState & { 
     setCustomValue: PricingStore['setCustomValue'],
-    setBulkValues: PricingStore['setBulkValues']
+    setBulkValues: PricingStore['setBulkValues'],
+    resetToZero: PricingStore['resetToZero']
   }
 > = (set) => ({
   apiPrices: INITIAL_API_PRICES,
@@ -38,4 +39,26 @@ export const createConfigSlice: StateCreator<
     set((state) => ({
       customValues: { ...state.customValues, ...values },
     })),
+  resetToZero: () =>
+    set((state) => {
+      const resetValues: Record<string, string | number | boolean> = {};
+      state.infrastructure.forEach((cat) => {
+        cat.subItems.forEach((item) => {
+          if (item.pricingType === 'slider' && item.slider) {
+            resetValues[item.id] = 0; // Forced to 0
+          } else if (item.pricingType === 'mixed' && item.tiers) {
+            const freeTier = item.tiers.find(t => t.isFree);
+            resetValues[item.id] = freeTier ? freeTier.name : 'none'; // Forced to none if no free tier
+          } else if (item.pricingType === 'tiers' && item.tiers) {
+            const freeTier = item.tiers.find(t => t.isFree);
+            resetValues[item.id] = freeTier ? freeTier.name : 'none'; // Forced to none if no free tier
+          } else if (item.pricingType === 'fixed') {
+            resetValues[item.id] = false;
+          }
+        });
+      });
+      return {
+        customValues: resetValues,
+      };
+    }),
 });
