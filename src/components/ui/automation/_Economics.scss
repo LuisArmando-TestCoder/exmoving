@@ -2,9 +2,8 @@
 @use "@/styles/mixins.scss" as *;
 
 .economics {
-  margin-top: clamp(8rem, 20vw, 15rem);
   border-top: 1px solid rgba(var(--text-rgb), 0.05);
-  padding: clamp(8rem, 20vw, 15rem) 1.5rem 0;
+  padding: 0 1.5rem;
 }
 
 .ecoHeader {

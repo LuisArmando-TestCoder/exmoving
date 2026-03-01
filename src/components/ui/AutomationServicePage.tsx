@@ -221,121 +221,6 @@ export default function AutomationServicePage({
           id={`${baseId}-scroll-progress`}
         />
 
-        {/* Hero Section */}
-        {header && (
-          <div className={styles.hero} id={`${baseId}-hero`}>
-            <Reveal>
-              {header.badgeText && (
-                <div className={styles.badge} id={`${baseId}-hero-badge`}>
-                  <Cpu size={14} />
-                  <span>{header.badgeText}</span>
-                </div>
-              )}
-              <h1 className={styles.title} id={`${baseId}-hero-title`}>
-                {header.titleLine1} <br />
-                <span className={styles.gradient}>{header.titleGradient}</span>
-              </h1>
-              <p className={styles.subtitle} id={`${baseId}-hero-subtitle`}>
-                {header.subtitle}
-              </p>
-            </Reveal>
-          </div>
-        )}
-
-        {/* Pricing/ROI Cards */}
-        {roiStats && roiStats.length > 0 && (
-          <StaggerContainer 
-            className={styles.pricingGrid} 
-            id={`${baseId}-roi-grid`}
-          >
-            {roiStats.map((stat, index) => {
-              const IconComponent = iconMap[stat.iconName] || Target;
-              const cardId = `${baseId}-roi-card-${index}`;
-              return (
-                <Reveal key={index} direction="up" id={cardId}>
-                  <div className={styles.pricingCard}>
-                    <div className={styles.cardHeader}>
-                      <div className={styles.iconWrapper}>
-                        <IconComponent size={20} />
-                      </div>
-                      <span className={styles.value}>{stat.value}</span>
-                    </div>
-                    <h3 className={styles.label}>{stat.label}</h3>
-                    <p className={styles.detail}>{stat.detail}</p>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </StaggerContainer>
-        )}
-
-        {/* Features Grid */}
-        {features && features.length > 0 && (
-          <div className={styles.mainFeatures} id={`${baseId}-features`}>
-            {features.map((feature, index) => {
-              const IconComponent = iconMap[feature.iconName] || Brain;
-              const cardId = `${baseId}-feature-${index}`;
-              return (
-                <Reveal 
-                  key={index} 
-                  direction={index % 2 === 0 ? "left" : "right"}
-                  id={cardId}
-                >
-                  <div className={styles.featureCard}>
-                    <div className={styles.bgIcon}>
-                      <IconComponent size={120} />
-                    </div>
-                    <div className={`${styles.iconBox} ${styles[feature.color] || styles.blue}`}>
-                      <IconComponent size={32} />
-                    </div>
-                    <div className={styles.featureHeader}>
-                      <h3>{feature.title}</h3>
-                      <span className={styles.tag}>{feature.metric}</span>
-                    </div>
-                    <p className={styles.description}>{feature.description}</p>
-                    <div className={styles.arrowLink}>
-                      EXPLORE ARCHITECTURE <ArrowRight size={16} />
-                    </div>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-        )}
-
-        {/* Deep Intel Section */}
-        {intelSection && (
-          <div className={styles.intelSection} id={`${baseId}-intel`}>
-            <Reveal id={`${baseId}-intel-header`}>
-              <div className={styles.sectionHeader}>
-                <h2>{intelSection.title}</h2>
-                <p className={styles.mono}>{intelSection.subtitle}</p>
-              </div>
-            </Reveal>
-            
-            {intelSection.details && intelSection.details.length > 0 && (
-              <StaggerContainer 
-                className={styles.intelGrid}
-                id={`${baseId}-intel-grid`}
-              >
-                {intelSection.details.map((detail, index) => {
-                  const IconComponent = iconMap[detail.iconName] || Activity;
-                  const cardId = `${baseId}-intel-card-${index}`;
-                  return (
-                    <Reveal key={index} distance={20} id={cardId}>
-                      <div className={styles.intelCard}>
-                        <IconComponent className={styles.icon} size={28} />
-                        <h4>{detail.label}</h4>
-                        <p>{detail.description}</p>
-                      </div>
-                    </Reveal>
-                  );
-                })}
-              </StaggerContainer>
-            )}
-          </div>
-        )}
-
         {/* Intelligence Economics Section */}
         {economicsSection && (
           <div className={styles.economics} id={`${baseId}-economics`}>
@@ -459,6 +344,100 @@ export default function AutomationServicePage({
               ))}
             </StaggerContainer>
           </section>
+        )}
+
+        {/* Pricing/ROI Cards */}
+        {roiStats && roiStats.length > 0 && (
+          <StaggerContainer 
+            className={styles.pricingGrid} 
+            id={`${baseId}-roi-grid`}
+          >
+            {roiStats.map((stat, index) => {
+              const IconComponent = iconMap[stat.iconName] || Target;
+              const cardId = `${baseId}-roi-card-${index}`;
+              return (
+                <Reveal key={index} direction="up" id={cardId}>
+                  <div className={styles.pricingCard}>
+                    <div className={styles.cardHeader}>
+                      <div className={styles.iconWrapper}>
+                        <IconComponent size={20} />
+                      </div>
+                      <span className={styles.value}>{stat.value}</span>
+                    </div>
+                    <h3 className={styles.label}>{stat.label}</h3>
+                    <p className={styles.detail}>{stat.detail}</p>
+                  </div>
+                </Reveal>
+              );
+            })}
+          </StaggerContainer>
+        )}
+
+        {/* Features Grid */}
+        {features && features.length > 0 && (
+          <div className={styles.mainFeatures} id={`${baseId}-features`}>
+            {features.map((feature, index) => {
+              const IconComponent = iconMap[feature.iconName] || Brain;
+              const cardId = `${baseId}-feature-${index}`;
+              return (
+                <Reveal 
+                  key={index} 
+                  direction={index % 2 === 0 ? "left" : "right"}
+                  id={cardId}
+                >
+                  <div className={styles.featureCard}>
+                    <div className={styles.bgIcon}>
+                      <IconComponent size={120} />
+                    </div>
+                    <div className={`${styles.iconBox} ${styles[feature.color] || styles.blue}`}>
+                      <IconComponent size={32} />
+                    </div>
+                    <div className={styles.featureHeader}>
+                      <h3>{feature.title}</h3>
+                      <span className={styles.tag}>{feature.metric}</span>
+                    </div>
+                    <p className={styles.description}>{feature.description}</p>
+                    <div className={styles.arrowLink}>
+                      EXPLORE ARCHITECTURE <ArrowRight size={16} />
+                    </div>
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Deep Intel Section */}
+        {intelSection && (
+          <div className={styles.intelSection} id={`${baseId}-intel`}>
+            <Reveal id={`${baseId}-intel-header`}>
+              <div className={styles.sectionHeader}>
+                <h2>{intelSection.title}</h2>
+                <p className={styles.mono}>{intelSection.subtitle}</p>
+              </div>
+            </Reveal>
+            
+            {intelSection.details && intelSection.details.length > 0 && (
+              <StaggerContainer 
+                className={styles.intelGrid}
+                id={`${baseId}-intel-grid`}
+              >
+                {intelSection.details.map((detail, index) => {
+                  const IconComponent = iconMap[detail.iconName] || Activity;
+                  const cardId = `${baseId}-intel-card-${index}`;
+                  return (
+                    <Reveal key={index} distance={20} id={cardId}>
+                      <div className={styles.intelCard}>
+                        <IconComponent className={styles.icon} size={28} />
+                        <h4>{detail.label}</h4>
+                        <p>{detail.description}</p>
+                      </div>
+                    </Reveal>
+                  );
+                })}
+              </StaggerContainer>
+            )}
+          </div>
         )}
 
         {/* Testimonials Section */}
@@ -588,6 +567,36 @@ export default function AutomationServicePage({
                 </div>
               </Reveal>
             ))}
+          </div>
+        )}
+
+        {/* Hero Section */}
+        {header && (
+          <div className={styles.hero} id={`${baseId}-hero`}>
+            <Reveal>
+              {header.badgeText && (
+                <div className={styles.badge} id={`${baseId}-hero-badge`}>
+                  <Cpu size={14} />
+                  <span>{header.badgeText}</span>
+                </div>
+              )}
+              <h1 className={styles.title} id={`${baseId}-hero-title`}>
+                {header.titleLine1} <br />
+                <span className={styles.gradient}>{header.titleGradient}</span>
+              </h1>
+              {
+                economicsSection && <div className="centeredWrapper">
+                <EmailActionButton 
+                  label={economicsSection.bottomRightCard.buttonText} 
+                  className={styles.auditButton}
+                  id={`${baseId}-cta-button`}
+                />
+              </div>
+              }
+              <p className={styles.subtitle} id={`${baseId}-hero-subtitle`}>
+                {header.subtitle}
+              </p>
+            </Reveal>
           </div>
         )}
       </div>

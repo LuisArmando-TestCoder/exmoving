@@ -83,6 +83,7 @@ $breakpoint-xl: 1280px;
   --primary: #{color.adjust($palette-blue, $lightness: 20%)};
   --secondary: #{$palette-lavender};
   --accent: #{$palette-pink};
+  --accent-gradient: linear-gradient(135deg, rgba(243, 117, 194, 0.8), rgba(177, 83, 215, 0.8));
   
   --bg-rgb: 3, 5, 16;
   --surface-rgb: 10, 12, 31;

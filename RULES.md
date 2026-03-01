@@ -95,7 +95,7 @@ We use a **Post-Tailwind SCSS Module** strategy. Pages must be styled with isola
 
 *   **Global Variables**: Always anchor your styles to `src/styles/variables.scss`. 
     *   **Colors**: Use `var(--text)`, `var(--text-dim)`, `var(--bg)`, `var(--border)`.
-    *   **Gradients**: Leverage `var(--accent-gradient)` for brand highlights.
+    *   **Gradients**: Leverage `linear-gradient(to right, #60a5fa, #3b82f6)` for brand highlights.
 *   **Mixins**: Use `src/styles/mixins.scss` for:
     *   `@include font-heading`: For brutalist headlines.
     *   `@include font-body`: For clean reading surfaces.
