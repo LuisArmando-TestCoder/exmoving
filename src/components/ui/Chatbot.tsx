@@ -132,26 +132,30 @@ export const Chatbot = ({
           
           if (currentTranscript) {
             setUserInput(prev => {
-              // We want to avoid double-appending if the same interim result comes back multiple times
-              // But simpler: just append the interim to the current state
-              // However, the interim changes constantly.
-              // A better way for interim is to keep track of the "stable" user input separately.
               return prev; 
             });
           }
         };
 
         recognitionRef.current.onerror = (event: any) => {
-          if (event.error === "network") {
+          const errorCode = event.error;
+          
+          if (errorCode === "network") {
             console.warn("Speech recognition network error - disabling auto-restart");
             setIsListening(false);
             return;
           }
-          console.error("Speech recognition error:", event.error);
-          if (event.error !== "not-allowed" && isListening) {
+          
+          if (errorCode === "aborted") {
+            return;
+          }
+          
+          console.error("Speech recognition error:", errorCode);
+          
+          if (errorCode !== "not-allowed" && isListening) {
             setTimeout(() => {
               try { recognitionRef.current.start(); } catch(e) {}
-            }, 1000); // Increased timeout for retry
+            }, 1000); 
           }
         };
 
@@ -234,7 +238,6 @@ export const Chatbot = ({
         }
         return useChatbotStore.getState().behaviorNotes;
       }).then(updatedNotes => {
-        // Relax checks for the first 3 user messages (messages includes the initial model message, so messages.length < 7 means <= 3 user turns)
         if (updatedMessages.length < 7) {
           return false;
         }
@@ -283,13 +286,11 @@ export const Chatbot = ({
           return newMessages;
         });
         
-        // Log to history
         useChatbotStore.getState().addInteractionRecord({
           date: new Date().toLocaleDateString(),
           status: 'erratic'
         });
         
-        // Auto-send minuta on erratic close
         const finalSummary = [...updatedMessages, { role: "model", text: erraticText, timestamp: formatTimestamp() }]
           .map((m) => `${m.role.toUpperCase()}: ${m.text}`)
           .join("\n\n");
@@ -299,7 +300,6 @@ export const Chatbot = ({
         
         setSummaryText(fullReportText);
 
-        // Auto-send report on erratic detection
         try {
           const currentState = useChatbotStore.getState();
           const patternSummary = await brain.getBehaviorPatternSummary(currentState.behaviorNotes);
@@ -350,13 +350,11 @@ export const Chatbot = ({
           setSummaryText(finalSummaryText);
           setIsListening(false);
           
-          // Log to history
           useChatbotStore.getState().addInteractionRecord({
             date: new Date().toLocaleDateString(),
             status: 'success'
           });
           
-          // Auto send email in background immediately
           const triggerEmail = async () => {
             try {
               const currentState = useChatbotStore.getState();
