@@ -62,7 +62,7 @@
 
   &:hover {
     background: rgba(var(--primary-rgb), 0.08);
-    border-color: rgba(var(--primary-rgb), 0.4);
+    border-color: var(--accent);
     transform: translateY(-3px) scale(1.02);
     box-shadow:
       0 15px 40px rgba(var(--primary-rgb), 0.2),
