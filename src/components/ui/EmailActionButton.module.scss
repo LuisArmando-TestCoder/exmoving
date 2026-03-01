@@ -13,7 +13,7 @@
   padding: 4px;
   border-radius: 100px;
   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  width: min(400px, 100%);
+  // width: min(400px, 100%);
   cursor: pointer;
   backdrop-filter: blur(20px);
   box-shadow:
@@ -26,7 +26,7 @@
   }
 
   @media screen and (max-width: 480px) {
-    width: auto;
+    // width: auto;
     transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
@@ -91,7 +91,7 @@
     background: rgba(var(--overlay-light-rgb), 0.1);
     border-color: rgba(var(--overlay-light-rgb), 0.3);
     cursor: default;
-    width: auto;
+    // width: auto;
     padding-right: 6px;
     transform: translateY(0);
     box-shadow:
@@ -100,12 +100,12 @@
       transition: .35s;
 
     @media (min-width: $breakpoint-sm) {
-      width: min(500px, 100%);
+      // width: min(500px, 100%);
       padding-right: 8px;
     }
 
     @media screen and (max-width: 480px) {
-      width: auto;
+      // width: auto;
     }
 
     .label {
@@ -233,7 +233,7 @@
   font-family: inherit;
   font-size: 0.875rem;
   font-weight: 500;
-  width: 100%;
+  // width: 100%;
   padding: 0.5rem 0;
   outline: none;
 
