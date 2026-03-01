@@ -5,61 +5,106 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
-  margin: 3rem 0 5rem;
-  padding: 3rem;
-  background: rgba(var(--bg-rgb), 0.3);
-  border-radius: 2rem;
-  border: 1px solid rgba(var(--primary-rgb), 0.1);
+  gap: clamp(1rem, 3vw, 2.5rem);
+  margin: 4rem auto;
+  padding: clamp(2rem, 5vw, 4rem);
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  border-radius: 2.5rem;
+  border: 1px solid var(--glass-border);
   overflow-x: auto;
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  box-shadow: 
+    0 20px 50px -20px rgba(var(--primary-rgb), 0.2),
+    inset 0 1px 1px rgba(255, 255, 255, 0.05);
+
+  // Background glow
+  &::before {
+    content: '';
+    @include abs-fill;
+    background: radial-gradient(circle at center, var(--glow), transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+  }
   
-  @media (max-width: 900px) {
+  @media (max-width: 1024px) {
     flex-direction: column;
+    padding: 3rem 1.5rem;
   }
 
   .flowNode {
-    padding: 1rem 1.5rem;
-    background: rgba(var(--primary-rgb), 0.1);
-    border: 1px solid var(--primary);
-    border-radius: 8px;
+    padding: 0.85rem 1.75rem;
+    background: rgba(var(--primary-rgb), 0.05);
+    border: 1px solid rgba(var(--primary-rgb), 0.3);
+    border-radius: 12px;
     font-family: var(--font-mono);
     font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: -0.02em;
     color: var(--text);
     text-align: center;
     white-space: nowrap;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+      background: rgba(var(--primary-rgb), 0.1);
+      box-shadow: 0 8px 20px -8px rgba(var(--primary-rgb), 0.4);
+    }
   }
 
   .flowDiamond {
-    padding: 1.5rem;
-    background: rgba(var(--secondary-rgb), 0.1);
-    border: 1px solid var(--secondary);
+    width: 120px;
+    height: 120px;
+    background: rgba(var(--secondary-rgb), 0.08);
+    border: 1px solid rgba(var(--secondary-rgb), 0.4);
     transform: rotate(45deg);
-    border-radius: 4px;
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.4s ease;
+    flex-shrink: 0;
+    margin: 1rem;
 
     &::after {
       content: "UIDBM Router";
       transform: rotate(-45deg);
       font-family: var(--font-mono);
-      font-weight: 700;
+      font-weight: 800;
+      font-size: 0.75rem;
+      text-transform: uppercase;
       color: var(--text);
       white-space: nowrap;
+      text-align: center;
     }
-    font-size: 0; // Hide original text
+    font-size: 0;
+
+    &:hover {
+      transform: rotate(45deg) scale(1.05);
+      background: rgba(var(--secondary-rgb), 0.15);
+      border-color: var(--secondary);
+      box-shadow: 0 0 30px rgba(var(--secondary-rgb), 0.2);
+    }
   }
 
   .flowDatabase {
-    padding: 1.5rem 1rem;
-    background: rgba(16, 185, 129, 0.1); // Emerald
-    border: 1px solid #10b981;
-    border-radius: 50% 50% 50% 50% / 10% 10% 10% 10%;
+    padding: 1.5rem 2rem;
+    background: rgba(16, 185, 129, 0.05);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    border-radius: 20px 20px 20px 20px / 15px 15px 15px 15px;
     font-family: var(--font-mono);
-    font-weight: 700;
+    font-weight: 800;
+    font-size: 0.85rem;
     color: var(--text);
     text-align: center;
     position: relative;
+    transition: all 0.3s ease;
     
     &::before {
       content: '';
@@ -67,41 +112,62 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 20%;
-      border-bottom: 1px solid #10b981;
+      height: 25%;
+      border-bottom: 1px solid rgba(16, 185, 129, 0.4);
       border-radius: 50%;
+      background: rgba(16, 185, 129, 0.05);
+    }
+
+    &:hover {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: #10b981;
+      transform: scale(1.02);
     }
   }
 
   .flowArrow {
-    color: var(--text-dim);
+    color: var(--primary);
+    opacity: 0.4;
     font-size: 1.5rem;
-    font-weight: 900;
+    font-weight: 300;
+    user-select: none;
+    transition: opacity 0.3s ease;
+
+    @media (max-width: 1024px) {
+      transform: rotate(90deg);
+    }
   }
 
   .flowBranches {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 2.5rem;
+    position: relative;
   }
 
   .flowBranch {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
+    position: relative;
 
-    @media (max-width: 900px) {
+    @media (max-width: 1024px) {
       flex-direction: column;
+      width: 100%;
     }
 
     .flowLabel {
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       font-family: var(--font-mono);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
       color: var(--text-dim);
-      background: rgba(var(--bg-rgb), 0.8);
-      padding: 0.2rem 0.5rem;
-      border-radius: 4px;
-      border: 1px dashed rgba(var(--text-rgb), 0.2);
+      background: var(--surface);
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     }
   }
 }

@@ -1,9 +1,43 @@
 import AutomationServicePage from "@/components/ui/AutomationServicePage";
 import styles from "./KronosAgenticCrmCustomizer.module.scss";
-import { KronosFlowchart } from "./KronosFlowchart";
+import { KronosFlowchart, FlowNode } from "./KronosFlowchart";
 
 export default function KronosAgenticCrmCustomizerPage() {
   const customStyles = styles;
+
+  const flowchartData: FlowNode[] = [
+    { type: 'node', text: 'HTTP Request' },
+    { type: 'arrow', text: '→' },
+    { type: 'diamond', text: 'UIDBM Router' },
+    {
+      type: 'branch_container',
+      subNodes: [
+        {
+          type: 'node',
+          subNodes: [
+            { type: 'label', text: 'GET /schema' },
+            { type: 'node', text: 'Schema Manager' }
+          ]
+        },
+        {
+          type: 'node',
+          subNodes: [
+            { type: 'label', text: 'POST /:coll' },
+            { type: 'node', text: 'Validator [Pass]' },
+            { type: 'arrow', text: '↓' },
+            { type: 'node', text: 'Security [Pass]' },
+            { type: 'arrow', text: '↓' },
+            { type: 'node', text: 'Logic & Plans [Pass]' },
+            { type: 'arrow', text: '↓' },
+            { type: 'node', text: 'CRUD Helper' },
+            { type: 'arrow', text: '↓' },
+            { type: 'database', text: 'DB (Firestore)' }
+          ]
+        }
+      ]
+    }
+  ];
+
   return (
     <div className={styles.page}>
       <AutomationServicePage
@@ -70,7 +104,7 @@ export default function KronosAgenticCrmCustomizerPage() {
                   <p>The <strong>UIDBM (UI Database Module)</strong> is a generic backend engine designed to decouple "App Logic" from "Implementation". In a traditional app, developers write specific controllers for specific data types (e.g., <code>UserController</code>). In UIDBM, there is only one controller: the <strong>Schema Controller</strong>, which adapts its behavior based on a configuration file.</p>
                 </div>
 
-                <KronosFlowchart />
+                <KronosFlowchart data={flowchartData} />
 
                 <div className={customStyles.docGrid}>
                   <div className={customStyles.docCard}>
