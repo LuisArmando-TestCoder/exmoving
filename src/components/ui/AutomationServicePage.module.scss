@@ -1,6 +1,19 @@
 @use "@/styles/variables.scss" as *;
 @use "@/styles/mixins.scss" as *;
 
+// Imported sections
+@use "./automation/Hero" as *;
+@use "./automation/PricingGrid" as *;
+@use "./automation/Features" as *;
+@use "./automation/Intel" as *;
+@use "./automation/Economics" as *;
+@use "./automation/Personas" as *;
+@use "./automation/Testimonials" as *;
+@use "./automation/Faqs" as *;
+@use "./automation/Architecture" as *;
+@use "./automation/Api" as *;
+@use "./automation/CustomBlocks" as *;
+
 .pageContainer {
   padding: clamp(4rem, 10vw, 10rem) 0;
   position: relative;
@@ -43,16 +56,3 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
-// Imported sections
-@import "./automation/Hero";
-@import "./automation/PricingGrid";
-@import "./automation/Features";
-@import "./automation/Intel";
-@import "./automation/Economics";
-@import "./automation/Personas";
-@import "./automation/Testimonials";
-@import "./automation/Faqs";
-@import "./automation/Architecture";
-@import "./automation/Api";
-@import "./automation/CustomBlocks";
