@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Sparkles, Check } from "lucide-react";
+import { X, Sparkles, Check, ArrowRight } from "lucide-react";
 import { useChatbotStore } from "@/store/useChatbotStore";
 import { Chatbot } from "./Chatbot";
 import { ChatBrain } from "@/lib/ChatBrain";
@@ -19,7 +19,9 @@ export const ChatbotModal = () => {
     interactionHistory, 
     messages, 
     behaviorNotes,
-    isErratic 
+    isErratic,
+    isSuccess,
+    openNewsletter
   } = useChatbotStore();
 
   const handleClose = async () => {
@@ -124,8 +126,27 @@ export const ChatbotModal = () => {
                 </div>
               )}
               <div className={styles.titleWrapper}>
-                <h2>Consultation</h2>
-                <div className={styles.statusDot} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <h2>Consultation</h2>
+                  <div className={styles.statusDot} />
+                </div>
+                
+                <AnimatePresence>
+                  {isSuccess && (
+                    <motion.button
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      className={styles.proceedButton}
+                      onClick={() => {
+                        closeChatbot();
+                        openNewsletter();
+                      }}
+                    >
+                      <span>Proceed</span>
+                      <ArrowRight size={14} />
+                    </motion.button>
+                  )}
+                </AnimatePresence>
               </div>
               <p>Explore automation opportunities for your business. Provide your details below to get a custom roadmap.</p>
               

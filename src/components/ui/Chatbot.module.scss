@@ -25,6 +25,8 @@
   flex-direction: column;
   gap: 1.5rem;
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 
   /* Custom Scrollbar */
   &::-webkit-scrollbar {

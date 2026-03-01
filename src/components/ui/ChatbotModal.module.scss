@@ -61,8 +61,10 @@
   .titleWrapper {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 0.75rem;
     margin-bottom: 0.75rem;
+    width: 100%;
 
     h2 {
       color: #000;
@@ -80,6 +82,35 @@
       background: #10b981; // Success green
       box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
       animation: blink 2s infinite;
+    }
+
+    .proceedButton {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: #111111;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+      &:hover {
+        transform: translateY(-2px);
+        background: var(--accent);
+        box-shadow: 0 8px 20px rgba(var(--accent-rgb), 0.3);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
     }
   }
 

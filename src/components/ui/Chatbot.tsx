@@ -32,6 +32,8 @@ export const Chatbot = ({
     setMessages, 
     isErratic, 
     setIsErratic, 
+    isSuccess,
+    setIsSuccess,
     behaviorNotes,
     setBehaviorNotes,
     showEmailBtn, 
@@ -77,7 +79,7 @@ export const Chatbot = ({
         - Speak ONLY in English regardless of the user's language.
         - DO NOT MAKE PROMISES or guarantees of any kind.
         - Keep track of the "5 Whys" chain internally.
-        - When complete, provide a 3-bullet point summary and tell them their inquiry has been sent to the research team.
+        - When complete, provide a 3-bullet point summary and include the following hidden completion tag at the very end: [SYSTEM_ENGAGEMENT_COMPLETE]
         
         USER CONTEXT: ${JSON.stringify(userContext)}`
     });
@@ -319,19 +321,24 @@ export const Chatbot = ({
       }
 
       if (fullText) {
-        const lowerFullText = fullText.toLowerCase();
-        if (lowerFullText.includes("summar") || 
-            lowerFullText.includes("whatsapp") || 
-            lowerFullText.includes("button below") || 
-            lowerFullText.includes("request button") ||
-            lowerFullText.includes("research team") ||
-            lowerFullText.includes("has been sent")) {
-          const finalSummary = [...updatedMessages, { role: "model", text: fullText, timestamp: formatTimestamp() }]
+        if (fullText.includes("[SYSTEM_ENGAGEMENT_COMPLETE]") && !isSuccess) {
+          setIsSuccess(true);
+          
+          const finalMessages = [
+            ...updatedMessages,
+            {
+              role: "model" as const,
+              text: fullText,
+              timestamp: formatTimestamp(),
+            }
+          ];
+
+          const chatHistoryText = finalMessages
             .map((m) => `${m.role.toUpperCase()}: ${m.text}`)
             .join("\n\n");
             
           const currentBehaviorNotes = useChatbotStore.getState().behaviorNotes;
-          const finalSummaryText = `CHAT HISTORY:\n${finalSummary}\n\nBEHAVIORAL OBSERVATIONS:\n${currentBehaviorNotes}`;
+          const finalSummaryText = `CHAT HISTORY:\n${chatHistoryText}\n\nBEHAVIORAL OBSERVATIONS:\n${currentBehaviorNotes}`;
           
           setSummaryText(finalSummaryText);
           setIsListening(false);
@@ -342,35 +349,33 @@ export const Chatbot = ({
             status: 'success'
           });
           
-          // Auto send email
-          try {
-            const currentState = useChatbotStore.getState();
-            const patternSummary = await brain.getBehaviorPatternSummary(currentState.behaviorNotes);
-            
-            const totals = {
-              totalInputTokens: currentState.totalTokensIn,
-              totalOutputTokens: currentState.totalTokensOut,
-              totalCost: currentState.totalCost,
-              modelsUsed: new Set(currentState.modelsUsed)
-            };
+          // Auto send email in background immediately
+          const triggerEmail = async () => {
+            try {
+              const currentState = useChatbotStore.getState();
+              const patternSummary = await brain.getBehaviorPatternSummary(currentState.behaviorNotes);
+              
+              const totals = {
+                totalInputTokens: currentState.totalTokensIn,
+                totalOutputTokens: currentState.totalTokensOut,
+                totalCost: currentState.totalCost,
+                modelsUsed: new Set(currentState.modelsUsed)
+              };
 
-            const resourceDossier = IntelligenceUnit.generateResourceDossierHTML(totals);
-            IntelligenceUnit.logSessionSummary(totals);
+              const resourceDossier = IntelligenceUnit.generateResourceDossierHTML(totals);
+              IntelligenceUnit.logSessionSummary(totals);
 
-            await sendEmail({
-              to: "oriens@aiexecutions.com",
-              ...getEmailTemplate(finalSummaryText, true, false, currentState.interactionHistory, currentState.userContext, currentState.behaviorNotes, patternSummary, resourceDossier)
-            });
-            console.log("Email automatically sent to stakeholder.");
-          } catch (error) {
-            console.error("Failed to auto-send chatbot summary email:", error);
-          }
+              await sendEmail({
+                to: "oriens@aiexecutions.com",
+                ...getEmailTemplate(finalSummaryText, true, false, currentState.interactionHistory, currentState.userContext, currentState.behaviorNotes, patternSummary, resourceDossier)
+              });
+              console.log("Email automatically sent to stakeholder.");
+            } catch (error) {
+              console.error("Failed to auto-send chatbot summary email:", error);
+            }
+          };
           
-          // Switch to newsletter modal
-          setTimeout(() => {
-            closeChatbot();
-            openNewsletter();
-          }, 3500); // Increased delay to 3.5s to allow reading/hearing the final message
+          triggerEmail();
         }
       }
     } catch (error: any) {

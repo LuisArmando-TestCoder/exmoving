@@ -22,6 +22,8 @@ interface ChatbotState {
   behaviorNotes: string;
   interactionHistory: InteractionRecord[];
   showEmailBtn: boolean;
+  isSuccess: boolean;
+  setIsSuccess: (isSuccess: boolean) => void;
   summaryText: string;
   isNewsletterOpen: boolean;
   // Resource Intelligence
@@ -73,6 +75,8 @@ export const useChatbotStore = create<ChatbotState>()(
       behaviorNotes: "",
       interactionHistory: [],
       showEmailBtn: false,
+      isSuccess: false,
+      setIsSuccess: (isSuccess) => set({ isSuccess }),
       summaryText: "",
       isNewsletterOpen: false,
       // Resource Intelligence
@@ -98,6 +102,7 @@ export const useChatbotStore = create<ChatbotState>()(
             userContext: mergedContext,
             messages: getInitialMessages(mergedContext),
             isErratic: false,
+            isSuccess: false,
             showEmailBtn: false,
             summaryText: "",
             // Reset session telemetry
@@ -123,6 +128,7 @@ export const useChatbotStore = create<ChatbotState>()(
       resetChat: () => set((state) => ({
         messages: getInitialMessages(state.userContext),
         isErratic: false,
+        isSuccess: false,
         showEmailBtn: false,
         summaryText: "",
       })),
