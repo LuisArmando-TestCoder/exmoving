@@ -1,12 +1,25 @@
-import { parseArgs } from "jsr:@std/cli/parse-args";
-import { join } from "jsr:@std/path";
-import { ensureDir } from "jsr:@std/fs";
+import { join } from "node:path";
+import { mkdir, stat, writeFile, readFile } from "node:fs/promises";
 
-const args = parseArgs(Deno.args);
+// Minimal shim for parseArgs to avoid new dependencies if possible, 
+// or use a simple regex-based parser since this is a local script.
+function parseArgs(args: string[]) {
+  const result: Record<string, string> = {};
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    if (arg.startsWith("--")) {
+      const [key, value] = arg.slice(2).split("=");
+      result[key] = value;
+    }
+  }
+  return result;
+}
+
+const args = parseArgs(process.argv.slice(2));
 
 if (!args.name || !args.path) {
-  console.error("Usage: deno run -A scripts/add-page.ts --name=\"Page Name\" --path=\"/path/to/page\"");
-  Deno.exit(1);
+  console.error("Usage: npx ts-node scripts/add-page.ts --name=\"Page Name\" --path=\"/path/to/page\"");
+  process.exit(1);
 }
 
 const pageName = args.name;
@@ -24,6 +37,14 @@ const getComponentName = (segment: string) => {
   return segment.split("-").map(capitalize).join("");
 };
 
+async function ensureDir(dir: string) {
+  try {
+    await mkdir(dir, { recursive: true });
+  } catch (err: any) {
+    if (err.code !== 'EEXIST') throw err;
+  }
+}
+
 async function createPageFile(dirPath: string, componentName: string, title: string, isLeaf: boolean) {
   await ensureDir(dirPath);
 
@@ -32,15 +53,15 @@ async function createPageFile(dirPath: string, componentName: string, title: str
 
   // Create empty SCSS
   try {
-    const stat = await Deno.stat(scssFilePath);
+    await stat(scssFilePath);
   } catch {
-    await Deno.writeTextFile(scssFilePath, `.page {\n  // Add styles here\n}\n`);
+    await writeFile(scssFilePath, `.page {\n  // Add styles here\n}\n`);
     console.log(`Created ${scssFilePath}`);
   }
 
   // Create Page TSX
   try {
-    await Deno.stat(pageFilePath);
+    await stat(pageFilePath);
   } catch {
     let content = "";
     if (isLeaf) {
@@ -167,33 +188,20 @@ export default function ${componentName}Page() {
 }
 `;
     }
-    await Deno.writeTextFile(pageFilePath, content);
+    await writeFile(pageFilePath, content);
     console.log(`Created ${pageFilePath}`);
   }
 }
 
 async function updateNavigation() {
-  let navContent = await Deno.readTextFile(NAV_FILE);
+  let navContent = await readFile(NAV_FILE, "utf-8");
   
-  // Quick and dirty way to inject into navigation array
-  // We'll read the existing navigation, parse it using eval (since it's a TS file with export const navigation = [...])
-  // Wait, Deno eval might be tricky with imports. Let's do a pure string replacement or AST if possible.
-  // Actually, string parsing to JSON is hard because it's a TS file, not pure JSON.
-  // A simpler approach: Just run a node/deno script that uses standard regex or a simple AST to modify it.
-  
-  // Let's create a temporary JSON representation of the paths.
-  // Or better, we can modify the string by looking for the export const navigation array.
-  
-  // Extract the array content
   const navMatch = navContent.match(/export const navigationData: NavItem\[\] = (\[[\s\S]*\]);/);
   if (!navMatch) {
     console.error("Could not parse navigation.ts");
-    Deno.exit(1);
+    process.exit(1);
   }
 
-  // To make it easy, we will define a recursive function that builds the desired structure
-  // For the sake of this script, we'll read the file, try to parse it with a loose JSON parser or Function, update it, and stringify it.
-  
   const jsCode = navContent.replace(/import .*\n/g, '').replace(/export interface NavItem \{[\s\S]*\}\n\n/, '').replace(/export const navigationData: NavItem\[\] = /, 'return ');
   
   let navArray;
@@ -201,10 +209,9 @@ async function updateNavigation() {
     navArray = new Function(jsCode)();
   } catch (e) {
     console.error("Failed to evaluate navigation array", e);
-    Deno.exit(1);
+    process.exit(1);
   }
 
-  // Recursive add function
   function addToNav(navPath: any[], segments: string[], currentPath: string, finalName: string) {
     if (segments.length === 0) return;
     
@@ -218,7 +225,7 @@ async function updateNavigation() {
       existingItem = {
         name: isLeaf ? finalName : capitalize(segment),
         path: newPath
-      };
+      } as any;
       if (!isLeaf) {
         existingItem.children = [];
       }
@@ -233,24 +240,20 @@ async function updateNavigation() {
 
   addToNav(navArray, segments, "", pageName);
 
-  // Stringify it back formatting nicely
   const newNavString = JSON.stringify(navArray, null, 2).replace(/"([^"]+)":/g, '$1:');
   
-  // Replace in original file
   const updatedFileContent = navContent.replace(
     /export const navigationData: NavItem\[\] = \[[\s\S]*\];/,
     `export const navigationData: NavItem[] = ${newNavString};`
   );
   
-  await Deno.writeTextFile(NAV_FILE, updatedFileContent);
+  await writeFile(NAV_FILE, updatedFileContent);
   console.log(`Updated ${NAV_FILE}`);
 }
 
 async function main() {
-  let currentPath = "";
   for (let i = 0; i < segments.length; i++) {
     const segment = segments[i];
-    currentPath += `/${segment}`;
     const isLeaf = i === segments.length - 1;
     const componentName = getComponentName(segment);
     const title = isLeaf ? pageName : capitalize(segment);
@@ -263,4 +266,4 @@ async function main() {
   console.log("Done!");
 }
 
-main();
+main().catch(console.error);
