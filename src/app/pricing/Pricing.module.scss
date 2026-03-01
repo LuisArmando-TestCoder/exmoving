@@ -662,19 +662,29 @@
 
           .baValueHighlight {
             font-family: var(--font-geist-mono), monospace;
-            font-size: clamp(1.25rem, 4vw, 1.75rem);
+            font-size: clamp(1rem, 3.5vw, 1.75rem); // Slightly more aggressive scaling
             font-weight: 900;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: clamp(4px, 1vw, 10px);
             color: var(--primary);
             letter-spacing: -0.05em;
             line-height: 1;
             white-space: nowrap;
+            overflow: hidden;
+            width: 100%;
 
             .sparkle {
               color: var(--primary);
               flex-shrink: 0;
+              width: clamp(10px, 2vw, 14px);
+              height: clamp(10px, 2vw, 14px);
+            }
+
+            span {
+              overflow: hidden;
+              text-overflow: ellipsis;
+              flex: 1;
             }
           }
 
