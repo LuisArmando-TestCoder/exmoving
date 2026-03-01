@@ -89,7 +89,7 @@
   &.expanded {
     interpolate-size: allow-keywords;
     background: rgba(var(--overlay-light-rgb), 0.1);
-    border-color: rgba(var(--overlay-light-rgb), 0.3);
+    border-color: var(--bg);
     cursor: default;
     // width: auto;
     padding-right: 6px;
