@@ -1,74 +1,80 @@
 "use client";
 
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { useScroll, useTransform, useSpring, useReducedMotion, useInView, motion } from "framer-motion";
 import { useRef } from "react";
+import styles from "@/components/sections/Hero.module.scss";
+import { HeroBackground } from "@/components/sections/hero/HeroBackground";
+import { SplitText } from "@/components/ui/SplitText";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import BackgroundDecor from "@/components/procedural/BackgroundDecor";
-import styles from "@/components/ModernPage.module.scss";
 import Link from "next/link";
 
 export default function GlobalNotFound() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
   const isInView = useInView(containerRef, { amount: 0.1 });
+  const shouldReduceMotion = useReducedMotion();
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end start"]
+    offset: ["start start", "end start"]
   });
-
-  const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+  
+  const scaleVideo = useTransform(scrollYProgress, [0, 1], [1, 1.2]);
+  const opacityVideo = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [1, 1, 0.5, 0]);
+  const blurVideo = useTransform(scrollYProgress, [0, 0.2], ["blur(0px)", "blur(5px)"]);
+  
+  const xTitle = useTransform(scrollYProgress, [0, 0.2], [0, 100]);
+  const opacityContent = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+  const blurContent = useTransform(scrollYProgress, [0, 0.15], ["blur(0px)", "blur(20px)"]);
+  
+  const springConfig = { stiffness: 60, damping: 20, restDelta: 0.001 };
+  const smoothXTitle = shouldReduceMotion ? xTitle : useSpring(xTitle, springConfig);
 
   return (
     <div className="selection:bg-red-500/30">
       <Header />
-      <BackgroundDecor />
-      
-      <main ref={containerRef} className={styles.modernSection}>
-        <motion.div 
-          className={styles.content}
-          style={{ opacity, y }}
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={isInView ? { scale: 1, opacity: 1 } : {}}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <motion.h1 
-            className={styles.title}
-            style={{ color: 'transparent', WebkitTextStroke: '2px var(--foreground)' }}
-          >
-            404
-          </motion.h1>
+      <section 
+        ref={containerRef} 
+        className={`${styles.heroWrapper}`}
+        aria-labelledby="hero-title"
+        style={{ height: '100vh', minHeight: '600px' }}
+      >
+        <div className={styles.soft}>
+          {isInView && (
+            <HeroBackground 
+              scaleVideo={scaleVideo}
+              opacityVideo={opacityVideo}
+              blurVideo={blurVideo}
+            />
+          )}
           
-          <motion.p 
-            className={styles.subtitle}
-            initial={{ y: 20, opacity: 0 }}
-            animate={isInView ? { y: 0, opacity: 1 } : {}}
-            transition={{ delay: 0.3 }}
-          >
-            System breach: requested coordinates do not exist in the Σxecutions ecosystem.
-          </motion.p>
+          <div className={styles.titleContainer} style={{ perspective: "1000px" }}>
+            {isInView && (
+              <motion.div 
+                className={styles.titleContent} 
+                style={{ 
+                  x: smoothXTitle,
+                  opacity: opacityContent,
+                  filter: blurContent
+                }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <h1 id="hero-title" className={styles.mainTitle}>
+                  <SplitText id="hero-split-title">404</SplitText>
+                </h1>
+              </motion.div>
+            )}
+          </div>
 
-          <motion.div
-            initial={{ y: 40, opacity: 0 }}
-            animate={isInView ? { y: 0, opacity: 1 } : {}}
-            transition={{ delay: 0.5 }}
-            className="mt-12"
-          >
-            <Link href="/" className={styles.submitBtn}>
-              Return to Core
-            </Link>
-          </motion.div>
-        </motion.div>
-
-        <motion.div 
-          className={styles.visual}
-          style={{ x: useTransform(scrollYProgress, [0, 1], [-100, 100]) }}
-        >
-          VOID
-        </motion.div>
-      </main>
-
+          <div className={styles.centeredWrapper}>
+             <Link href="/" className="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full transition-all duration-300 text-sm font-medium tracking-widest text-white">
+                RETURN TO CORE
+             </Link>
+          </div>
+        </div>
+      </section>
       <Footer />
     </div>
   );
