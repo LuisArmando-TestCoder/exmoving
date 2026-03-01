@@ -63,6 +63,9 @@ export const useChatbotStore = create<ChatbotState>()(
       isOpen: false,
       userEmail: null,
       setUserEmail: (email) => set((state) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) return state;
+        
         const newContext = { ...state.userContext, email };
         return { 
           userEmail: email,
