@@ -103,7 +103,7 @@ export const EmailActionButton = ({
       hardwareConcurrency: navigator.hardwareConcurrency,
       deviceMemory: (navigator as any).deviceMemory,
       maxTouchPoints: navigator.maxTouchPoints,
- screenResolution: `${window.screen.width}x${window.screen.height}`,
+      screenResolution: `${window.screen.width}x${window.screen.height}`,
       availableScreenResolution: `${window.screen.availWidth}x${window.screen.availHeight}`,
       windowSize: `${window.innerWidth}x${window.innerHeight}`,
       colorDepth: window.screen.colorDepth,
@@ -280,15 +280,18 @@ export const EmailActionButton = ({
               e.stopPropagation();
               const trimmedEmail = email.trim();
               if (trimmedEmail && !trimmedEmail.includes("@")) {
-                setEmail(prev => prev + "@");
-                // Focus and move cursor to end
+                const newValue = trimmedEmail + "@";
+                setEmail(newValue);
                 setTimeout(() => {
                   if (inputRef.current) {
+                    const originalType = inputRef.current.type;
+                    inputRef.current.type = "text";
                     inputRef.current.focus();
-                    const length = inputRef.current.value.length;
+                    const length = newValue.length;
                     inputRef.current.setSelectionRange(length, length);
+                    inputRef.current.type = originalType;
                   }
-                }, 0);
+                }, 10);
               } else {
                 handleSubmitInternal();
               }
