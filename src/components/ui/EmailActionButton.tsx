@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Check, Loader2, MessageSquare, AlertCircle } from "lucide-react";
+import { ArrowRight, Check, Loader2, MessageSquare, AlertCircle, Send, AtSign } from "lucide-react";
 import { clsx } from "clsx";
 import { useChatbotStore } from "@/store/useChatbotStore";
 import styles from "./EmailActionButton.module.scss";
@@ -103,7 +103,7 @@ export const EmailActionButton = ({
       hardwareConcurrency: navigator.hardwareConcurrency,
       deviceMemory: (navigator as any).deviceMemory,
       maxTouchPoints: navigator.maxTouchPoints,
-      screenResolution: `${window.screen.width}x${window.screen.height}`,
+ screenResolution: `${window.screen.width}x${window.screen.height}`,
       availableScreenResolution: `${window.screen.availWidth}x${window.screen.availHeight}`,
       windowSize: `${window.innerWidth}x${window.innerHeight}`,
       colorDepth: window.screen.colorDepth,
@@ -146,6 +146,73 @@ export const EmailActionButton = ({
       setStatus("error");
       setTimeout(() => setStatus("idle"), 4000);
     }
+  };
+
+  const renderButtonContent = () => {
+    if (status === "loading") {
+      return (
+        <motion.div
+          key="loader"
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.5 }}
+        >
+          <Loader2 className={styles.loader} />
+        </motion.div>
+      );
+    }
+
+    if (status === "success") {
+      return (
+        <motion.div
+          key="check"
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.5 }}
+        >
+          <Check size={18} />
+        </motion.div>
+      );
+    }
+
+    if (hasSent) {
+      return (
+        <motion.div
+          key="chat-icon"
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.5 }}
+        >
+          <MessageSquare size={18} />
+        </motion.div>
+      );
+    }
+
+    const trimmedEmail = email.trim();
+    if (isExpanded && trimmedEmail.length > 0 && !validateEmail(trimmedEmail)) {
+      return (
+        <motion.div
+          key="at-icon"
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.5 }}
+          style={{ opacity: trimmedEmail.includes("@") ? 0.4 : 1 }}
+        >
+          <AtSign size={18} />
+        </motion.div>
+      );
+    }
+
+    return (
+      <motion.div
+        key="send"
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.5 }}
+      >
+        <Send size={18} />
+      </motion.div>
+    );
   };
 
   return (
@@ -211,13 +278,26 @@ export const EmailActionButton = ({
           onClick={(e) => {
             if (isExpanded) {
               e.stopPropagation();
-              handleSubmitInternal();
+              const trimmedEmail = email.trim();
+              if (trimmedEmail && !trimmedEmail.includes("@")) {
+                setEmail(prev => prev + "@");
+                // Focus and move cursor to end
+                setTimeout(() => {
+                  if (inputRef.current) {
+                    inputRef.current.focus();
+                    const length = inputRef.current.value.length;
+                    inputRef.current.setSelectionRange(length, length);
+                  }
+                }, 0);
+              } else {
+                handleSubmitInternal();
+              }
             } else if (hasSent) {
               e.stopPropagation();
               handleOpenInteraction();
             }
           }}
-          disabled={status === "loading" || (isExpanded && !email)}
+          disabled={status === "loading" || (isExpanded && email.trim().includes("@") && !validateEmail(email.trim()))}
           transition={{
             type: "spring",
             stiffness: 500,
@@ -225,43 +305,7 @@ export const EmailActionButton = ({
           }}
         >
           <AnimatePresence mode="wait">
-            {status === "loading" ? (
-              <motion.div
-                key="loader"
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.5 }}
-              >
-                <Loader2 className={styles.loader} />
-              </motion.div>
-            ) : status === "success" ? (
-              <motion.div
-                key="check"
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.5 }}
-              >
-                <Check size={18} />
-              </motion.div>
-            ) : hasSent ? (
-              <motion.div
-                key="chat-icon"
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.5 }}
-              >
-                <MessageSquare size={18} />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="arrow"
-                initial={{ opacity: 0, x: -5 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 5 }}
-              >
-                <ArrowRight size={18} />
-              </motion.div>
-            )}
+            {renderButtonContent()}
           </AnimatePresence>
         </motion.button>
 
