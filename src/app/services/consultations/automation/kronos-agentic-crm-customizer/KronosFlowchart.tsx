@@ -28,7 +28,11 @@ const RenderNode = ({ node, index }: { node: FlowNode; index: number }) => {
     case 'database':
       return <div key={index} className={styles.flowDatabase}>{node.text}</div>;
     case 'arrow':
-      return <div key={index} className={styles.flowArrow}>{node.text || '→'}</div>;
+      return (
+        <div key={index} className={styles.flowArrow}>
+          <span className={styles.arrowContent}>{node.text || '→'}</span>
+        </div>
+      );
     case 'label':
       return <div key={index} className={styles.flowLabel}>{node.text}</div>;
     case 'branch_container':
