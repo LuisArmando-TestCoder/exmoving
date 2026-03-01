@@ -24,7 +24,7 @@ const chatbotFeatures = [
   {
     icon: Brain,
     title: "Gemini Intelligence",
-    description: "Powered by Gemini 1.5 Flash for lightning-fast, high-context business logic.",
+    description: "Powered by Gemini Flash Latest for lightning-fast, high-context business logic.",
     metric: "< 1s latency",
     color: "purple"
   },
@@ -216,7 +216,7 @@ export default function ChatbotPage() {
               <div className={styles.modelStack}>
                 <div className={styles.stackText}>
                   <span>Model Stack</span>
-                  <strong>Gemini 1.5 Flash</strong>
+                  <strong>Gemini Flash Latest</strong>
                 </div>
                 <Rocket className={styles.rocket} />
               </div>

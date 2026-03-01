@@ -11,7 +11,7 @@ export async function recordSavings(amount: number) {
 
 export async function recordLLMCost(tokens: number) {
   const cost = (tokens / 1_000_000) * 0.10;
-  logSpending("LLM Gemini 1.5 Flash", cost);
+  logSpending("LLM Gemini Flash Latest", cost);
   await dbUpdate({ spent: cost });
 }
 
