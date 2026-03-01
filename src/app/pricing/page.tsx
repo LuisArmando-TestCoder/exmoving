@@ -50,6 +50,7 @@ export default function PricingPage() {
                 </blockquote>
                 <div className={styles.centeredWrapper}>
                   <EmailActionButton
+                    id="pricing-vision-cta"
                     label="Schedule Consultation Call"
                     subject="Pricing Consultation Request"
                   />
@@ -86,6 +87,7 @@ export default function PricingPage() {
                   Instead of quoting, we make a demo. We use your transcripts to generate the tool. Only when it performs successfully do we move forward.
                 </p>
                 <EmailActionButton
+                  id="pricing-footer-cta"
                   label="Schedule Consultation Call"
                   subject="Pricing Consultation Request"
                 />

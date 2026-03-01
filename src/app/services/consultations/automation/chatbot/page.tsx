@@ -283,6 +283,7 @@ export default function ChatbotPage() {
                     Each session is logged with full telemetry to ensure stakeholders see value.
                   </p>
                   <EmailActionButton 
+                    id="chatbot-audit-cta"
                     label="REQUEST ARCHITECTURE AUDIT" 
                     className={styles.auditButton}
                   />

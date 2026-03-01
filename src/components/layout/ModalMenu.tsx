@@ -322,6 +322,7 @@ export const ModalMenu = ({ isOpen, activeTab, setActiveTab, setMenuOpen }: Moda
 
             <div className={styles.modalActions}>
               <EmailActionButton 
+                id="modal-menu-demo-cta"
                 label="REQUEST FREE DEMO" 
                 subject="Modal Menu Demo Request"
                 className={styles.modalDemoButton}

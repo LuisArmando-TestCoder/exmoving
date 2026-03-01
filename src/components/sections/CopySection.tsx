@@ -67,6 +67,7 @@ export default function CopySection() {
             
             <div className={styles.inputGroup}>
               <EmailActionButton 
+                id="contact-section-demo-cta"
                 label="REQUEST FREE DEMO" 
                 subject="Contact Section Demo Request"
                 className={styles.submitButton}

@@ -56,40 +56,6 @@ export const Chatbot = ({
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const lastSubmittedInputRef = useRef("");
   const recognitionRef = useRef<any>(null);
-  const isSpeakingRef = useRef(false);
-
-  const speak = useCallback((text: string) => {
-    if (typeof window !== "undefined" && "speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.9;
-      utterance.pitch = 0.8;
-      
-      const voices = window.speechSynthesis.getVoices();
-      const preferredVoice = voices.find(v => 
-        (v.lang.includes("en-GB") && (v.name.includes("Male") || v.name.includes("Daniel") || v.name.includes("Oliver"))) ||
-        (v.lang.includes("en-GB") && v.name.includes("Google"))
-      ) || voices.find(v => v.lang.includes("en-GB"));
-      
-      if (preferredVoice) utterance.voice = preferredVoice;
-
-      utterance.onstart = () => {
-        isSpeakingRef.current = true;
-        if (isListening) {
-          recognitionRef.current?.stop();
-        }
-      };
-
-      utterance.onend = () => {
-        isSpeakingRef.current = false;
-        if (isListening) {
-          try { recognitionRef.current?.start(); } catch(e) {}
-        }
-      };
-
-      window.speechSynthesis.speak(utterance);
-    }
-  }, [isListening]);
 
   const brain = useMemo(() => {
     if (!apiKey) return null;
@@ -131,10 +97,6 @@ export const Chatbot = ({
   }, [userInput]);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && "speechSynthesis" in window) {
-      window.speechSynthesis.getVoices();
-    }
-    
     if (typeof window !== "undefined") {
       const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
       if (SpeechRecognition) {
@@ -175,7 +137,7 @@ export const Chatbot = ({
             return;
           }
           console.error("Speech recognition error:", event.error);
-          if (event.error !== "not-allowed" && isListening && !isSpeakingRef.current) {
+          if (event.error !== "not-allowed" && isListening) {
             setTimeout(() => {
               try { recognitionRef.current.start(); } catch(e) {}
             }, 1000); // Increased timeout for retry
@@ -183,14 +145,14 @@ export const Chatbot = ({
         };
 
         recognitionRef.current.onend = () => {
-          if (isListening && !isSpeakingRef.current) {
+          if (isListening) {
             setTimeout(() => {
               try { recognitionRef.current.start(); } catch(e) {}
             }, 100);
           }
         };
 
-        if (isListening && !isSpeakingRef.current) {
+        if (isListening) {
            try { recognitionRef.current.start(); } catch(e) {}
         }
       }
@@ -203,9 +165,7 @@ export const Chatbot = ({
 
   useEffect(() => {
     if (isListening) {
-      if (!isSpeakingRef.current) {
-        try { recognitionRef.current?.start(); } catch(e) {}
-      }
+      try { recognitionRef.current?.start(); } catch(e) {}
     } else {
       recognitionRef.current?.stop();
     }
@@ -236,10 +196,6 @@ export const Chatbot = ({
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
     if (!userInput.trim() || loading || isErratic) return;
-
-    if (typeof window !== "undefined" && "speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
-    }
 
     const userText = userInput;
     setUserInput("");
@@ -315,7 +271,6 @@ export const Chatbot = ({
           };
           return newMessages;
         });
-        speak(erraticText);
         
         // Log to history
         useChatbotStore.getState().addInteractionRecord({
@@ -362,8 +317,6 @@ export const Chatbot = ({
       }
 
       if (fullText) {
-        speak(fullText);
-
         if (fullText.toLowerCase().includes("summar") || 
             fullText.toLowerCase().includes("whatsapp") || 
             fullText.toLowerCase().includes("button below") || 

@@ -160,6 +160,7 @@ export default function AutomationPage() {
 
           <div className={styles.ctaWrapper}>
             <EmailActionButton 
+              id="automation-audit-cta"
               label="BOOK EFFICIENCY AUDIT" 
               className={styles.auditButton}
             />
