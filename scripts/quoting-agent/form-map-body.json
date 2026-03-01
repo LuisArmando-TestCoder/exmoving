@@ -1,0 +1,711 @@
+{
+  "inputs": [
+    {
+      "checked": false,
+      "id": "",
+      "name": "",
+      "type": "file",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "s2id_autogen206",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "s2id_autogen208",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "s2id_autogen220",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "s2id_autogen222",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "ctl00_cntPlcHld1_ShipmentSpecs1_btnHide0",
+      "name": "ctl00$cntPlcHld1$ShipmentSpecs1$btnHide0",
+      "type": "submit",
+      "value": "X"
+    },
+    {
+      "checked": false,
+      "id": "s2id_autogen210",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "s2id_autogen212",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "s2id_autogen214",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_txtCargoWeight",
+      "name": "ctl00$cntPlcHld1$ShipmentSpecs1$ShipmentOption0$txtCargoWeight",
+      "type": "text",
+      "value": "1000"
+    },
+    {
+      "checked": false,
+      "id": "s2id_autogen216",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_txtCargoVolume",
+      "name": "ctl00$cntPlcHld1$ShipmentSpecs1$ShipmentOption0$txtCargoVolume",
+      "type": "text",
+      "value": "20"
+    },
+    {
+      "checked": false,
+      "id": "s2id_autogen218",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "s2id_autogen223",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": true,
+      "id": "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_chkadditional_0",
+      "name": "ctl00$cntPlcHld1$ShipmentSpecs1$ShipmentOption0$chkadditional$0",
+      "type": "checkbox",
+      "value": "on"
+    },
+    {
+      "checked": false,
+      "id": "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_chkadditional_1",
+      "name": "ctl00$cntPlcHld1$ShipmentSpecs1$ShipmentOption0$chkadditional$1",
+      "type": "checkbox",
+      "value": "on"
+    },
+    {
+      "checked": false,
+      "id": "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_chkadditional_2",
+      "name": "ctl00$cntPlcHld1$ShipmentSpecs1$ShipmentOption0$chkadditional$2",
+      "type": "checkbox",
+      "value": "on"
+    },
+    {
+      "checked": false,
+      "id": "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_chkadditional_3",
+      "name": "ctl00$cntPlcHld1$ShipmentSpecs1$ShipmentOption0$chkadditional$3",
+      "type": "checkbox",
+      "value": "on"
+    },
+    {
+      "checked": false,
+      "id": "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_chkadditional_4",
+      "name": "ctl00$cntPlcHld1$ShipmentSpecs1$ShipmentOption0$chkadditional$4",
+      "type": "checkbox",
+      "value": "on"
+    },
+    {
+      "checked": false,
+      "id": "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_chkadditional_5",
+      "name": "ctl00$cntPlcHld1$ShipmentSpecs1$ShipmentOption0$chkadditional$5",
+      "type": "checkbox",
+      "value": "on"
+    },
+    {
+      "checked": false,
+      "id": "ctl00_cntPlcHld1_ShipmentSpecs1_btnAddOption",
+      "name": "ctl00$cntPlcHld1$ShipmentSpecs1$btnAddOption",
+      "type": "submit",
+      "value": "Add an Option"
+    },
+    {
+      "checked": false,
+      "id": "ctl00_cntPlcHld1_ShipmentSpecs1_chkSpecialRequest",
+      "name": "ctl00$cntPlcHld1$ShipmentSpecs1$chkSpecialRequest",
+      "type": "checkbox",
+      "value": "on"
+    },
+    {
+      "checked": false,
+      "id": "ctl00_cntPlcHld1_Attachments1__Insert",
+      "name": "ctl00$cntPlcHld1$Attachments1$_Insert",
+      "type": "submit",
+      "value": "Click Here to Attach a File"
+    },
+    {
+      "checked": false,
+      "id": "ctl00_cntPlcHld1_Attachments1__Cancel",
+      "name": "ctl00$cntPlcHld1$Attachments1$_Cancel",
+      "type": "submit",
+      "value": "Cancel"
+    },
+    {
+      "checked": false,
+      "id": "ctl00_cntPlcHld1_txtYourName",
+      "name": "ctl00$cntPlcHld1$txtYourName",
+      "type": "text",
+      "value": "Quoting Agent Test"
+    },
+    {
+      "checked": false,
+      "id": "ctl00_cntPlcHld1_txtYourEmail",
+      "name": "ctl00$cntPlcHld1$txtYourEmail",
+      "type": "text",
+      "value": "lucas@exmoving.com"
+    },
+    {
+      "checked": false,
+      "id": "ctl00_cntPlcHld1_txtRefNo",
+      "name": "ctl00$cntPlcHld1$txtRefNo",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "ctl00_cntPlcHld1_btnProceed",
+      "name": "ctl00$cntPlcHld1$btnProceed",
+      "type": "submit",
+      "value": "Proceed"
+    },
+    {
+      "checked": false,
+      "id": "oKG",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oSTon",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oLTon",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oLB",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oOZ",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oCCM",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oCL",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oCM",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oCIN",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oCYA",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oCG",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oCFT",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oSCM",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oSM",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oSKM",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oSIN",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oSYA",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oSMI",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oCM",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oM",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oKM",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oInch",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oFeet",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oYard",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "oMile",
+      "name": "",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "checked": false,
+      "id": "ctl00_btnView",
+      "name": "ctl00$btnView",
+      "type": "submit",
+      "value": "View"
+    }
+  ],
+  "labels": [
+    {
+      "for": "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_chkadditional_0",
+      "text": "Upright Piano"
+    },
+    {
+      "for": "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_chkadditional_1",
+      "text": "Grand Piano"
+    },
+    {
+      "for": "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_chkadditional_2",
+      "text": "Safe"
+    },
+    {
+      "for": "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_chkadditional_3",
+      "text": "Motorcycle"
+    },
+    {
+      "for": "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_chkadditional_4",
+      "text": "Baby Grand Piano"
+    },
+    {
+      "for": "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_chkadditional_5",
+      "text": "Pool Table"
+    }
+  ],
+  "redIssues": [
+    "Price List Generator",
+    "Please select Country",
+    "Please enter a valid weight value",
+    "Please enter valid volume size",
+    "Please select cargo volume units",
+    "Please enter your name",
+    "Please enter your email"
+  ],
+  "selects": [
+    {
+      "id": "ctl00_cntPlcHld1_ShipmentSpecs1_ddlGroupage",
+      "name": "ctl00$cntPlcHld1$ShipmentSpecs1$ddlGroupage",
+      "optionCount": 2,
+      "sampleOptions": [
+        {
+          "text": "Individual Shipment",
+          "value": "1"
+        },
+        {
+          "text": "Groupage Shipment",
+          "value": "2"
+        }
+      ]
+    },
+    {
+      "id": "ctl00_cntPlcHld1_ShipmentSpecs1_ddlServices",
+      "name": "ctl00$cntPlcHld1$ShipmentSpecs1$ddlServices",
+      "optionCount": 2,
+      "sampleOptions": [
+        {
+          "text": "Destination Service",
+          "value": "1"
+        },
+        {
+          "text": "Origin Service",
+          "value": "2"
+        }
+      ]
+    },
+    {
+      "id": "ctl00_cntPlcHld1_ShipmentSpecs1_ddlCCountry",
+      "name": "ctl00$cntPlcHld1$ShipmentSpecs1$ddlCCountry",
+      "optionCount": 260,
+      "sampleOptions": [
+        {
+          "text": "Country",
+          "value": "-1"
+        },
+        {
+          "text": "Afghanistan",
+          "value": "1"
+        },
+        {
+          "text": "... (257 more)",
+          "value": "..."
+        },
+        {
+          "text": "Zygia",
+          "value": "238"
+        }
+      ]
+    },
+    {
+      "id": "ctl00_cntPlcHld1_ShipmentSpecs1_ddlCCityArea",
+      "name": "ctl00$cntPlcHld1$ShipmentSpecs1$ddlCCityArea",
+      "optionCount": 1465,
+      "sampleOptions": [
+        {
+          "text": "Select City",
+          "value": "-1"
+        },
+        {
+          "text": "Other",
+          "value": "-2"
+        },
+        {
+          "text": "... (1462 more)",
+          "value": "..."
+        },
+        {
+          "text": "Zvoleneves",
+          "value": "59913"
+        }
+      ]
+    },
+    {
+      "id": "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_ddlCommodity",
+      "name": "ctl00$cntPlcHld1$ShipmentSpecs1$ShipmentOption0$ddlCommodity",
+      "optionCount": 9,
+      "sampleOptions": [
+        {
+          "text": "HHG & PE",
+          "value": "1"
+        },
+        {
+          "text": "Vehicle",
+          "value": "2"
+        },
+        {
+          "text": "HHG & PE + Vehicle",
+          "value": "7"
+        },
+        {
+          "text": "Vehicle (RoRo)",
+          "value": "8"
+        },
+        {
+          "text": "Exhibition",
+          "value": "4"
+        },
+        {
+          "text": "Commercial",
+          "value": "3"
+        },
+        {
+          "text": "Fine Art",
+          "value": "5"
+        },
+        {
+          "text": "Motorcycle",
+          "value": "9"
+        },
+        {
+          "text": "Other (see Add. Information)",
+          "value": "6"
+        }
+      ]
+    },
+    {
+      "id": "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_ddlShippingMode",
+      "name": "ctl00$cntPlcHld1$ShipmentSpecs1$ShipmentOption0$ddlShippingMode",
+      "optionCount": 3,
+      "sampleOptions": [
+        {
+          "text": "Sea",
+          "value": "1"
+        },
+        {
+          "text": "Air",
+          "value": "2"
+        },
+        {
+          "text": "Land",
+          "value": "3"
+        }
+      ]
+    },
+    {
+      "id": "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_ddlCargoTypes",
+      "name": "ctl00$cntPlcHld1$ShipmentSpecs1$ShipmentOption0$ddlCargoTypes",
+      "optionCount": 6,
+      "sampleOptions": [
+        {
+          "text": "20' container",
+          "value": "1"
+        },
+        {
+          "text": "40' container",
+          "value": "2"
+        },
+        {
+          "text": "40' HC container",
+          "value": "3"
+        },
+        {
+          "text": "LCL(Lift Vans)",
+          "value": "6"
+        },
+        {
+          "text": "Motorcycle (Handout/Handin Depo)",
+          "value": "26"
+        },
+        {
+          "text": "Motorcycle (Pickup/Delivery)",
+          "value": "29"
+        }
+      ]
+    },
+    {
+      "id": "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_ddlCargoWeight",
+      "name": "ctl00$cntPlcHld1$ShipmentSpecs1$ShipmentOption0$ddlCargoWeight",
+      "optionCount": 2,
+      "sampleOptions": [
+        {
+          "text": "Net Kgs",
+          "value": "1"
+        },
+        {
+          "text": "Net Lbs",
+          "value": "2"
+        }
+      ]
+    },
+    {
+      "id": "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_ddlCargoVolume",
+      "name": "ctl00$cntPlcHld1$ShipmentSpecs1$ShipmentOption0$ddlCargoVolume",
+      "optionCount": 2,
+      "sampleOptions": [
+        {
+          "text": "Net CBM",
+          "value": "2"
+        },
+        {
+          "text": "Net CF",
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "id": "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_ddlPOE",
+      "name": "ctl00$cntPlcHld1$ShipmentSpecs1$ShipmentOption0$ddlPOE",
+      "optionCount": 1860,
+      "sampleOptions": [
+        {
+          "text": "Best POE",
+          "value": "-1"
+        },
+        {
+          "text": "Aachen, Germany",
+          "value": "1"
+        },
+        {
+          "text": "... (1857 more)",
+          "value": "..."
+        },
+        {
+          "text": "Zurich, Switzerland",
+          "value": "1787"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "testInputs": {
+    "ctl00_cntPlcHld1_ShipmentSpecs1_ddlGroupage": {
+      "value": "1",
+      "description": "Individual Shipment"
+    },
+    "ctl00_cntPlcHld1_ShipmentSpecs1_ddlServices": {
+      "value": "1",
+      "description": "Destination Service"
+    },
+    "ctl00_cntPlcHld1_ShipmentSpecs1_ddlCCountry": {
+      "value": "48",
+      "description": "Costa Rica"
+    },
+    "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_ddlPOE": {
+      "value": "1360",
+      "description": "San Jose, Costa Rica"
+    },
+    "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_ddlCommodity": {
+      "value": "1",
+      "description": "HHG & PE"
+    },
+    "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_ddlShippingMode": {
+      "value": "1",
+      "description": "Sea"
+    },
+    "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_ddlCargoTypes": {
+      "value": "1",
+      "description": "20' container"
+    },
+    "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_txtCargoWeight": {
+      "value": "1000",
+      "description": "Weight"
+    },
+    "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_ddlCargoWeight": {
+      "value": "1",
+      "description": "Net Kgs"
+    },
+    "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_txtCargoVolume": {
+      "value": "20",
+      "description": "Volume in CBM"
+    },
+    "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_ddlCargoVolume": {
+      "value": "2",
+      "description": "Net CBM"
+    },
+    "ctl00_cntPlcHld1_txtYourName": {
+      "value": "Quoting Agent Test",
+      "description": "Name"
+    },
+    "ctl00_cntPlcHld1_txtYourEmail": {
+      "value": "lucas@exmoving.com",
+      "description": "Email"
+    },
+    "ctl00_cntPlcHld1_ShipmentSpecs1_ShipmentOption0_chkadditional_0": {
+      "value": true,
+      "description": "Upright Piano"
+    }
+  },
+  "interactionSequence": [
+    {
+      "step": "login",
+      "action": "click",
+      "selector": "#navLogin"
+    },
+    {
+      "step": "credentials",
+      "action": "type",
+      "fields": ["usernameInput", "passwordInput"]
+    },
+    {
+      "step": "navigation",
+      "action": "wait_url",
+      "pattern": "DashBoard.aspx"
+    },
+    {
+      "step": "locate_mover",
+      "action": "click_href",
+      "pattern": "LocateDestinationMover.aspx"
+    },
+    {
+      "step": "fill_form",
+      "action": "batch_fill",
+      "source": "testInputs"
+    },
+    {
+      "step": "submit",
+      "action": "click",
+      "selector": "#ctl00_cntPlcHld1_btnProceed",
+      "waitFor": ".loadingDiv",
+      "waitMode": "invisibility"
+    }
+  ]
+}

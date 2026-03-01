@@ -1,0 +1,57 @@
+{
+  "stakeholders": [
+    "oriens@aiexecutions.com"
+  ],
+  "products": [
+    {
+      "productName": "FCL 20ft",
+      "pricePerUnit": 4500,
+      "bundlePrices": [
+        { "amountTreshold": 5, "price": 4200 }
+      ]
+    },
+    {
+      "productName": "FCL 40ft",
+      "pricePerUnit": 6800,
+      "bundlePrices": [
+        { "amountTreshold": 3, "price": 6400 }
+      ]
+    },
+    {
+      "productName": "LCL (per CBM)",
+      "pricePerUnit": 250,
+      "bundlePrices": [
+        { "amountTreshold": 10, "price": 220 }
+      ]
+    }
+  ],
+  "scraping": {
+    "moversPOE": {
+      "selectors": {
+        "navLogin": "#navLogin",
+        "loginModal": "#myModal",
+        "usernameInput": "#RegisterationControl1_txtUserName",
+        "passwordInput": "#RegisterationControl1_txtPassword",
+        "loginButton": "#RegisterationControl1_btnLogin",
+        "locateMoverLink": "a[href~='LocateDestinationMover.aspx']"
+      },
+      "dashboardPattern": "DashBoard.aspx",
+      "locateMoverPattern": "LocateDestinationMover.aspx"
+    }
+  },
+  "marginRange": {
+    "min": 15,
+    "max": 25
+  },
+  "comparisonWindowMinutes": 120,
+  "emailIdentification": {
+    "userSubmissionPatterns": [
+      "quote request submission",
+      "new user quote details"
+    ],
+    "providerResponsePatterns": [
+      "---",
+      "re: quote request"
+    ]
+  }
+}
