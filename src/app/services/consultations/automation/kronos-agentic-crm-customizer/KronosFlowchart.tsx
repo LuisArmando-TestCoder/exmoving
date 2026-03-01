@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './KronosFlowchart.module.scss';
 
 export interface FlowNode {
-  type: 'node' | 'diamond' | 'database' | 'arrow' | 'label' | 'branch_container';
+  type: 'node' | 'diamond' | 'database' | 'arrow' | 'label' | 'branch_container' | 'diamond_wrapper';
   text?: string;
   subNodes?: FlowNode[]; // For branches or content within containers
 }
@@ -17,6 +17,14 @@ const RenderNode = ({ node, index }: { node: FlowNode; index: number }) => {
       return <div key={index} className={styles.flowNode}>{node.text}</div>;
     case 'diamond':
       return <div key={index} className={styles.flowDiamond}>{node.text}</div>;
+    case 'diamond_wrapper':
+      return (
+        <div key={index} className={styles.diamondWrapper}>
+          {node.subNodes?.map((sub, sIdx) => (
+            <RenderNode key={sIdx} node={sub} index={sIdx} />
+          ))}
+        </div>
+      );
     case 'database':
       return <div key={index} className={styles.flowDatabase}>{node.text}</div>;
     case 'arrow':
@@ -45,19 +53,22 @@ export const KronosFlowchart = ({ data }: KronosFlowchartProps) => {
   const flowchartData: FlowNode[] = data || [
     { type: 'node', text: 'HTTP Request' },
     { type: 'arrow', text: '→' },
-    { type: 'diamond', text: 'UIDBM Router' },
+    { 
+      type: 'diamond_wrapper', 
+      subNodes: [{ type: 'diamond', text: 'UIDBM Router' }] 
+    },
     {
       type: 'branch_container',
       subNodes: [
         {
-          type: 'node', // Using node as a wrapper for branch 1
+          type: 'node',
           subNodes: [
             { type: 'label', text: 'GET /schema' },
             { type: 'node', text: 'Schema Manager' }
           ]
         },
         {
-          type: 'node', // Using node as a wrapper for branch 2
+          type: 'node',
           subNodes: [
             { type: 'label', text: 'POST /:coll' },
             { type: 'node', text: 'Validator [Pass]' },

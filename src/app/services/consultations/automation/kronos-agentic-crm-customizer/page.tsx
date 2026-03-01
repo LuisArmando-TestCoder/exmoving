@@ -8,7 +8,10 @@ export default function KronosAgenticCrmCustomizerPage() {
   const flowchartData: FlowNode[] = [
     { type: 'node', text: 'HTTP Request' },
     { type: 'arrow', text: '→' },
-    { type: 'diamond', text: 'UIDBM Router' },
+    { 
+      type: 'diamond_wrapper', 
+      subNodes: [{ type: 'diamond', text: 'UIDBM Router' }] 
+    },
     {
       type: 'branch_container',
       subNodes: [

@@ -3,10 +3,11 @@
 
 .flowchart {
   display: flex;
-  flex-wrap: wrap; // Allow wrapping to prevent horizontal overflow
+  flex-direction: row; // Standard desktop horizontal flow
+  flex-wrap: wrap; // Allow wrapping
   align-items: center;
   justify-content: center;
-  gap: clamp(1rem, 2vw, 2rem);
+  gap: clamp(1rem, 2vw, 2.5rem);
   margin: 4rem auto;
   padding: clamp(2rem, 5vw, 4rem);
   background: var(--glass);
@@ -15,12 +16,27 @@
   border: 1px solid var(--glass-border);
   position: relative;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1300px;
+  overflow-x: auto; // Horizontal scroll for extra wide charts on desktop/tablet
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
   box-shadow: 
     0 20px 50px -20px rgba(var(--primary-rgb), 0.2),
     inset 0 1px 1px rgba(255, 255, 255, 0.05);
 
-  // Background glow
+  // Custom Scrollbar for modern look
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: rgba(var(--primary-rgb), 0.05);
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 10px;
+  }
+
   &::before {
     content: '';
     @include abs-fill;
@@ -29,20 +45,22 @@
     z-index: -1;
   }
   
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    padding: 3rem 1.5rem;
-    flex-wrap: nowrap;
+  @media (max-width: 768px) {
+    flex-direction: column; // Vertical stack for mobile
+    padding: 3rem 1rem;
+    overflow-x: hidden;
+    overflow-y: visible;
+    gap: 1.5rem;
   }
 
   .flowNode {
-    padding: 0.85rem 1.75rem;
+    padding: 0.85rem 1.5rem;
     background: rgba(var(--primary-rgb), 0.05);
     border: 1px solid rgba(var(--primary-rgb), 0.3);
     border-radius: 12px;
     font-family: var(--font-mono);
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     letter-spacing: -0.02em;
     color: var(--text);
     text-align: center;
@@ -50,6 +68,13 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+
+    @media (max-width: 768px) {
+      width: 100%; // Full width on mobile
+      max-width: 280px;
+      white-space: normal; // Allow wrapping in node text on mobile
+    }
 
     &:hover {
       transform: translateY(-2px);
@@ -60,25 +85,36 @@
   }
 
   .flowDiamond {
-    width: 110px;
-    height: 110px;
+    flex-basis: 100%; // Force own row
+    order: 2; // Position after the first set of nodes
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
     background: rgba(var(--secondary-rgb), 0.08);
     border: 1px solid rgba(var(--secondary-rgb), 0.4);
     transform: rotate(45deg);
     border-radius: 16px;
+    position: relative;
+    z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.4s ease;
     flex-shrink: 0;
-    margin: 1rem;
+    margin: 1.5rem;
+
+    @media (max-width: 768px) {
+      margin: 2rem auto;
+    }
 
     &::after {
       content: "UIDBM Router";
       transform: rotate(-45deg);
       font-family: var(--font-mono);
       font-weight: 800;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       text-transform: uppercase;
       color: var(--text);
       white-space: nowrap;
@@ -95,17 +131,23 @@
   }
 
   .flowDatabase {
-    padding: 1.5rem 2rem;
+    padding: 1.25rem 1.75rem;
     background: rgba(16, 185, 129, 0.05);
     border: 1px solid rgba(16, 185, 129, 0.4);
     border-radius: 20px 20px 20px 20px / 15px 15px 15px 15px;
     font-family: var(--font-mono);
     font-weight: 800;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--text);
     text-align: center;
     position: relative;
     transition: all 0.3s ease;
+    flex-shrink: 0;
+
+    @media (max-width: 768px) {
+      width: 100%;
+      max-width: 240px;
+    }
     
     &::before {
       content: '';
@@ -133,39 +175,46 @@
     font-weight: 300;
     user-select: none;
     transition: opacity 0.3s ease;
+    flex-shrink: 0;
 
-    @media (max-width: 1024px) {
-      transform: rotate(90deg);
+    @media (max-width: 768px) {
+      transform: rotate(90deg); // Arrow points down on mobile
     }
   }
 
   .flowBranches {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    order: 3; // Position after the diamond
+    gap: 2.5rem;
     position: relative;
-    flex-grow: 1;
-    min-width: 300px;
+    flex-shrink: 0;
+
+    @media (max-width: 768px) {
+      width: 100%;
+      gap: 3rem;
+    }
   }
 
   .flowBranch {
     display: flex;
     align-items: center;
-    flex-wrap: wrap; // Wrap nodes within branches
-    gap: 1rem;
+    gap: 1.25rem;
     position: relative;
-    padding: 1rem;
-    border-radius: 1rem;
+    padding: 1rem 1.5rem;
+    border-radius: 1.5rem;
     background: rgba(var(--primary-rgb), 0.02);
     border: 1px dashed var(--glass-border);
+    flex-shrink: 0;
 
-    @media (max-width: 1024px) {
+    @media (max-width: 768px) {
       flex-direction: column;
       width: 100%;
+      padding: 2rem 1rem;
     }
 
     .flowLabel {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       font-family: var(--font-mono);
       font-weight: 600;
       text-transform: uppercase;
@@ -177,6 +226,14 @@
       border: 1px solid var(--border);
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
       flex-shrink: 0;
+      position: absolute;
+      top: -0.75rem;
+      left: 1rem;
+
+      @media (max-width: 768px) {
+        left: 50%;
+        transform: translateX(-50%);
+      }
     }
   }
 }
