@@ -69,7 +69,7 @@ export const Chatbot = ({
         1. GATHER initial info: Company, Industry.
         2. DEFINE OBJECTIVE: Ask what the primary business goal is.
         3. IDENTIFY PROBLEM: Once the objective is set, ask for the main roadblock/problem.
-        4. ROOT CAUSE ANALYSIS: Use the "5 Whys" technique to drill down into the stated problem to find its source.
+        4. ROOT CAUSE ANALYSIS: Use the "5 Whys" technique to drill down into the stated problem to find its source. (DO NOT ask why they haven't automated it yet; instead, find the source of the operational failure).
         5. RECOMMENDATION: Briefly state how automation addresses the root cause.
         
         RULES:
@@ -86,13 +86,13 @@ export const Chatbot = ({
   }, [apiKey, modelId, userContext]);
 
   useEffect(() => {
-    if (chatContainerRef.current) {
+    if (chatContainerRef.current && loading) {
       chatContainerRef.current.scrollTo({
         top: chatContainerRef.current.scrollHeight,
         behavior: "smooth",
       });
     }
-  }, [messages, loading]);
+  }, [messages.length, loading]);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -413,6 +413,7 @@ export const Chatbot = ({
         setUserInput={setUserInput}
         loading={loading}
         isErratic={isErratic}
+        isSuccess={isSuccess}
         showEmailBtn={showEmailBtn}
         isListening={isListening}
         toggleListening={toggleListening}

@@ -139,7 +139,16 @@ export const useChatbotStore = create<ChatbotState>()(
         behaviorNotes: state.behaviorNotes, 
         interactionHistory: state.interactionHistory,
         userEmail: state.userEmail,
-        userContext: state.userContext
+        userContext: state.userContext,
+        messages: state.messages,
+        isErratic: state.isErratic,
+        isSuccess: state.isSuccess,
+        summaryText: state.summaryText,
+        showEmailBtn: state.showEmailBtn,
+        totalTokensIn: state.totalTokensIn,
+        totalTokensOut: state.totalTokensOut,
+        totalCost: state.totalCost,
+        modelsUsed: state.modelsUsed
       }),
     }
   )

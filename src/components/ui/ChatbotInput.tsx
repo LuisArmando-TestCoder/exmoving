@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { clsx } from "clsx";
-import { AlertCircle, Mic, MicOff } from "lucide-react";
+import { AlertCircle, CheckCircle2, Mic, MicOff } from "lucide-react";
 import gsap from "gsap";
 import styles from "./Chatbot.module.scss";
 
@@ -9,6 +9,7 @@ interface ChatbotInputProps {
   setUserInput: (value: string) => void;
   loading: boolean;
   isErratic: boolean;
+  isSuccess?: boolean;
   showEmailBtn: boolean;
   isListening: boolean;
   toggleListening: () => void;
@@ -22,6 +23,7 @@ export const ChatbotInput = ({
   setUserInput,
   loading,
   isErratic,
+  isSuccess,
   showEmailBtn,
   isListening,
   toggleListening,
@@ -87,15 +89,35 @@ export const ChatbotInput = ({
 
   return (
     <div className={styles["input-area"]}>
-      {isErratic ? (
+      {isSuccess ? (
+        <div
+          className={styles["success-notice"]}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "100%",
+            gap: "8px",
+            padding: "1rem",
+            color: "#10b981",
+            fontWeight: 600,
+          }}
+        >
+          <CheckCircle2 size={20} />
+          <span>Consultation Complete</span>
+        </div>
+      ) : isErratic ? (
         <div
           className={styles["erratic-notice"]}
           style={{
             display: "flex",
             alignItems: "center",
+            justifyContent: "center",
+            width: "100%",
             gap: "8px",
             padding: "1rem",
             color: "#dc2626",
+            fontWeight: 600,
           }}
         >
           <AlertCircle size={20} />

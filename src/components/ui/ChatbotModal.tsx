@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Sparkles, Check, ArrowRight } from "lucide-react";
+import { X, Sparkles, Check, ArrowRight, Edit2 } from "lucide-react";
 import { useChatbotStore } from "@/store/useChatbotStore";
 import { Chatbot } from "./Chatbot";
 import { ChatBrain } from "@/lib/ChatBrain";
@@ -21,8 +21,15 @@ export const ChatbotModal = () => {
     behaviorNotes,
     isErratic,
     isSuccess,
-    openNewsletter
+    openNewsletter,
+    resetChat,
+    userEmail,
+    setUserEmail
   } = useChatbotStore();
+
+  const [isEditingEmail, setIsEditingEmail] = useState(false);
+  const [emailInput, setEmailInput] = useState(userEmail || "");
+  const [emailError, setEmailError] = useState("");
 
   const handleClose = async () => {
     const currentState = useChatbotStore.getState();
@@ -100,29 +107,63 @@ export const ChatbotModal = () => {
                 <Sparkles size={12} className={styles.sparkleIcon} />
                 <span>Proprietary Engine</span>
               </div>
-              {(userContext?.email || useChatbotStore.getState().userEmail) && (
-                <div className={styles.emailBadge} style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  borderRadius: '16px',
-                  padding: '4px 10px',
-                  fontSize: '0.7rem',
-                  color: 'rgba(255, 255, 255, 0.7)',
-                  marginTop: '8px',
-                  letterSpacing: '0.02em',
-                  backdropFilter: 'blur(4px)'
-                }}>
-                  <div style={{
-                    width: '4px',
-                    height: '4px',
-                    borderRadius: '50%',
-                    background: '#10b981',
-                    marginRight: '6px',
-                    boxShadow: '0 0 8px rgba(16, 185, 129, 0.5)'
-                  }} />
-                  {userContext?.email || useChatbotStore.getState().userEmail}
+              {(userEmail || isEditingEmail) && (
+                <div className={styles.emailContainer}>
+                  {isEditingEmail ? (
+                    <div className={styles.emailInputWrapper}>
+                      <input
+                        type="email"
+                        value={emailInput}
+                        onChange={(e) => {
+                          setEmailInput(e.target.value);
+                          setEmailError("");
+                        }}
+                        onBlur={() => {
+                          if (!emailInput) setIsEditingEmail(false);
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                            if (!emailRegex.test(emailInput)) {
+                              setEmailError("Invalid email format");
+                            } else {
+                              setUserEmail(emailInput);
+                              setIsEditingEmail(false);
+                              setEmailError("");
+                            }
+                          } else if (e.key === "Escape") {
+                            setIsEditingEmail(false);
+                            setEmailInput(userEmail || "");
+                            setEmailError("");
+                          }
+                        }}
+                        placeholder="your@email.com"
+                        autoFocus
+                        className={clsx(styles.minimalEmailInput, emailError && styles.error)}
+                      />
+                      <AnimatePresence>
+                        {emailError && (
+                          <motion.span
+                            initial={{ opacity: 0, y: -5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0 }}
+                            className={styles.errorText}
+                          >
+                            {emailError}
+                          </motion.span>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    <div 
+                      className={styles.emailBadge}
+                      onClick={() => setIsEditingEmail(true)}
+                    >
+                      <div className={styles.activeDot} />
+                      <span>{userEmail}</span>
+                      <Edit2 size={10} className={styles.editIcon} />
+                    </div>
+                  )}
                 </div>
               )}
               <div className={styles.titleWrapper}>
@@ -177,9 +218,20 @@ export const ChatbotModal = () => {
               <div className={styles.headerGlow} />
             </div>
 
-            <button className={styles.closeButton} onClick={handleClose} aria-label="Close">
-              <X size={20} />
-            </button>
+            <div className={styles.topRightActions}>
+              <button 
+                className={styles.resetLink} 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  resetChat();
+                }}
+              >
+                Reset Conversation
+              </button>
+              <button className={styles.closeButton} onClick={handleClose} aria-label="Close">
+                <X size={20} />
+              </button>
+            </div>
             
             <Chatbot 
               apiKey={process.env.NEXT_PUBLIC_GEMINI_API_KEY || ""} 
