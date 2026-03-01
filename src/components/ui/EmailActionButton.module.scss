@@ -289,6 +289,7 @@
   svg {
     position: relative;
     z-index: 1;
+    top: 1px;
   }
 }
 
@@ -336,6 +337,7 @@
   svg {
     position: relative;
     z-index: 1;
+    top: 1px;
     filter: drop-shadow(0 0 5px rgba(var(--accent-rgb), 0.5));
     animation: pulse 2s ease-in-out infinite;
   }
