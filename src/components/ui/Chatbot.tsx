@@ -59,7 +59,7 @@ export const Chatbot = ({
   const [loading, setLoading] = useState(false);
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [emailStatus, setEmailStatus] = useState<"idle" | "success" | "error">("idle");
-  const [isListening, setIsListening] = useState(true);
+  const [isListening, setIsListening] = useState(false);
 
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -154,7 +154,9 @@ export const Chatbot = ({
           
           if (errorCode !== "not-allowed" && isListening) {
             setTimeout(() => {
-              try { recognitionRef.current.start(); } catch(e) {}
+              if (isListening) {
+                try { recognitionRef.current.start(); } catch(e) {}
+              }
             }, 1000); 
           }
         };
@@ -162,11 +164,15 @@ export const Chatbot = ({
         recognitionRef.current.onend = () => {
           if (isListening) {
             setTimeout(() => {
-              try { recognitionRef.current.start(); } catch(e) {}
+              if (isListening) {
+                try { recognitionRef.current.start(); } catch(e) {}
+              }
             }, 100);
           }
         };
 
+        // Start only if isListening is true. 
+        // Note: isListening is initialized to false now.
         if (isListening) {
            try { recognitionRef.current.start(); } catch(e) {}
         }

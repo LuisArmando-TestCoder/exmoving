@@ -159,9 +159,9 @@ export const ChatbotInput = ({
               className={clsx(styles["mic-btn"], isListening && styles.listening)}
               onClick={toggleListening}
               disabled={loading}
-              title="Speak directly"
+              title={isListening ? "Pause listening" : "Resume listening"}
             >
-              {isListening ? <MicOff size={20} /> : <Mic size={20} />}
+              {isListening ? <Mic size={20} /> : <MicOff size={20} />}
             </button>
           )}
 
