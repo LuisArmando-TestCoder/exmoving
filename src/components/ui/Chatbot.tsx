@@ -38,14 +38,11 @@ export const Chatbot = ({
     setBehaviorNotes,
     showEmailBtn, 
     setShowEmailBtn, 
-    isOpen,
     summaryText, 
     setSummaryText,
     closeChatbot,
     openNewsletter,
-    userEmail,
-    isListening,
-    setIsListening
+    userEmail
   } = useChatbotStore();
 
   const isEmailInvalid = useMemo(() => {
@@ -62,6 +59,7 @@ export const Chatbot = ({
   const [loading, setLoading] = useState(false);
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [emailStatus, setEmailStatus] = useState<"idle" | "success" | "error">("idle");
+  const [isListening, setIsListening] = useState(true);
 
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -154,8 +152,7 @@ export const Chatbot = ({
           
           console.error("Speech recognition error:", errorCode);
           
-          const { isOpen, isListening } = useChatbotStore.getState();
-          if (errorCode !== "not-allowed" && isListening && isOpen) {
+          if (errorCode !== "not-allowed" && isListening) {
             setTimeout(() => {
               try { recognitionRef.current.start(); } catch(e) {}
             }, 1000); 
@@ -163,15 +160,14 @@ export const Chatbot = ({
         };
 
         recognitionRef.current.onend = () => {
-          const { isOpen, isListening } = useChatbotStore.getState();
-          if (isListening && isOpen) {
+          if (isListening) {
             setTimeout(() => {
               try { recognitionRef.current.start(); } catch(e) {}
             }, 100);
           }
         };
 
-        if (isListening && isOpen) {
+        if (isListening) {
            try { recognitionRef.current.start(); } catch(e) {}
         }
       }
@@ -183,15 +179,15 @@ export const Chatbot = ({
   }, []);
 
   useEffect(() => {
-    if (isListening && isOpen) {
+    if (isListening) {
       try { recognitionRef.current?.start(); } catch(e) {}
     } else {
       recognitionRef.current?.stop();
     }
-  }, [isListening, isOpen]);
+  }, [isListening]);
 
   const toggleListening = () => {
-    setIsListening(!isListening);
+    setIsListening(prev => !prev);
   };
 
   const handleSendEmail = async () => {
