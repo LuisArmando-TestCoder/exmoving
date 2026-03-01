@@ -74,6 +74,7 @@ export const Chatbot = ({
         - BE EXTREMELY CONCISE. One sentence max per response.
         - Ask ONLY 1 question at a time.
         - Professional tone.
+        - DO NOT MAKE PROMISES or guarantees of any kind.
         - Keep track of the "5 Whys" chain internally.
         - When complete, provide a 3-bullet point summary and tell them their inquiry has been sent to the research team.
         
