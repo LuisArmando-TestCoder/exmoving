@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Sparkles, Check, ArrowRight, Edit2 } from "lucide-react";
+import { clsx } from "clsx";
 import { useChatbotStore } from "@/store/useChatbotStore";
 import { Chatbot } from "./Chatbot";
 import { ChatBrain } from "@/lib/ChatBrain";
