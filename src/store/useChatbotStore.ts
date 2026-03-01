@@ -26,6 +26,7 @@ interface ChatbotState {
   setIsSuccess: (isSuccess: boolean) => void;
   summaryText: string;
   isNewsletterOpen: boolean;
+  isListening: boolean;
   // Resource Intelligence
   totalTokensIn: number;
   totalTokensOut: number;
@@ -43,6 +44,7 @@ interface ChatbotState {
   addInteractionRecord: (record: InteractionRecord) => void;
   setShowEmailBtn: (showEmailBtn: boolean) => void;
   setSummaryText: (summaryText: string) => void;
+  setIsListening: (isListening: boolean) => void;
   resetChat: () => void;
 }
 
@@ -82,6 +84,7 @@ export const useChatbotStore = create<ChatbotState>()(
       setIsSuccess: (isSuccess) => set({ isSuccess }),
       summaryText: "",
       isNewsletterOpen: false,
+      isListening: true,
       // Resource Intelligence
       totalTokensIn: 0,
       totalTokensOut: 0,
@@ -108,6 +111,7 @@ export const useChatbotStore = create<ChatbotState>()(
             isSuccess: false,
             showEmailBtn: false,
             summaryText: "",
+            isListening: true,
             // Reset session telemetry
             totalTokensIn: 0,
             totalTokensOut: 0,
@@ -116,7 +120,7 @@ export const useChatbotStore = create<ChatbotState>()(
           };
         });
       },
-      closeChatbot: () => set({ isOpen: false }),
+      closeChatbot: () => set({ isOpen: false, isListening: false }),
       openNewsletter: () => set({ isNewsletterOpen: true }),
       closeNewsletter: () => set({ isNewsletterOpen: false }),
       setMessages: (messagesOrFn) => 
@@ -128,12 +132,14 @@ export const useChatbotStore = create<ChatbotState>()(
       addInteractionRecord: (record) => set((state) => ({ interactionHistory: [...state.interactionHistory, record] })),
       setShowEmailBtn: (showEmailBtn) => set({ showEmailBtn }),
       setSummaryText: (summaryText) => set({ summaryText }),
+      setIsListening: (isListening) => set({ isListening }),
       resetChat: () => set((state) => ({
         messages: getInitialMessages(state.userContext),
         isErratic: false,
         isSuccess: false,
         showEmailBtn: false,
         summaryText: "",
+        isListening: true,
       })),
     }),
     {
