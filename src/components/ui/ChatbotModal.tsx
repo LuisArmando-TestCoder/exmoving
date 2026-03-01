@@ -120,7 +120,17 @@ export const ChatbotModal = () => {
                           setEmailError("");
                         }}
                         onBlur={() => {
-                          if (!emailInput) setIsEditingEmail(false);
+                          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                          if (emailRegex.test(emailInput)) {
+                            setUserEmail(emailInput);
+                            setIsEditingEmail(false);
+                            setEmailError("");
+                          } else if (!emailInput) {
+                            setIsEditingEmail(false);
+                            setEmailError("");
+                          } else {
+                            setEmailError("Invalid email format");
+                          }
                         }}
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
