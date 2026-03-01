@@ -60,6 +60,7 @@ export const Chatbot = ({
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [emailStatus, setEmailStatus] = useState<"idle" | "success" | "error">("idle");
   const [isListening, setIsListening] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
