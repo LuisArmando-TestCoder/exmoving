@@ -1,0 +1,107 @@
+@use "@/styles/variables.scss" as *;
+@use "@/styles/mixins.scss" as *;
+
+.flowchart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 3rem 0 5rem;
+  padding: 3rem;
+  background: rgba(var(--bg-rgb), 0.3);
+  border-radius: 2rem;
+  border: 1px solid rgba(var(--primary-rgb), 0.1);
+  overflow-x: auto;
+  
+  @media (max-width: 900px) {
+    flex-direction: column;
+  }
+
+  .flowNode {
+    padding: 1rem 1.5rem;
+    background: rgba(var(--primary-rgb), 0.1);
+    border: 1px solid var(--primary);
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--text);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .flowDiamond {
+    padding: 1.5rem;
+    background: rgba(var(--secondary-rgb), 0.1);
+    border: 1px solid var(--secondary);
+    transform: rotate(45deg);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &::after {
+      content: "UIDBM Router";
+      transform: rotate(-45deg);
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    font-size: 0; // Hide original text
+  }
+
+  .flowDatabase {
+    padding: 1.5rem 1rem;
+    background: rgba(16, 185, 129, 0.1); // Emerald
+    border: 1px solid #10b981;
+    border-radius: 50% 50% 50% 50% / 10% 10% 10% 10%;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--text);
+    text-align: center;
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 20%;
+      border-bottom: 1px solid #10b981;
+      border-radius: 50%;
+    }
+  }
+
+  .flowArrow {
+    color: var(--text-dim);
+    font-size: 1.5rem;
+    font-weight: 900;
+  }
+
+  .flowBranches {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .flowBranch {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    @media (max-width: 900px) {
+      flex-direction: column;
+    }
+
+    .flowLabel {
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      color: var(--text-dim);
+      background: rgba(var(--bg-rgb), 0.8);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      border: 1px dashed rgba(var(--text-rgb), 0.2);
+    }
+  }
+}

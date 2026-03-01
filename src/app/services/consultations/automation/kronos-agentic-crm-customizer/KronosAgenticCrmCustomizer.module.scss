@@ -81,14 +81,18 @@
   .apiEndpoint {
     background: rgba(var(--text-rgb), 0.02);
     border: 1px solid rgba(var(--text-rgb), 0.05);
-    padding: 2rem;
+    padding: clamp(1rem, 5vw, 2rem);
     border-radius: 1.5rem;
+    overflow: hidden;
+    width: 100%;
 
     .apiHead {
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 1rem;
       margin-bottom: 1rem;
+      width: 100%;
 
       span {
         padding: 0.3rem 0.8rem;
@@ -97,6 +101,7 @@
         font-weight: 900;
         font-size: 0.75rem;
         color: #fff;
+        flex-shrink: 0;
       }
 
       .get { background: #61affe; }
@@ -104,8 +109,14 @@
 
       code {
         font-family: var(--font-mono);
-        font-size: 1rem;
+        // Responsive sizing with min() for very long URLs
+        font-size: min(4vw, 1rem);
+        @media (max-width: 480px) {
+          font-size: min(5vw, 1rem);
+        }
         color: var(--text);
+        word-break: break-all;
+        overflow-wrap: anywhere;
       }
     }
 
@@ -115,32 +126,37 @@
       margin-bottom: 1.5rem;
     }
 
-    .apiTable {
-      width: 100%;
-      border-collapse: collapse;
+  .apiTable {
+    width: 100%;
+    border-collapse: collapse;
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 
-      th {
-        text-align: left;
-        padding: 0.75rem;
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: var(--text-dim);
-        border-bottom: 1px solid rgba(var(--text-rgb), 0.05);
-      }
+    th {
+      text-align: left;
+      padding: 0.75rem;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      border-bottom: 1px solid rgba(var(--text-rgb), 0.05);
+      white-space: nowrap;
+    }
 
-      td {
-        padding: 1rem 0.75rem;
-        border-bottom: 1px solid rgba(var(--text-rgb), 0.03);
-        font-size: 0.9rem;
+    td {
+      padding: 1rem 0.75rem;
+      border-bottom: 1px solid rgba(var(--text-rgb), 0.03);
+      font-size: 0.9rem;
+      white-space: nowrap;
 
-        code {
-          font-family: var(--font-mono);
-          color: var(--primary);
-          font-weight: 700;
-        }
+      code {
+        font-family: var(--font-mono);
+        color: var(--primary);
+        font-weight: 700;
       }
     }
+  }
   }
 }
 
@@ -197,7 +213,9 @@
     margin-bottom: 2rem;
     background: rgba(var(--bg-rgb), 0.3);
     border-radius: 1rem;
-    overflow: hidden;
+    overflow-x: auto;
+    display: block;
+    -webkit-overflow-scrolling: touch;
     border: 1px solid rgba(var(--text-rgb), 0.05);
 
     th {
@@ -209,6 +227,7 @@
       font-size: 0.85rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
+      white-space: nowrap;
     }
 
     td {
@@ -216,6 +235,7 @@
       border-bottom: 1px solid rgba(var(--text-rgb), 0.05);
       color: var(--text-dim);
       font-size: 0.95rem;
+      white-space: nowrap;
 
       code {
         font-family: var(--font-mono);
@@ -224,112 +244,6 @@
         padding: 0.2rem 0.4rem;
         border-radius: 4px;
       }
-    }
-  }
-}
-
-// Flowchart (Mermaid-like)
-.flowchart {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-  margin: 3rem 0 5rem;
-  padding: 3rem;
-  background: rgba(var(--bg-rgb), 0.3);
-  border-radius: 2rem;
-  border: 1px solid rgba(var(--primary-rgb), 0.1);
-  overflow-x: auto;
-  
-  @media (max-width: 900px) {
-    flex-direction: column;
-  }
-
-  .flowNode {
-    padding: 1rem 1.5rem;
-    background: rgba(var(--primary-rgb), 0.1);
-    border: 1px solid var(--primary);
-    border-radius: 8px;
-    font-family: var(--font-mono);
-    font-weight: 700;
-    color: var(--text);
-    text-align: center;
-    white-space: nowrap;
-  }
-
-  .flowDiamond {
-    padding: 1.5rem;
-    background: rgba(var(--secondary-rgb), 0.1);
-    border: 1px solid var(--secondary);
-    transform: rotate(45deg);
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &::after {
-      content: "UIDBM Router";
-      transform: rotate(-45deg);
-      font-family: var(--font-mono);
-      font-weight: 700;
-      color: var(--text);
-      white-space: nowrap;
-    }
-    font-size: 0; // Hide original text
-  }
-
-  .flowDatabase {
-    padding: 1.5rem 1rem;
-    background: rgba(16, 185, 129, 0.1); // Emerald
-    border: 1px solid #10b981;
-    border-radius: 50% 50% 50% 50% / 10% 10% 10% 10%;
-    font-family: var(--font-mono);
-    font-weight: 700;
-    color: var(--text);
-    text-align: center;
-    position: relative;
-    
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 20%;
-      border-bottom: 1px solid #10b981;
-      border-radius: 50%;
-    }
-  }
-
-  .flowArrow {
-    color: var(--text-dim);
-    font-size: 1.5rem;
-    font-weight: 900;
-  }
-
-  .flowBranches {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-
-  .flowBranch {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-
-    @media (max-width: 900px) {
-      flex-direction: column;
-    }
-
-    .flowLabel {
-      font-size: 0.8rem;
-      font-family: var(--font-mono);
-      color: var(--text-dim);
-      background: rgba(var(--bg-rgb), 0.8);
-      padding: 0.2rem 0.5rem;
-      border-radius: 4px;
-      border: 1px dashed rgba(var(--text-rgb), 0.2);
     }
   }
 }
@@ -347,9 +261,19 @@
 
   .featureBlock {
     background: rgba(var(--bg-rgb), 0.2);
-    padding: 2.5rem;
+    padding: clamp(1rem, 5vw, 2.5rem);
     border-radius: 1.5rem;
     border: 1px solid rgba(var(--text-rgb), 0.05);
+    width: 100%;
+    overflow: hidden;
+
+    @media (max-width: 600px) {
+      padding: 1.5rem 0;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(var(--text-rgb), 0.05);
+      border-radius: 0;
+    }
 
     h4 {
       @include font-heading;

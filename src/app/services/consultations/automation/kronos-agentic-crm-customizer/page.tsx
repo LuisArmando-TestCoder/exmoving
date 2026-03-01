@@ -1,5 +1,6 @@
 import AutomationServicePage from "@/components/ui/AutomationServicePage";
 import styles from "./KronosAgenticCrmCustomizer.module.scss";
+import { KronosFlowchart } from "./KronosFlowchart";
 
 export default function KronosAgenticCrmCustomizerPage() {
   const customStyles = styles;
@@ -69,30 +70,7 @@ export default function KronosAgenticCrmCustomizerPage() {
                   <p>The <strong>UIDBM (UI Database Module)</strong> is a generic backend engine designed to decouple "App Logic" from "Implementation". In a traditional app, developers write specific controllers for specific data types (e.g., <code>UserController</code>). In UIDBM, there is only one controller: the <strong>Schema Controller</strong>, which adapts its behavior based on a configuration file.</p>
                 </div>
 
-                {/* Using CSS grid for mermaid-like flowchart structure without external libraries */}
-                <div className={customStyles.flowchart}>
-                  <div className={customStyles.flowNode}>HTTP Request</div>
-                  <div className={customStyles.flowArrow}>→</div>
-                  <div className={customStyles.flowDiamond}>UIDBM Router</div>
-                  <div className={customStyles.flowBranches}>
-                    <div className={customStyles.flowBranch}>
-                      <div className={customStyles.flowLabel}>GET /schema</div>
-                      <div className={customStyles.flowNode}>Schema Manager</div>
-                    </div>
-                    <div className={customStyles.flowBranch}>
-                      <div className={customStyles.flowLabel}>POST /:coll</div>
-                      <div className={customStyles.flowNode}>Validator [Pass]</div>
-                      <div className={customStyles.flowArrow}>↓</div>
-                      <div className={customStyles.flowNode}>Security [Pass]</div>
-                      <div className={customStyles.flowArrow}>↓</div>
-                      <div className={customStyles.flowNode}>Logic & Plans [Pass]</div>
-                      <div className={customStyles.flowArrow}>↓</div>
-                      <div className={customStyles.flowNode}>CRUD Helper</div>
-                      <div className={customStyles.flowArrow}>↓</div>
-                      <div className={customStyles.flowDatabase}>DB (Firestore)</div>
-                    </div>
-                  </div>
-                </div>
+                <KronosFlowchart />
 
                 <div className={customStyles.docGrid}>
                   <div className={customStyles.docCard}>

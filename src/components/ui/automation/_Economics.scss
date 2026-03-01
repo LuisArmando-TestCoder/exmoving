@@ -23,10 +23,18 @@
 
     h2 {
       @include font-heading;
-      font-size: clamp(3.5rem, 10vw, 6rem);
+      // Use min() with vw to ensure the font scales down exactly to fit small viewports without wrapping
+      // 90vw ensures it doesn't touch the edges on very small devices
+      font-size: min(10vw, 6rem); 
+      
+      @media (max-width: 600px) {
+        font-size: min(14vw, 3.5rem);
+      }
+
       margin-bottom: 2rem;
       line-height: 0.85;
       letter-spacing: -0.06em;
+      white-space: nowrap;
     }
 
     p {
@@ -159,10 +167,14 @@
       display: flex;
       align-items: center;
       gap: 1rem;
+      width: 100%;
+      min-width: 0; // Fixes flex child overflow
+      flex-wrap: wrap; // Allows detail to wrap on extremely narrow screens if necessary
 
       .track {
         height: 6px;
         flex-grow: 1;
+        min-width: 30px; // Ensures visibility on small screens
         max-width: 4rem;
         background: rgba(var(--text-rgb), 0.05);
         border-radius: 9999px;
@@ -180,6 +192,10 @@
         font-family: var(--font-mono);
         text-transform: uppercase;
         letter-spacing: 0.05em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
       }
     }
   }
