@@ -71,9 +71,10 @@ export const Captcha: React.FC<CaptchaProps> = ({ onResolve, id = 'default' }) =
   const onDrag = (_: any, info: any) => {
     if (isSuccess || !trackRef.current) return;
     const trackWidth = trackRef.current.offsetWidth;
-    const dragLimit = trackWidth - 66; 
+    // Lower threshold: require only 90% of the way instead of practically 100%
+    const dragLimit = (trackWidth - 76) * 0.9;
     
-    if (info.offset.x >= dragLimit) {
+    if (info.point.x - trackRef.current.getBoundingClientRect().left >= dragLimit) {
       handleResolve();
     }
   };
