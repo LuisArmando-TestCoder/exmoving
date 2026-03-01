@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { clsx } from "clsx";
-import { AlertCircle, CheckCircle2, Mic, MicOff } from "lucide-react";
+import { AlertCircle, CheckCircle2, Mic, MicOff, MailWarning } from "lucide-react";
 import gsap from "gsap";
 import styles from "./Chatbot.module.scss";
 
@@ -10,6 +10,7 @@ interface ChatbotInputProps {
   loading: boolean;
   isErratic: boolean;
   isSuccess?: boolean;
+  isEmailInvalid?: boolean;
   showEmailBtn: boolean;
   isListening: boolean;
   toggleListening: () => void;
@@ -24,6 +25,7 @@ export const ChatbotInput = ({
   loading,
   isErratic,
   isSuccess,
+  isEmailInvalid,
   showEmailBtn,
   isListening,
   toggleListening,
@@ -89,7 +91,24 @@ export const ChatbotInput = ({
 
   return (
     <div className={styles["input-area"]}>
-      {isSuccess ? (
+      {isEmailInvalid ? (
+        <div
+          className={styles["email-invalid-notice"]}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "100%",
+            gap: "8px",
+            padding: "1rem",
+            color: "#ef4444",
+            fontWeight: 600,
+          }}
+        >
+          <MailWarning size={20} />
+          <span>Please fix your email address to continue</span>
+        </div>
+      ) : isSuccess ? (
         <div
           className={styles["success-notice"]}
           style={{

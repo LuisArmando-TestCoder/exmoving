@@ -41,8 +41,15 @@ export const Chatbot = ({
     summaryText, 
     setSummaryText,
     closeChatbot,
-    openNewsletter
+    openNewsletter,
+    userEmail
   } = useChatbotStore();
+
+  const isEmailInvalid = useMemo(() => {
+    if (!userEmail) return false;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return !emailRegex.test(userEmail);
+  }, [userEmail]);
 
   const formatTimestamp = () => {
     return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -414,6 +421,7 @@ export const Chatbot = ({
         loading={loading}
         isErratic={isErratic}
         isSuccess={isSuccess}
+        isEmailInvalid={isEmailInvalid}
         showEmailBtn={showEmailBtn}
         isListening={isListening}
         toggleListening={toggleListening}
