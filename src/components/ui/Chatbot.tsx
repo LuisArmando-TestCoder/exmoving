@@ -318,11 +318,13 @@ export const Chatbot = ({
       }
 
       if (fullText) {
-        if (fullText.toLowerCase().includes("summar") || 
-            fullText.toLowerCase().includes("whatsapp") || 
-            fullText.toLowerCase().includes("button below") || 
-            fullText.toLowerCase().includes("request button") ||
-            fullText.toLowerCase().includes("research team")) {
+        const lowerFullText = fullText.toLowerCase();
+        if (lowerFullText.includes("summar") || 
+            lowerFullText.includes("whatsapp") || 
+            lowerFullText.includes("button below") || 
+            lowerFullText.includes("request button") ||
+            lowerFullText.includes("research team") ||
+            lowerFullText.includes("has been sent")) {
           const finalSummary = [...updatedMessages, { role: "model", text: fullText, timestamp: formatTimestamp() }]
             .map((m) => `${m.role.toUpperCase()}: ${m.text}`)
             .join("\n\n");
