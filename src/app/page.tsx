@@ -9,35 +9,11 @@ import Architecture from "@/components/sections/Architecture";
 import MarginEngine from "@/components/sections/MarginEngine";
 import Risk from "@/components/sections/Risk";
 import CopySection from "@/components/sections/CopySection";
-import { Captcha } from "@/components/ui/Captcha";
 
 export default function Home() {
-  const [isVerified, setIsVerified] = useState(false);
-  const [showContent, setShowContent] = useState(false);
-
-  useEffect(() => {
-    // Small delay to allow captcha to check local storage
-    const timer = setTimeout(() => {
-      if (isVerified) {
-        setShowContent(true);
-      }
-    }, 100);
-    return () => clearTimeout(timer);
-  }, [isVerified]);
-
   return (
     <>
-      {!isVerified && <Captcha onResolve={() => setIsVerified(true)} id="home-page" />}
-      
-      {/* 
-        We render the layout immediately to help load assets (fonts, images, scripts),
-        but keep it invisible until verified. 
-      */}
-      <div style={{ 
-        opacity: showContent ? 1 : 0, 
-        visibility: showContent ? 'visible' : 'hidden',
-        transition: 'opacity 0.8s ease'
-      }}>
+      <div>
         <Header />
         <main>
           <Hero />

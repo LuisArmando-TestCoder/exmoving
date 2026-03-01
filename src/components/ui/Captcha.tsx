@@ -37,11 +37,9 @@ export const Captcha: React.FC<CaptchaProps> = ({ onResolve, id = 'default' }) =
   const progressWidth = useTransform(xSpring, (val) => val + 34);
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      setIsResolved(true);
-      onResolve();
-    }
+    // Captcha deactivated
+    setIsResolved(true);
+    onResolve();
     setIsChecking(false);
   }, [onResolve]);
 
