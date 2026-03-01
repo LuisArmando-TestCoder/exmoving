@@ -387,6 +387,18 @@ export const Chatbot = ({
           };
           
           triggerEmail();
+
+          // Send the special additional message
+          setTimeout(() => {
+            setMessages((prev) => [
+              ...prev,
+              {
+                role: "model",
+                text: "Now, our team is going to analyze all of the information that you have facilitated, and we are going to contact you in business days.",
+                timestamp: formatTimestamp(),
+              },
+            ]);
+          }, 1000);
         }
       }
     } catch (error: any) {
