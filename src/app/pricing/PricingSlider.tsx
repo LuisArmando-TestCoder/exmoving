@@ -120,17 +120,15 @@ export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
         </div>
 
         <div className={styles.baDivider}>
-          <div className={styles.baLine} />
           <motion.div
             animate={{
-              x: isDragging ? [0, 5, 0] : 0,
+              y: isDragging ? [0, 5, 0] : 0,
               opacity: isDragging ? 1 : 0.4,
             }}
             transition={{ repeat: Infinity, duration: 1.5 }}
           >
             <ArrowRight size={14} className={styles.baArrow} />
           </motion.div>
-          <div className={styles.baLine} />
         </div>
 
         <div className={styles.baStep}>
