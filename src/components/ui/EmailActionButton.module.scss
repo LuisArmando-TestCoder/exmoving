@@ -182,7 +182,7 @@
 }
 
 .label {
-  font-weight: 100;
+  font-weight: 200;
   padding: 0 0.75rem 0 1rem;
   font-size: 0.75rem;
   letter-spacing: 0.05em;
@@ -240,7 +240,7 @@
   }
 
   &::placeholder {
-    font-weight: 100;
+    font-weight: 200;
     color: rgba(var(--overlay-dark-rgb), 0.3);
   }
 }
