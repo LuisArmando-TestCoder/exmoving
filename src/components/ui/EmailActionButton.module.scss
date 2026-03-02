@@ -240,6 +240,7 @@
   }
 
   &::placeholder {
+    font-weight: 100;
     color: rgba(var(--overlay-dark-rgb), 0.3);
   }
 }
