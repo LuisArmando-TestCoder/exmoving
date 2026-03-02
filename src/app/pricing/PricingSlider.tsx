@@ -114,7 +114,7 @@ export const PricingSlider = ({ itemId, config }: PricingSliderProps) => {
       >
         <div className={styles.baStep}>
           <motion.div className={styles.baValue}>
-            {humanValue}
+            {Math.round(+humanValue)}
           </motion.div>
           <div className={styles.baLabel}>{ba.humanUnit}</div>
         </div>

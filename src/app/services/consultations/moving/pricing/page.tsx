@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, useSpring, useTransform } from "framer-motion";
+import { motion, useSpring } from "framer-motion";
 import { 
   Calculator, Brain, Layers, Globe, Shield, 
-  TrendingUp, Activity, Zap, Server, FileText, Anchor, Code
+  TrendingUp, Activity, Zap, Server, FileText, Anchor, Code, Database
 } from "lucide-react";
 import ProceduralTemplate from "@/components/ProceduralTemplate";
 import { Reveal } from "@/components/ui/Reveal";
@@ -21,23 +21,23 @@ function useProjection(leads: number, complexity: number) {
   });
 
   useEffect(() => {
-    // Complexity 1 = Best Case (Deterministic, $0.002)
-    // Complexity 100 = Worst Case (High Entropy, $0.10)
+    // Technical Projection based on Iteration A/B State Machine
+    // Complexity 1% = Golden Path (Lowest Computation: $0.002)
+    // Complexity 100% = Maximum Friction (All Providers Exhausted: $0.10)
     
-    // Non-linear mapping for the cost curve (exponential growth towards worst case)
     const normalizedComplexity = complexity / 100;
-    const baseCost = 0.002;
+    const minCost = 0.002;
     const maxCost = 0.10;
     
-    // Calculate current cost per quote
-    const currentCost = baseCost + (maxCost - baseCost) * Math.pow(normalizedComplexity, 2);
+    // Linear interpolation based on Iteration B exhaustion probability
+    const currentCost = minCost + (maxCost - minCost) * normalizedComplexity;
     
-    // Calculate total tokens (assuming $0.15/1M input, $0.38/1M output -> blended ~$0.25/1M)
+    // Gemini 1.5 Flash blended rate ~$0.25/1M tokens
     const costPerMillionTokens = 0.25;
     const currentTokens = (currentCost / costPerMillionTokens) * 1000000;
     
-    // Humans take roughly 30 mins (0.5 hrs) to do a full negotiation cycle
-    const hoursDisplaced = leads * 0.5;
+    // Humans take roughly 45 mins to manage a multi-batch provider sourcing + negotiation
+    const hoursDisplaced = leads * 0.75;
 
     setMetrics({
       costPerQuote: currentCost,
@@ -94,7 +94,7 @@ export default function MovingPricingPage() {
       icon: Globe,
       items: [
         "Origin: City, State, ZIP, Country",
-        "Destination: Port, Final Drop-off"
+        "Destination: Port, City, or Final Location"
       ]
     },
     {
@@ -104,7 +104,7 @@ export default function MovingPricingPage() {
         "Service Type: Household / Vehicles",
         "Method: FCL (20/40ft), LCL, RoRo",
         "Estimated Volume: CBM / m³",
-        "Goods Description & Conditions"
+        "Goods Description: New/Used mix"
       ]
     },
     {
@@ -112,37 +112,37 @@ export default function MovingPricingPage() {
       icon: Activity,
       items: [
         "Terms: Door-to-Port, Port-to-Port",
-        "Packing: Self-pack vs Professional",
-        "Loading: Assistance required?",
-        "Customs: Destination handling"
+        "Packing: Self-pack vs Professional load",
+        "Loading: Origin assistance required?",
+        "Customs: Destination handling status"
       ]
     },
     {
       title: "4. Carrier Details",
       icon: Anchor,
       items: [
-        "Carrier Name & Service Class",
-        "Estimated Transit Time",
-        "Restrictions (e.g., Avoid MSC)"
+        "Carrier Name & Service Details",
+        "Estimated Port-to-Port Transit Time",
+        "Restrictions: Carriers to avoid (e.g. MSC)"
       ]
     },
     {
       title: "5. Financial Breakdown",
       icon: Calculator,
       items: [
-        "Base Rate ($)",
-        "Surcharges: BAF, CAF, ISPS",
-        "Local Charges",
-        "Rate Validity Expiration"
+        "Base Rate ($) & Currency Adjustment",
+        "Surcharges: BAF, CAF, ISPS, Local",
+        "Rate Validity: Expiration tracking",
+        "Job Cost distillation logic"
       ]
     },
     {
       title: "6. Profitability Engine",
       icon: TrendingUp,
       items: [
-        "Dynamic Margin (15% - 25%)",
-        "Global Average Comparison",
-        "Proposal Language Generation"
+        "Dynamic Margin: 15% - 25% (Manual/Auto)",
+        "Global Average Price Matrix",
+        "Document Language: Spanish/English"
       ]
     }
   ];
@@ -154,9 +154,9 @@ export default function MovingPricingPage() {
         {/* HERO SECTION */}
         <Reveal direction="down">
           <div className={styles.heroSection}>
-            <h1>Intelligence Economics</h1>
+            <h1>Autonomous Pricing Architecture</h1>
             <p>
-              The Quoting Agent distills multi-threaded logistics negotiations into a flat $0.01 computational overhead. Explore the multidimensional ROI below.
+              The Quoting Agent utilizes a nested state machine (Iterations A & B) to distill multi-provider email chaos into a deterministic $0.01 computational unit.
             </p>
           </div>
         </Reveal>
@@ -165,8 +165,8 @@ export default function MovingPricingPage() {
         <Reveal delay={0.1}>
           <div className={styles.simulatorSection}>
             <div className={styles.simulatorHeader}>
-              <h2>Computational ROI Simulator</h2>
-              <p>Slide to simulate the Cost Distillation (CoD) vs. Gross Volume (GV) projection.</p>
+              <h2>Computational ROI Projection</h2>
+              <p>Simulate Cost Distillation (CoD) across varying lead volumes and negotiation friction.</p>
             </div>
 
             <div className={styles.sliderGroup}>
@@ -194,7 +194,7 @@ export default function MovingPricingPage() {
               <div className={styles.sliderControl}>
                 <div className={styles.sliderHeader}>
                   <span className={styles.label}>
-                    <Brain size={18} /> Complexity / Negotiation Entropy (A/B Loops)
+                    <Brain size={18} /> Provider Friction / Iteration Depth
                   </span>
                   <span className={styles.value}>{complexity}%</span>
                 </div>
@@ -206,8 +206,8 @@ export default function MovingPricingPage() {
                   onChange={(e) => setComplexity(Number(e.target.value))} 
                 />
                 <div className={styles.sliderScale}>
-                  <span>1% (Best Case: Deterministic)</span>
-                  <span>100% (Worst Case: High Entropy)</span>
+                  <span>1% (Best Case: Golden Path)</span>
+                  <span>100% (Worst Case: Provider Exhaustion)</span>
                 </div>
               </div>
             </div>
@@ -215,7 +215,7 @@ export default function MovingPricingPage() {
             <div className={styles.metricsGrid}>
               <div className={styles.metricCard}>
                 <Zap className={styles.metricIcon} size={24} />
-                <span className={styles.metricLabel}>Total LLM OpEx</span>
+                <span className={styles.metricLabel}>Operational LLM OpEx</span>
                 <div className={styles.metricValue}>
                   <AnimatedCounter value={metrics.totalMonthlyCost} prefix="$" decimals={2} />
                   <span className={styles.unit}>/mo</span>
@@ -223,15 +223,15 @@ export default function MovingPricingPage() {
               </div>
               <div className={styles.metricCard}>
                 <Code className={styles.metricIcon} size={24} />
-                <span className={styles.metricLabel}>Avg. Cost per Quote</span>
+                <span className={styles.metricLabel}>Cost per Realized Quote</span>
                 <div className={styles.metricValue}>
                   <AnimatedCounter value={metrics.costPerQuote} prefix="$" decimals={3} />
                   <span className={styles.unit}>/ea</span>
                 </div>
               </div>
               <div className={styles.metricCard}>
-                <Shield className={styles.metricIcon} size={24} />
-                <span className={styles.metricLabel}>Human Hours Displaced</span>
+                <Database className={styles.metricIcon} size={24} />
+                <span className={styles.metricLabel}>Firestore Ops Displaced</span>
                 <div className={styles.metricValue}>
                   <AnimatedCounter value={metrics.hoursSaved} />
                   <span className={styles.unit}>hrs</span>
@@ -244,8 +244,8 @@ export default function MovingPricingPage() {
         {/* 20-FIELD MATRIX */}
         <Reveal delay={0.2}>
           <div className={styles.matrixSection}>
-            <h2>The 20-Field Intelligence Matrix</h2>
-            <p>Every IMAP ingestion event distills unstructured email chaos into these deterministic data points for precision margin calculation.</p>
+            <h2>The 20-Field Job Cost Matrix</h2>
+            <p>Every IMAP ingestion event distills unstructured relocation requests into these deterministic fields, synchronized directly to the Firestore "emailQuotes" collection.</p>
             
             <div className={styles.matrixGrid}>
               {dataFields.map((field, idx) => (
@@ -271,47 +271,47 @@ export default function MovingPricingPage() {
         <Reveal delay={0.3}>
           <div className={styles.processSection}>
             <div className={styles.processCol}>
-              <h3><span>Loop A</span> The Negotiation Protocol</h3>
-              <p>The system utilizes a mathematically capped state machine to avoid runaway LLM hallucinations, securing the lowest possible quote deterministically.</p>
+              <h3><span>Loop A</span> Iterative Negotiation</h3>
+              <p>The arbiter analyzes provider traits and pricing matrices to select winners and trigger the lowball negotiation logic.</p>
               <div className={styles.processSteps}>
                 <div className={styles.step}>
                   <Activity className={styles.stepIcon} size={20} />
-                  <span className={styles.stepText}>Analyze returned Provider pricing arrays.</span>
-                </div>
-                <div className={styles.step}>
-                  <TrendingUp className={styles.stepIcon} size={20} />
-                  <span className={styles.stepText}>Score via (Efficiency_Weight / Price) * Traits.</span>
+                  <span className={styles.stepText}>Score via (10000 / Rate) * ProviderTraits.</span>
                 </div>
                 <div className={styles.step}>
                   <Shield className={styles.stepIcon} size={20} />
-                  <span className={styles.stepText}>Apply d6 Random Lowball Trigger (1-in-6 chance).</span>
+                  <span className={styles.stepText}>Trigger d6 lowball (-10% random reduction).</span>
                 </div>
                 <div className={styles.step}>
                   <FileText className={styles.stepIcon} size={20} />
-                  <span className={styles.stepText}>Inject into Deterministic Template.</span>
+                  <span className={styles.stepText}>Await handshake or fallback to next row.</span>
+                </div>
+                <div className={styles.step}>
+                  <TrendingUp className={styles.stepIcon} size={20} />
+                  <span className={styles.stepText}>Update Global Averages on acceptance.</span>
                 </div>
               </div>
             </div>
 
             <div className={styles.processCol}>
-              <h3><span>Loop B</span> Market Sourcing Fallback</h3>
-              <p>If all "Loop A" providers stall or refuse the target margins, the system re-triggers the external ingestion engine without manual intervention.</p>
+              <h3><span>Loop B</span> Autonomous Batching</h3>
+              <p>When the current provider array is exhausted or fails handshake, Loop B re-activates the sourcing engine.</p>
               <div className={styles.processSteps}>
                 <div className={styles.step}>
                   <Server className={styles.stepIcon} size={20} />
-                  <span className={styles.stepText}>Detect Exhaustion of current Provider Array.</span>
+                  <span className={styles.stepText}>Detect loop-stall in Iteration A.</span>
                 </div>
                 <div className={styles.step}>
                   <Globe className={styles.stepIcon} size={20} />
-                  <span className={styles.stepText}>Trigger Selenium Scraper on target POE.</span>
-                </div>
-                <div className={styles.step}>
-                  <Code className={styles.stepIcon} size={20} />
-                  <span className={styles.stepText}>Discover & Parse N new Providers.</span>
+                  <span className={styles.stepText}>Re-trigger Movers POE Selenium discovery.</span>
                 </div>
                 <div className={styles.step}>
                   <Zap className={styles.stepIcon} size={20} />
-                  <span className={styles.stepText}>Restart Loop A with new batch context.</span>
+                  <span className={styles.stepText}>Seed Firestore with N new Provider docs.</span>
+                </div>
+                <div className={styles.step}>
+                  <Code className={styles.stepIcon} size={20} />
+                  <span className={styles.stepText}>Notify fallback providers & restart Loop A.</span>
                 </div>
               </div>
             </div>
@@ -322,7 +322,7 @@ export default function MovingPricingPage() {
         <Reveal delay={0.4}>
           <div className={styles.ctaSection}>
             <EmailActionButton 
-              label="Distill My Logistics Overhead"
+              label="Distill My Quoting Complexity"
               id="moving-pricing-cta"
             />
           </div>
