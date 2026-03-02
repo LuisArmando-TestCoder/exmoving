@@ -2,13 +2,6 @@
   "inputs": [
     {
       "checked": false,
-      "id": "",
-      "name": "",
-      "type": "file",
-      "value": ""
-    },
-    {
-      "checked": false,
       "id": "s2id_autogen11",
       "name": "",
       "type": "text",

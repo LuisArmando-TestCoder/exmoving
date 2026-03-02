@@ -165,4 +165,31 @@ export class ChatBrain {
       return "Pattern summary unavailable";
     }
   }
+
+  async generateUserChatSummary(historyText: string) {
+    const summarizerModel = this.genAI.getGenerativeModel({
+      model: "gemini-flash-latest",
+      systemInstruction: "You are a professional business consultant. Summarize the following consultation chat in a single, high-impact paragraph. Focus on the business objectives and the value of automation for their specific case. Be encouraging and professional."
+    });
+
+    try {
+      const result = await summarizerModel.generateContent(`CHAT HISTORY:\n${historyText}\n\nSummary for the user:`);
+      const responseText = (await result.response).text().trim();
+
+      // Telemetry
+      const metrics = {
+        inputTokens: IntelligenceUnit.estimateTokens(historyText),
+        outputTokens: IntelligenceUnit.estimateTokens(responseText),
+        modelId: summarizerModel.model,
+        operation: "user_chat_summary"
+      };
+      const cost = IntelligenceUnit.calculateCost(metrics);
+      IntelligenceUnit.logTelemetry(metrics, cost, "User-facing chat summary generated.");
+      useChatbotStore.getState().addUsage({ ...metrics, cost });
+
+      return responseText;
+    } catch (e) {
+      return "Thank you for your consultation. Our team is reviewing your requirements and will contact you shortly.";
+    }
+  }
 }

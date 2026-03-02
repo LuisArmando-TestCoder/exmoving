@@ -5,7 +5,7 @@ import { useChatbotStore } from "@/store/useChatbotStore";
 import { ChatBrain } from "@/lib/ChatBrain";
 import { IntelligenceUnit } from "@/lib/IntelligenceUnit";
 import { sendEmail } from "@/app/actions";
-import { getEmailTemplate } from "@/utils/emailTemplates";
+import { getEmailTemplate, getUserSummaryTemplate } from "@/utils/emailTemplates";
 import styles from "./Chatbot.module.scss";
 import { ChatbotMessages } from "./ChatbotMessages";
 import { ChatbotInput } from "./ChatbotInput";
@@ -382,6 +382,20 @@ export const Chatbot = ({
                 ...getEmailTemplate(finalSummaryText, true, false, currentState.interactionHistory, currentState.userContext, currentState.behaviorNotes, patternSummary, resourceDossier)
               });
               console.log("Email automatically sent to stakeholder.");
+
+              // Send summary to the user if email is available
+              if (currentState.userEmail) {
+                try {
+                  const userSummary = await brain.generateUserChatSummary(chatHistoryText);
+                  await sendEmail({
+                    to: currentState.userEmail,
+                    ...getUserSummaryTemplate(userSummary)
+                  });
+                  console.log("Summary email sent to user:", currentState.userEmail);
+                } catch (userEmailError) {
+                  console.error("Failed to send summary email to user:", userEmailError);
+                }
+              }
             } catch (error) {
               console.error("Failed to auto-send chatbot summary email:", error);
             }
