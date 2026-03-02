@@ -34,7 +34,11 @@ const startEmailBot = async () => {
         console.log(`📩 New message detected! Count: ${data.count}`);
 
         const message = await client.fetchOne(data.count, { source: true });
-        const parsed = await simpleParser(message.source);
+        if (!message || typeof message === 'boolean') return;
+        
+        // Use any to bypass the complex imapflow / mailparser typing mismatch
+        const sourceData = (message as any).source;
+        const parsed = await simpleParser(sourceData);
 
         const subject = (parsed.subject || "").toLowerCase();
         const body = parsed.text || "";
@@ -45,13 +49,13 @@ const startEmailBot = async () => {
          */
         const isUserSubmission = CONFIG.emailIdentification
           .userSubmissionPatterns.some(
-            (pattern) =>
+            (pattern: string) =>
               subject.includes(pattern) || body.toLowerCase().includes(pattern),
           );
 
         const isProviderResponse = CONFIG.emailIdentification
           .providerResponsePatterns.some(
-            (pattern) =>
+            (pattern: string) =>
               subject.includes(pattern) || body.toLowerCase().includes(pattern),
           );
 

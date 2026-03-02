@@ -1,4 +1,4 @@
-import { By, Select, until, WebDriver } from "npm:selenium-webdriver";
+import { By, until, WebDriver } from "npm:selenium-webdriver";
 import { logPipeline, verbose } from "./logger.ts";
 
 export interface TestValues {
@@ -31,8 +31,11 @@ export async function fillFormWithMappedValues(
             $('#' + arguments[0].id).val('${value}').trigger('change');
           `, element);
         } else {
-          const select = new Select(element);
-          await select.selectByValue(String(value));
+          await driver.executeScript(`
+            const select = arguments[0];
+            select.value = '${value}';
+            select.dispatchEvent(new Event('change', { bubbles: true }));
+          `, element);
         }
         verbose("FILLER", `Selected value ${value} for dropdown ${id}`);
       } else if (type === "checkbox" || type === "radio") {
@@ -62,14 +65,14 @@ export async function fillFormWithMappedValues(
         await driver.wait(async () => {
           const blockers = await driver.findElements(By.css(".loadingDiv"));
           if (blockers.length === 0) return true;
-          const visible = await Promise.all(blockers.map((b) => b.isDisplayed()));
-          return !visible.some((v) => v === true);
+      const visible = await Promise.all(blockers.map((b: any) => b.isDisplayed()));
+      return !visible.some((v: any) => v === true);
         }, 5000);
       } catch (e) {
         verbose("FILLER", "Loader wait timed out or failed, continuing...");
       }
     } catch (err) {
-      verbose("FILLER", `Warning: Could not fill field ${id} - ${err.message}`);
+      verbose("FILLER", `Warning: Could not fill field ${id} - ${(err as Error).message}`);
     }
   }
 

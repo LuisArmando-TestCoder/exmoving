@@ -14,43 +14,51 @@ export interface QuoteDetail {
   id: string;
   senderEmail: string;
   jobDetails: {
-    // 1. Detalles de Origen y Destino
-    origin: string; // Ciudad, Estado, País y Código Postal
-    destination: string; // Puerto, ciudad o ubicación final
+    // 1. Route Details
+    origin: string; // City, State, Country, ZIP
+    destination: string; // Port, City, or Final Location
 
-    // 2. Detalles del Equipo y Volumen
-    equipmentType: string; // Household goods / Vehículos
+    // 2. Equipment & Volume
+    equipmentType: string; // Household goods / Vehicles
     method: string; // FCL 20ft / FCL 40ft / LCL / RoRo
-    volumeCbm: number; // Medida en m3
-    description: string; // Detalles de la carga
+    volumeCbm: number; // Volume in m3
+    description: string; // Cargo details
 
-    // 3. Alcance del Servicio y Manipulación
-    serviceTerms: string; // Door to Port, Puerto a Puerto, etc.
+    // 3. Service Scope & Handling
+    serviceTerms: string; // Door to Port, Port to Port, etc.
     packingConditions: string; // Self pack / Movers load
-    loadingConditions: string; // Asistencia de carga / Carga por cliente
-    customsHandling: boolean; // Trámites aduanales en destino
+    loadingConditions: string; // Origin assistance / Client load
+    customsHandling: boolean; // Destination customs handling
 
-    // 4. Detalles del Flete Marítimo
+    // 4. Carrier Details
     carrierName?: string;
     transitTime?: string;
-    restrictions?: string; // Navieras a evitar
+    restrictions?: string; // Carriers to avoid
 
-    // 5. Desglose de Costos
+    // 5. Cost Breakdown
     baseRate?: number;
-    surcharges?: Record<string, number>; // BAF, CAF, ISPS, etc.
+    surcharges?: Record<string, number>; // BAF, CAF, ISPS, local charges, etc.
     validityDate?: string;
 
-    // 6. Rentabilidad y Generación
+    // 6. Profitability & Generation
     marginContribution: number; // 15% - 25%
     language: "en" | "es";
   };
   quotes: Array<{
     senderEmail: string;
-    quoteData: any;
+    quoteData: any; // Merged fields based on provider reply
+    costDistillation: number; // The LLM token cost for processing this quote ($0.15-$0.38/1M tokens)
     createdAt: string;
     updatedAt: string;
+    status: "received" | "negotiating" | "accepted" | "rejected";
+    negotiatedValue?: number; // Last value during Iteration A
   }>;
   createdAt: string;
   updatedAt: string;
-  status: "pending" | "comparing" | "completed";
+  status: "pending" | "comparing" | "negotiating" | "completed" | "failed";
+  
+  // Negotiation State Machine (Iterations A & B)
+  currentBatch: number;
+  exhaustedProviders: string[];
+  totalDistillationCost: number; // Track ROI dynamically
 }

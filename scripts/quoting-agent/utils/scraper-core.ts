@@ -36,8 +36,8 @@ export async function clickElement(driver: WebDriver, selector: string) {
     await driver.wait(async () => {
       const blockers = await driver.findElements(By.css(".loadingDiv"));
       if (blockers.length === 0) return true;
-      const visible = await Promise.all(blockers.map((b) => b.isDisplayed()));
-      return !visible.some((v) => v === true);
+      const visible = await Promise.all(blockers.map((b: any) => b.isDisplayed()));
+      return !visible.some((v: any) => v === true);
     }, 15000);
 
     // Try direct click first, then script click as backup
@@ -55,7 +55,7 @@ export async function clickElement(driver: WebDriver, selector: string) {
     logPipeline(`Click Element: ${selector}`, "SUCCESS");
     logPerformance(`Click: ${selector}`, Date.now() - start);
   } catch (err) {
-    logPipeline(`Click Element: ${selector}`, "ERROR", err.message);
+    logPipeline(`Click Element: ${selector}`, "ERROR", (err as Error).message);
     throw err;
   }
 }
@@ -73,7 +73,7 @@ export async function typeInElement(
     logPipeline(`Type text in: ${selector}`, "SUCCESS");
     logPerformance(`Type: ${selector}`, Date.now() - start);
   } catch (err) {
-    logPipeline(`Type text in: ${selector}`, "ERROR", err.message);
+    logPipeline(`Type text in: ${selector}`, "ERROR", (err as Error).message);
     throw err;
   }
 }
@@ -128,7 +128,7 @@ export async function findAndClickLinkByHref(
     logPipeline(`Click Link By Href: ${pattern}`, "SUCCESS");
     logPerformance(`Href Click: ${pattern}`, Date.now() - start);
   } catch (err) {
-    logPipeline(`Click Link By Href: ${pattern}`, "ERROR", err.message);
+    logPipeline(`Click Link By Href: ${pattern}`, "ERROR", (err as Error).message);
     throw err;
   }
 }
